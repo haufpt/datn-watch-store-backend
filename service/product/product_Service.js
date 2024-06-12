@@ -13,6 +13,73 @@ const createNewProduct = async (data) => {
 };
 
 
+const listProduct = async () => {
+  const pipeline = [
+    {
+      $lookup: {
+        from: "brands",
+        localField: "brandId",
+        foreignField: "_id",
+        as: "brandInfo",
+      },
+    },
+    // {
+    //   $addFields: {
+    //     brandInfo: { $arrayElemAt: ["$brandInfo", 0] },
+    //   },
+    // },
+    {
+      $unwind: {
+        path: "$brandInfo",
+        preserveNullAndEmptyArrays: false,
+      },
+    },
+    {
+      $group: {
+        _id: "$_id",
+        product: { $first: "$$ROOT" },
+        brandInfo: { $first: "$brandInfo" },
+      },
+    },
+  ];
+  return await productModel.aggregate(pipeline);
+};
+
+
+const findProductByID = async (idProduct) => {
+  console.log("[findProductByID] idProduct:", idProduct);
+  try {
+    const pipeline = [
+      {
+        $match: { _id: new mongoose.Types.ObjectId(idProduct) },
+      },
+      {
+        $lookup: {
+          from: "brands",
+          localField: "brandId",
+          foreignField: "_id",
+          as: "brandInfo",
+        },
+      },
+       {
+      $addFields: {
+        brandInfo: { $arrayElemAt: ["$brandInfo", 0] },
+      },
+    },
+    ];
+
+    var product = await productModel.aggregate(pipeline);
+    if (product.length != 1) {
+      return null;
+    }
+    return product[0];
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
-    createNewProduct
+    createNewProduct,
+    listProduct,
+    findProductByID
 };

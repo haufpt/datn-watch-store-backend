@@ -13,6 +13,9 @@ var storage = multer.diskStorage({
   });
 var upload = multer({ storage: storage });
 
+
+router.get('/list-product',  productController.listProduct);
+router.get('/get-product-by-id/:idProduct',  productController.findProductById);
 router.post('/add-product', upload.fields([{name: "photoUrls"}]), productController.postProduct);
 
 module.exports = router;
