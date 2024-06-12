@@ -50,6 +50,55 @@ const postProduct = async (req, res) => {
     }
   };
 
+const listProduct = async (req, res) => {
+  try {
+    const listProduct = await productService.listProduct();
+    console.log("[listProduct]: ", listProduct);
+
+    res.status(201).json({
+      success: true,
+      message: `Product get successfully`,
+      data:listProduct
+  });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+  
+  
+}
+
+const findProductById = async (req, res) => {
+  try {
+    let idProduct = req.params.idProduct;
+    const product = await productService.findProductByID(idProduct);
+    console.log("[findProductById]: ", JSON.stringify(product));
+
+    if (!product) {
+      return res.status(301).json({
+        success: false,
+        message: `product not found`,
+      });
+    }
+    res.status(201).json({
+      success: true,
+      message: `Product get successfully`,
+      data:product
+  });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+  
+  
+}
+
   module.exports = {
     postProduct,
+    listProduct,
+    findProductById
   };
