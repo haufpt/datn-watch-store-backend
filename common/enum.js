@@ -3,4 +3,9 @@ const OsPlatformEnum = {
   IOS: "ios",
 };
 
-module.exports = { OsPlatformEnum };
+const AccountRoleEnum = {
+  ADMIN: "ADMIN",
+  CLIENT: "CLIENT",
+};
+
+module.exports = { OsPlatformEnum, AccountRoleEnum };

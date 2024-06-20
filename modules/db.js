@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 module.exports.initDbConnection = async () => {
   mongoose
-    .connect('mongodb+srv://minhquan:quan1452003@phamminhquan145.ilzcilm.mongodb.net/Apolis')
+    .connect('mongodb+srv://quanphammm8:UDB8sAS31J3M70mW@cluster0.fafhvmy.mongodb.net/watch-store')
+    
     .then(() => {
       console.log(` Database connect successfully.`);
     })
@@ -10,3 +11,4 @@ module.exports.initDbConnection = async () => {
       console.log(`Error connecting: ${err.message}`);
     });
 };
+//mongodb+srv://minhquan:quan1452003@phamminhquan145.ilzcilm.mongodb.net/Apolis

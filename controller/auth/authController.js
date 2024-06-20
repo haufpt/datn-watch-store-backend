@@ -1,5 +1,6 @@
+const { AccountRoleEnum } = require("../../common/enum");
 const accountService = require("../../service/account/account_service");
-const jwt = require("jsonwebtoken");
+const jwtService = require("../../shared/jwt");
 
 const login = async (req, res) => {
   try {
@@ -28,8 +29,10 @@ const login = async (req, res) => {
       firebaseNotifications: [firebase],
     });
 
-    const secretKey = "this-is-my-secret-key";
-    const token = jwt.sign(req.body, secretKey);
+    const token = jwtService.generateToken({
+      id: isExistUserName._id,
+      role: isExistUserName.role,
+    });
 
     res.status(200).json({
       success: true,
@@ -49,6 +52,7 @@ const login = async (req, res) => {
 const singup = async (req, res) => {
   try {
     const newAccount = req.body;
+    newAccount.role = AccountRoleEnum.CLIENT;
     console.log("[AuthController] singup req: ", newAccount);
 
     var isExistUserName = await accountService.findAccount({
@@ -94,14 +98,16 @@ const singup = async (req, res) => {
 
 const logout = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const accountId = req.session.account.id;
 
-    await User.findByIdAndUpdate(userId, { firebaseNotifications: [] });
+    await accountService.findByIdAndUpdate(accountId, {
+      firebaseNotifications: [],
+    });
 
-    res.status(200).json({ message: "Đã đăng xuất thành công" });
+    res.status(200).json({ message: "Đăng xuất thành công." });
   } catch (error) {
     console.error("Lỗi khi đăng xuất:", error);
-    res.status(500).json({ message: "Đã xảy ra lỗi khi đăng xuất" });
+    res.status(500).json({ message: error });
   }
 };
 

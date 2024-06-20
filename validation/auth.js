@@ -27,6 +27,12 @@ class AuthValidation {
       password: Joi.string().max(255).trim().required(),
     }),
   };
+
+  static logout = {
+    body: Joi.object().keys({
+      deviceId: Joi.string().max(255).optional(),
+    }),
+  };
 }
 
 module.exports = AuthValidation;
