@@ -52,7 +52,7 @@ const postProduct = async (req, res) => {
 
 const listProduct = async (req, res) => {
   try {
-    const listProduct = await productService.listProduct();
+    const listProduct = await productService.getListProduct();
     console.log("[listProduct]: ", listProduct);
 
     res.status(201).json({

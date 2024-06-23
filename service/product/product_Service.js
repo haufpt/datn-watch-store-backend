@@ -12,8 +12,7 @@ const createNewProduct = async (data) => {
   }
 };
 
-
-const listProduct = async () => {
+const getListProduct = async () => {
   const pipeline = [
     {
       $lookup: {
@@ -23,11 +22,6 @@ const listProduct = async () => {
         as: "brandInfo",
       },
     },
-    // {
-    //   $addFields: {
-    //     brandInfo: { $arrayElemAt: ["$brandInfo", 0] },
-    //   },
-    // },
     {
       $unwind: {
         path: "$brandInfo",
@@ -45,7 +39,6 @@ const listProduct = async () => {
   return await productModel.aggregate(pipeline);
 };
 
-
 const findProductByID = async (idProduct) => {
   console.log("[findProductByID] idProduct:", idProduct);
   try {
@@ -61,11 +54,11 @@ const findProductByID = async (idProduct) => {
           as: "brandInfo",
         },
       },
-       {
-      $addFields: {
-        brandInfo: { $arrayElemAt: ["$brandInfo", 0] },
+      {
+        $addFields: {
+          brandInfo: { $arrayElemAt: ["$brandInfo", 0] },
+        },
       },
-    },
     ];
 
     var product = await productModel.aggregate(pipeline);
@@ -79,7 +72,7 @@ const findProductByID = async (idProduct) => {
 };
 
 module.exports = {
-    createNewProduct,
-    listProduct,
-    findProductByID
+  createNewProduct,
+  getListProduct,
+  findProductByID,
 };

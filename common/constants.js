@@ -4,10 +4,14 @@ const refreshTokenKey =
   "Jwt_nuijJ0iMxIimEN2TCgbEIYfgjhcfkshcgbdfhgfhdsigchnuakshngkuhsaicghaiufsdhgciusfahiguchasfniugchniafsuhgicshiagciufadsghcniuadsh";
 const accessTokenExpires = "1d";
 const refreshTokenExpires = "30d";
+const fileLimitSize='300mb';
+const fileStoragePath='./assets';
 
 module.exports = {
   accessTokenKey,
   refreshTokenKey,
   accessTokenExpires,
   refreshTokenExpires,
+  fileLimitSize,
+  fileStoragePath
 };
