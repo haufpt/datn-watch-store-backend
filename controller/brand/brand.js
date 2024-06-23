@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const path = require("path");
-const brandService = require("../../service/brand/brand_Service");
+const brandService = require("../../service/brand/brand");
 
 const postBrand = async (req, res) => {
   try {
@@ -15,7 +15,6 @@ const postBrand = async (req, res) => {
     if (!logoFile.mimetype.startsWith("image/")) {
       return res.status(400).json({ message: "File không phải là hình ảnh." });
     }
-    // console.log(`[postBrand] data -> ${JSON.stringify(data)}`);
     const logoPath = path.join(
       __dirname,
       "../../public/uploads/",
@@ -27,7 +26,7 @@ const postBrand = async (req, res) => {
     const newBrandData = {
       name: name,
       description: description,
-      logo: url
+      logo: url,
     };
     const newBrand = await brandService.createNewBrand(newBrandData);
 

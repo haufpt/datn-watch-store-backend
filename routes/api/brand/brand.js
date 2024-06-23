@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const multer = require("multer");
 const router = express.Router();
-const brandController = require('../../../controller/brand/brand_Controller');
+const brandController = require("../../../controller/brand/brand");
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -14,6 +14,10 @@ var storage = multer.diskStorage({
 });
 var upload = multer({ storage: storage });
 
-router.post('/post-brand',upload.fields([{ name: 'logo', maxCount: 1 }]) , brandController.postBrand );
+router.post(
+  "/post-brand",
+  upload.fields([{ name: "logo", maxCount: 1 }]),
+  brandController.postBrand
+);
 
 module.exports = router;

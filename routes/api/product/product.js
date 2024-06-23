@@ -1,21 +1,30 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
-const multer = require("multer");
-const productController = require('../../../controller/product/product_controller');
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, "public/uploads/");
-    },
-    filename: function (req, file, cb) {
-      const fileConfig = `${file.fieldname}-${Date.now()}-${file.originalname}`;
-      cb(null, fileConfig);
-    },
-  });
-var upload = multer({ storage: storage });
+const productController = require("../../../controller/product/product");
+const { checkLogin, checkPermission } = require("../../../middleware/auth");
+const { AccountRoleEnum, FileTypeEnum } = require("../../../common/enum");
+const ProductValidation = require("../../../validation/product");
+const { validateSchema } = require("../../../middleware/validate");
+const multerService = require("../../../shared/multer");
+const checkFile = require("../../../middleware/file");
 
+router.get(
+  "/",
+  checkLogin,
+  checkPermission([AccountRoleEnum.ADMIN, AccountRoleEnum.CLIENT]),
+  productController.listProduct
+);
 
-router.get('/list-product',  productController.listProduct);
-router.get('/get-product-by-id/:idProduct',  productController.findProductById);
-router.post('/add-product', upload.fields([{name: "photoUrls"}]), productController.postProduct);
+router.get("/:idProduct", productController.findProductById);
+
+router.post(
+  "/new",
+  checkLogin,
+  checkPermission([AccountRoleEnum.ADMIN]),
+  validateSchema(ProductValidation.addProduct),
+  multerService.uploadFile(FileTypeEnum.IMAGE).array("files"),
+  checkFile("MULTIPLE"),
+  productController.postProduct
+);
 
 module.exports = router;

@@ -1,5 +1,5 @@
 const { accessTokenKey } = require("../common/constants");
-const accountService = require("../service/account/account_service");
+const accountService = require("../service/account/account");
 const jwtService = require("../shared/jwt");
 const { handleRequest } = require("./request");
 
