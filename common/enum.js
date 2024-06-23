@@ -21,9 +21,23 @@ const WireCategoryEnum = {
   FABRIC: "FABRIC",
 };
 
+const FileTypeEnum = {
+  ANY: "ANY",
+  MEDIA: "MEDIA",
+  IMAGE: "IMAGE",
+};
+
+const ResponseStatusEnum = {
+  SUCCESS: "success",
+  FAILED: "failed",
+  ERROR: "error",
+};
+
 module.exports = {
   OsPlatformEnum,
   AccountRoleEnum,
   MachineCategoryEnum,
   WireCategoryEnum,
+  FileTypeEnum,
+  ResponseStatusEnum,
 };

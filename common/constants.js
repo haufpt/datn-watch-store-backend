@@ -4,8 +4,21 @@ const refreshTokenKey =
   "Jwt_nuijJ0iMxIimEN2TCgbEIYfgjhcfkshcgbdfhgfhdsigchnuakshngkuhsaicghaiufsdhgciusfahiguchasfniugchniafsuhgicshiagciufadsghcniuadsh";
 const accessTokenExpires = "1d";
 const refreshTokenExpires = "30d";
-const fileLimitSize='300mb';
-const fileStoragePath='./assets';
+const fileLimitSize = "300mb";
+const fileStoragePath = "public/uploads/";
+const FILE_MIME_TYPE_FORMAT = {
+  IMAGE: {
+    INDEX: "image",
+    PNG: "image/png",
+    JPG: "image/jpg",
+    JPEG: "image/jpeg",
+    GIF: "image/gif",
+  },
+  VIDEO: {
+    INDEX: "video",
+    MP4: "video/mp4",
+  },
+};
 
 module.exports = {
   accessTokenKey,
@@ -13,5 +26,6 @@ module.exports = {
   accessTokenExpires,
   refreshTokenExpires,
   fileLimitSize,
-  fileStoragePath
+  fileStoragePath,
+  FILE_MIME_TYPE_FORMAT,
 };

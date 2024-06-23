@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { OsPlatformEnum } = require("../common/enum");
+const { OsPlatformEnum, AccountRoleEnum } = require("../common/enum");
 
 class AuthValidation {
   static login = {
@@ -25,6 +25,17 @@ class AuthValidation {
       email: Joi.string().email().max(255).required(),
       phoneNumber: Joi.string().required(),
       password: Joi.string().max(255).trim().required(),
+    }),
+  };
+
+  static signupAdmin = {
+    body: Joi.object().keys({
+      name: Joi.string().max(255).required(),
+      userName: Joi.string().max(255).required(),
+      email: Joi.string().email().max(255).required(),
+      phoneNumber: Joi.string().required(),
+      password: Joi.string().max(255).trim().required(),
+      role: Joi.string().valid(AccountRoleEnum.ADMIN).required(),
     }),
   };
 

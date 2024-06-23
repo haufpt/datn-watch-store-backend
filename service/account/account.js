@@ -1,4 +1,4 @@
-const accountModel = require("../../model/accountModel");
+const accountModel = require("../../model/account");
 
 const findAccount = async (filter) => {
   return await accountModel.findOne(filter);

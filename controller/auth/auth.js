@@ -1,5 +1,5 @@
 const { AccountRoleEnum } = require("../../common/enum");
-const accountService = require("../../service/account/account_service");
+const accountService = require("../../service/account/account");
 const jwtService = require("../../shared/jwt");
 
 const login = async (req, res) => {
@@ -52,7 +52,9 @@ const login = async (req, res) => {
 const singup = async (req, res) => {
   try {
     const newAccount = req.body;
-    newAccount.role = AccountRoleEnum.CLIENT;
+    if (!newAccount.role) {
+      newAccount.role = AccountRoleEnum.CLIENT;
+    }
     console.log("[AuthController] singup req: ", newAccount);
 
     var isExistUserName = await accountService.findAccount({

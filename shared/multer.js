@@ -1,10 +1,12 @@
-const bytes = require('bytes');
-const Multer = require('multer');
-const { FILE_MIME_TYPE_FORMAT } = require('../common/constant');
-const { HTTP_RESPONSE, HTTP_STATUS } = require('../common/http-response');
-const AppError = require('../utils/app-error');
-const { FileTypeEnum } = require('../common/enum');
-const { fileStoragePath, fileLimitSize } = require('../common/constants');
+const bytes = require("bytes");
+const Multer = require("multer");
+const {
+  fileStoragePath,
+  fileLimitSize,
+  FILE_MIME_TYPE_FORMAT,
+} = require("../common/constants");
+const { FileTypeEnum } = require("../common/enum");
+const { default: AppError } = require("../utils/app-error");
 
 const storage = Multer.diskStorage({
   destination: (req, file, callback) => {
@@ -29,10 +31,6 @@ const uploadFile = (type) => {
 
     case FileTypeEnum.IMAGE:
       filter = fileFilter.image;
-      break;
-
-    case FileTypeEnum.DOCUMENT:
-      filter = fileFilter.document;
       break;
 
     case FileTypeEnum.ANY:
@@ -65,9 +63,9 @@ const fileFilter = {
     if (!whiteList.includes(file.mimetype)) {
       return callback(
         new AppError(
-          HTTP_STATUS.BAD_REQUEST,
-          HTTP_RESPONSE.FILE.ACCEPT_MEDIA.MESSAGE,
-          HTTP_RESPONSE.FILE.ACCEPT_MEDIA.CODE
+          400,
+          "Only accepts media files: PNG, JPG, JPEG, MP4",
+          39003
         )
       );
     }
@@ -83,35 +81,7 @@ const fileFilter = {
     ];
     if (!whiteList.includes(file.mimetype)) {
       return callback(
-        new AppError(
-          HTTP_STATUS.BAD_REQUEST,
-          HTTP_RESPONSE.FILE.ACCEPT_IMAGE.MESSAGE,
-          HTTP_RESPONSE.FILE.ACCEPT_IMAGE.CODE
-        )
-      );
-    }
-
-    return callback(null, true);
-  },
-
-  document: (req, file, callback) => {
-    const whiteList = [
-      FILE_MIME_TYPE_FORMAT.DOCUMENT.PDF,
-      FILE_MIME_TYPE_FORMAT.DOCUMENT.XLS,
-      FILE_MIME_TYPE_FORMAT.DOCUMENT.XLSX,
-      FILE_MIME_TYPE_FORMAT.DOCUMENT.DOC,
-      FILE_MIME_TYPE_FORMAT.DOCUMENT.DOCX,
-      FILE_MIME_TYPE_FORMAT.DOCUMENT.PPT,
-      FILE_MIME_TYPE_FORMAT.DOCUMENT.PPTX,
-      FILE_MIME_TYPE_FORMAT.DOCUMENT.TXT,
-    ];
-    if (!whiteList.includes(file.mimetype)) {
-      return callback(
-        new AppError(
-          HTTP_STATUS.BAD_REQUEST,
-          HTTP_RESPONSE.FILE.ACCEPT_DOCUMENT.MESSAGE,
-          HTTP_RESPONSE.FILE.ACCEPT_DOCUMENT.CODE
-        )
+        new AppError(400, "Only accepts image files: PNG, JPG, JPEG", 39004)
       );
     }
 
