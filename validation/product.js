@@ -1,8 +1,8 @@
 const Joi = require("joi");
 const {
-  OsPlatformEnum,
   MachineCategoryEnum,
   WireCategoryEnum,
+  TopProductTypeEnum,
 } = require("../common/enum");
 
 class ProductValidation {
@@ -20,6 +20,16 @@ class ProductValidation {
       .valid(...Object.values(WireCategoryEnum))
       .required(),
   });
+
+  static getProduct = {
+    query: Joi.object().keys({
+      page: Joi.number().integer().min(1).optional(),
+      limit: Joi.number().integer().min(1).optional(),
+      type: Joi.string()
+        .valid(...Object.values(TopProductTypeEnum))
+        .optional(),
+    }),
+  };
 }
 
 module.exports = ProductValidation;

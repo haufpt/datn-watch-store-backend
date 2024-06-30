@@ -33,6 +33,14 @@ const ResponseStatusEnum = {
   ERROR: "error",
 };
 
+const TopProductTypeEnum = {
+  SALE: "SALE",
+  POPULAR: "POPULAR",
+  NEW: "NEW",
+  COLLECTION: "COLLECTION",
+  PRICE: "PRICE",
+};
+
 module.exports = {
   OsPlatformEnum,
   AccountRoleEnum,
@@ -40,4 +48,5 @@ module.exports = {
   WireCategoryEnum,
   FileTypeEnum,
   ResponseStatusEnum,
+  TopProductTypeEnum,
 };

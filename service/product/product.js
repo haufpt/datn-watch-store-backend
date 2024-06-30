@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const productModel = require("../../model/product.js");
+const orderItemModel = require("../../model/order_item.js");
 const BrandService = require("../../service/brand/brand.js");
+const { TopProductTypeEnum } = require("../../common/enum.js");
 
 const createNewProduct = async (data) => {
   try {
@@ -23,12 +25,8 @@ const createNewProduct = async (data) => {
   }
 };
 
-const getProducts = async (filter) => {
-  return await productModel.find(filter);
-};
-
-const getListProduct = async () => {
-  const pipeline = [
+const getListProduct = async ({ type, page = 1, limit = 10 } = {}) => {
+  let pipeline = [
     {
       $lookup: {
         from: "brands",
@@ -44,10 +42,40 @@ const getListProduct = async () => {
       },
     },
     {
+      $lookup: {
+        from: "order_items",
+        let: { productId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: { $eq: ["$productId", "$$productId"] },
+            },
+          },
+          {
+            $lookup: {
+              from: "orders",
+              let: { orderId: "$orderId" },
+              pipeline: [
+                {
+                  $match: {
+                    $expr: { $eq: ["$_id", "$$orderId"] },
+                    status: "DELIVERED",
+                  },
+                },
+              ],
+              as: "order",
+            },
+          },
+          { $unwind: "$order" },
+        ],
+        as: "order_items",
+      },
+    },
+    {
       $project: {
         _id: 1,
-        description: 1,
         name: 1,
+        description: 1,
         price: 1,
         quantity: 1,
         photoUrls: 1,
@@ -56,9 +84,36 @@ const getListProduct = async () => {
         machineCategory: 1,
         wireCategory: 1,
         brand: 1,
+        numberPurchase: { $size: "$order_items" },
+        totalSold: {
+          $sum: "$order_items.quantity",
+        },
       },
     },
   ];
+
+  switch (type) {
+    case TopProductTypeEnum.SALE:
+      pipeline.push({ $sort: { totalSold: -1 } });
+      break;
+    case TopProductTypeEnum.POPULAR:
+      pipeline.push({ $sort: { numberPurchase: -1 } });
+      break;
+    case TopProductTypeEnum.NEW:
+      pipeline.push({ $sort: { createdDate: -1 } });
+      break;
+    case TopProductTypeEnum.COLLECTION:
+      pipeline.push({ $sort: { "brand.name": 1 } });
+      break;
+    case TopProductTypeEnum.PRICE:
+      pipeline.push({ $sort: { price: -1 } });
+      break;
+    default:
+      break;
+  }
+
+  pipeline = [...pipeline, { $skip: (page - 1) * limit }, { $limit: limit }];
+
   return await productModel.aggregate(pipeline);
 };
 

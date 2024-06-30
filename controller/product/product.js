@@ -59,7 +59,14 @@ const postProduct = async (req, res) => {
 
 const listProduct = async (req, res) => {
   try {
-    const listProduct = await productService.getListProduct();
+    const { page, limit, type } = req.query;
+    console.log("[ProductController] listProduct req.query: ", req.query);
+
+    const listProduct = await productService.getListProduct({
+      type,
+      page,
+      limit,
+    });
 
     res.status(201).json({
       success: true,

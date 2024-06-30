@@ -12,6 +12,7 @@ router.get(
   "/",
   checkLogin,
   checkPermission([AccountRoleEnum.ADMIN, AccountRoleEnum.CLIENT]),
+  validateSchema(ProductValidation.getProduct),
   productController.listProduct
 );
 
