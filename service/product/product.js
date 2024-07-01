@@ -144,15 +144,70 @@ const findProductByID = async (idProduct) => {
         },
       },
       {
-        $addFields: {
-          brand: { $arrayElemAt: ["$brand", 0] },
+        $unwind: {
+          path: "$brand",
+          preserveNullAndEmptyArrays: false,
+        },
+      },
+      {
+        $lookup: {
+          from: "reviews",
+          localField: "_id",
+          foreignField: "productId",
+          as: "reviews",
+          pipeline: [
+            {
+              $lookup: {
+                from: "accounts",
+                localField: "accountId",
+                foreignField: "_id",
+                as: "account",
+              },
+            },
+            {
+              $unwind: {
+                path: "$account",
+                preserveNullAndEmptyArrays: false,
+              },
+            },
+          ],
+        },
+      },
+      {
+        $lookup: {
+          from: "order_items",
+          let: { productId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: { $eq: ["$productId", "$$productId"] },
+              },
+            },
+            {
+              $lookup: {
+                from: "orders",
+                let: { orderId: "$orderId" },
+                pipeline: [
+                  {
+                    $match: {
+                      $expr: { $eq: ["$_id", "$$orderId"] },
+                      status: "DELIVERED",
+                    },
+                  },
+                ],
+                as: "order",
+              },
+            },
+            { $unwind: "$order" },
+          ],
+          as: "order_items",
         },
       },
       {
         $project: {
           _id: 1,
-          description: 1,
           name: 1,
+          description: 1,
           price: 1,
           quantity: 1,
           photoUrls: 1,
@@ -161,6 +216,11 @@ const findProductByID = async (idProduct) => {
           machineCategory: 1,
           wireCategory: 1,
           brand: 1,
+          reviews: 1,
+          numberPurchase: { $size: "$order_items" },
+          totalSold: {
+            $sum: "$order_items.quantity",
+          },
         },
       },
     ];

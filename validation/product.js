@@ -4,6 +4,7 @@ const {
   WireCategoryEnum,
   TopProductTypeEnum,
 } = require("../common/enum");
+const { param } = require("../routes/api/product/product");
 
 class ProductValidation {
   static addProduct = Joi.object({
@@ -29,6 +30,12 @@ class ProductValidation {
       type: Joi.string()
         .valid(...Object.values(TopProductTypeEnum))
         .optional(),
+    }),
+  };
+
+  static getDetailProduct = {
+    param: Joi.object().keys({
+      idProduct: Joi.string().max(255).required(),
     }),
   };
 }

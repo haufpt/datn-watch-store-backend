@@ -16,7 +16,13 @@ router.get(
   productController.listProduct
 );
 
-router.get("/:idProduct", productController.findProductById);
+router.get(
+  "/:idProduct",
+  checkLogin,
+  checkPermission([AccountRoleEnum.ADMIN, AccountRoleEnum.CLIENT]),
+  validateSchema(ProductValidation.getDetailProduct),
+  productController.findProductById
+);
 
 router.post(
   "/new",
