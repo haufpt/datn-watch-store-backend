@@ -43,6 +43,27 @@ const postBrand = async (req, res) => {
   }
 };
 
+const getBrand = async (req, res) => {
+  try {
+    const { page, limit } = req.query;
+    console.log("[BrandController] getBrand req.query: ", req.query);
+
+    const brands = await brandService.listBrand({ page: page, limit: limit });
+
+    res.status(200).json({
+      success: true,
+      message: `Lấy danh sách brand thành công.`,
+      data: brands,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   postBrand,
+  getBrand,
 };

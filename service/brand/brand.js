@@ -11,6 +11,23 @@ const createNewBrand = async (brandData) => {
   }
 };
 
+const listBrand = async ({ page = 1, limit = 10 } = {}) => {
+  try {
+    const skip = (page - 1) * limit;
+    const brands = await brandsModel.find().skip(skip).limit(limit);
+    const totalBrands = await brandsModel.countDocuments();
+
+    return {
+      brands: brands,
+      currentPage: page,
+      totalPages: Math.ceil(totalBrands / limit),
+      totalBrands,
+    };
+  } catch (error) {
+    throw error;
+  }
+};
+
 const findBrandById = async (idBrand) => {
   return await brandsModel.findById(idBrand);
 };
@@ -18,4 +35,5 @@ const findBrandById = async (idBrand) => {
 module.exports = {
   createNewBrand,
   findBrandById,
+  listBrand,
 };
