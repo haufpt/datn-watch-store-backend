@@ -23,6 +23,7 @@ class ProductValidation {
 
   static getProduct = {
     query: Joi.object().keys({
+      brandId: Joi.string().max(255).optional(),
       page: Joi.number().integer().min(1).optional(),
       limit: Joi.number().integer().min(1).optional(),
       type: Joi.string()

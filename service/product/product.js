@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const productModel = require("../../model/product.js");
-const orderItemModel = require("../../model/order_item.js");
 const BrandService = require("../../service/brand/brand.js");
 const { TopProductTypeEnum } = require("../../common/enum.js");
 
@@ -25,8 +24,20 @@ const createNewProduct = async (data) => {
   }
 };
 
-const getListProduct = async ({ type, page = 1, limit = 10 } = {}) => {
-  let pipeline = [
+const getListProduct = async ({ type, page = 1, limit = 10, brandId } = {}) => {
+  let pipeline = [];
+
+  if (brandId) {
+    const objectIdBrandId = new mongoose.Types.ObjectId(brandId);
+    pipeline.push({
+      $match: {
+        brandId: objectIdBrandId,
+      },
+    });
+  }
+
+  pipeline = [
+    ...pipeline,
     {
       $lookup: {
         from: "brands",
