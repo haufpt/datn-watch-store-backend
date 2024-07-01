@@ -113,8 +113,45 @@ const logout = async (req, res) => {
   }
 };
 
+const loginWeb = async (req, res) => {
+  try {
+    const { userName, password, firebase } = req.body;
+    console.log("[AuthController] login req: ", req.body);
+
+    const isExistUserName = await accountService.findAccount({
+      userName: userName,
+    });
+
+    if (!isExistUserName) {
+      return res.render("./login/login.ejs", { error: "Email hoặc mật khẩu không chính xác!" });
+    }
+
+    if (password != isExistUserName.password) {
+      return res.render("./login/login.ejs", { error: "Email hoặc mật khẩu không chính xác!" });
+    }
+    
+
+    if (isExistUserName.role != "ADMIN") {
+      return res.render("./login/login.ejs", { error: "Không thể đăng nhập!" });
+    }
+
+    await accountService.findByIdAndUpdate(isExistUserName._id, {
+      firebaseNotifications: [firebase],
+    });
+
+    req.session.account = isExistUserName;    
+    return res.redirect("/home");
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   login,
   singup,
   logout,
+  loginWeb
 };
