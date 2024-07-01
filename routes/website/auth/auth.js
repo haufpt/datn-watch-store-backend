@@ -9,6 +9,6 @@ router.get("/login", (req, res) => {
   res.render("./login/login.ejs");
 });
 
-router.post("/login",checkPermission([AccountRoleEnum.ADMIN]),loginController.loginWeb);
+router.post("/login", loginController.loginWeb);
 
 module.exports = router;

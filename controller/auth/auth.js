@@ -129,16 +129,17 @@ const loginWeb = async (req, res) => {
     if (password != isExistUserName.password) {
       return res.render("./login/login.ejs", { error: "Email hoặc mật khẩu không chính xác!" });
     }
-    req.session.account = isExistUserName;
+    
+
+    if (isExistUserName.role != "ADMIN") {
+      return res.render("./login/login.ejs", { error: "Không thể đăng nhập!" });
+    }
+
     await accountService.findByIdAndUpdate(isExistUserName._id, {
       firebaseNotifications: [firebase],
     });
 
-    const token = jwtService.generateToken({
-      id: isExistUserName._id,
-      role: isExistUserName.role,
-    });
-    
+    req.session.account = isExistUserName;    
     return res.redirect("/home");
   } catch (error) {
     res.status(500).json({
