@@ -354,6 +354,10 @@
         overflow: auto;
         white-space: nowrap;
       }
+
+      .custom-file-input:lang(en)~.custom-file-label::after {
+            content: "Chọn tệp";
+      }
     </style>
   </head>
 
@@ -396,17 +400,16 @@
       <div class="left-side-menu">
         <div class="h-100 mt-4" data-simplebar>
           <!--- Sidemenu -->
-          <div id="sidebar-menu">
+          <div id="sidebar-menu" class="ml-4">
             <ul id="side-menu">
               <li>
                 <a href="/admin">
-                  <i class="mdi mdi-view-dashboard-outline"></i>
                   <span> Trang chủ </span>
                 </a>
               </li>
+
               <li>
                 <a href="#course" data-bs-toggle="collapse">
-                  <i class="fe-book-open"></i>
                   <span> Sản phẩm </span>
                   <span class="menu-arrow"></span>
                 </a>
@@ -423,31 +426,33 @@
                   </ul>
                 </div>
               </li>
+              
+              <li>
+                <a href="">
+                  <span> Thương hiệu </span>
+                </a>
+              </li>
 
               <li>
                 <a href="/admin/teacher/list-teacher">
-                  <i class="mdi mdi-account-details-outline"></i>
                   <span> Khách hàng </span>
                 </a>
               </li>
 
               <li>
                 <a href="/admin/post/list-post">
-                  <i class="mdi mdi-account-supervisor"></i>
                   <span> Đơn hàng </span>
                 </a>
               </li>
 
               <li>
                 <a href="/admin/student/list-student">
-                  <i class="mdi mdi-account-supervisor"></i>
                   <span> Thông báo </span>
                 </a>
               </li>
 
               <li>
                 <a href="/admin/course/listCategory">
-                  <i class="fe-folder-minus"></i>
                   <span> Khuyến mại </span>
                 </a>
               </li>
@@ -465,9 +470,13 @@
       <!-- Start Page Content here -->
       <!-- ============================================================== -->
 
-      <% if (routerName === 'product') { %>
-      <%-include('products/listProducts.ejs')%> <% } else { %>
-      <%-include('dashboard/dashboard.ejs')%> <% } %>
+      <% if (routerName === 'product'){ %>
+        <%-include('products/listProducts.ejs')%> 
+      <% } else if (routerName === 'brand') { %>
+        <%-include('brands/listBrands.ejs')%> 
+      <% } else { %>
+        <%-include('dashboard/dashboard.ejs')%> 
+      <% } %> 
 
       <!-- ============================================================== -->
       <!-- End Page content -->
