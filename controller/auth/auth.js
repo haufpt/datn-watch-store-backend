@@ -149,9 +149,21 @@ const loginWeb = async (req, res) => {
   }
 };
 
+const redirectLogin = async (req, res) => {
+  try {
+    res.redirect("/auth/login");
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   login,
   singup,
   logout,
-  loginWeb
+  loginWeb,
+  redirectLogin
 };

@@ -2,7 +2,19 @@
     <div class="content">
         <!-- Start Content-->
         <div class="container-fluid">
-            <div class="row">
+            <div id="brandListContainer" class="row">
+                <div id="loading" class="loading-container">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
+
+                <div id="dialog" class="dialog-container">
+                    <div class="dialog-content">
+                        <span id="dialog-message"></span>
+                        <button onclick="hideDialog()">Ok</button>
+                    </div>
+                </div>
                 <div class="col-xl-12 mb-0">
                     <div class="card">
                         <div class="card-body">
@@ -11,45 +23,58 @@
                                 <div class="card-body-action-right">
                                     <div class="float-end">
                                         <button type="button" class="btn btn-success" data-toggle="modal"
-                                            data-target="#exampleModal">Thêm Mới</button>
+                                            data-target="#myModal">
+                                            Thêm Mới
+                                        </button>
 
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <label class="modal-title" id="exampleModalLabel">Thương Hiệu</label>
+                                                        <label class="modal-title" id="exampleModalLabel">Thương
+                                                            Hiệu</label>
                                                         <button type="button" class="close" data-dismiss="modal"
                                                             aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <form>
+                                                        <form id="uploadForm">
                                                             <div class="form-group">
-                                                                <label for="brandName">Tên Thương Hiệu</label>
-                                                                <input type="text" class="form-control" id="brandName" placeholder="Nhập tên thương hiệu" required>
+                                                                <label for="name">Tên Thương Hiệu</label>
+                                                                <input type="text" class="form-control" id="name"
+                                                                    placeholder="Nhập tên thương hiệu" name="name"
+                                                                    required />
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="brandDescription">Mô Tả Thương Hiệu</label>
-                                                                <textarea class="form-control" id="brandDescription" rows="3" placeholder="Nhập mô tả thương hiệu" required></textarea>
+                                                                <label for="description">Mô Tả Thương Hiệu</label>
+                                                                <textarea class="form-control" id="description" rows="3"
+                                                                    placeholder="Nhập mô tả thương hiệu"
+                                                                    name="description" required></textarea>
                                                             </div>
                                                             <div class="form-group">
                                                                 <div class="custom-file">
-                                                                    <input type="file" class="custom-file-input" id="brandImage" accept="image/*" required>
-                                                                    <label class="custom-file-label" for="brandImage">Chọn hình ảnh</label>
+                                                                    <input type="file" class="custom-file-input"
+                                                                        name="logo" id="logo" accept="image/*"
+                                                                        required />
+                                                                    <label class="custom-file-label" for="logo">Chọn
+                                                                        hình ảnh</label>
                                                                 </div>
                                                             </div>
-                                
+                                                            <div class="modal-footer">
+                                                                <button type="button" id="closeDialog"
+                                                                    class="btn btn-secondary" data-dismiss="modal">
+                                                                    Đóng
+                                                                </button>
+                                                                <button type="submit" class="btn btn-success" onclick="addBrand()">
+                                                                    Thêm mới
+                                                                </button></a>
+
+                                                            </div>
                                                         </form>
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Đóng</button>
-                                                        <a href="">
-                                                            <button type="button" class="btn btn-success">Thêm mới</button>
-                                                        </a>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
@@ -60,59 +85,25 @@
                     </div>
                 </div>
                 <!-- end col -->
-                <div class="mb-4 col-md-3 col-sm-6 col-12">
-                    <a href="#" class="pe-auto text-decoration-none text-center">
-                        <div class="border border-5 p-2 rounded-4 bg-white">
-                            <div class="text-center">
-                                <img src="/public/assets/images/logo-rolex.png" alt="Product Brands" height="250">
-                            </div>
-                            <div class="p-2">
-                                <span class="fs-4">Rolex</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <!-- /.col -->
-                <div class="mb-4 col-md-3 col-sm-6 col-12">
-                    <a href="#" class="pe-auto text-decoration-none text-center">
-                        <div class="border border-5 p-2 rounded-4 bg-white">
-                            <div class="text-center">
-                                <img src="/public/assets/images/logo-rolex.png" alt="Product Brands" height="250">
-                            </div>
-                            <div class="p-2">
-                                <span class="fs-4">Rolex</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <!-- /.col -->
-                <div class="mb-4 col-md-3 col-sm-6 col-12">
-                    <a href="#" class="pe-auto text-decoration-none text-center">
-                        <div class="border border-5 p-2 rounded-4 bg-white">
-                            <div class="text-center">
-                                <img src="/public/assets/images/logo-rolex.png" alt="Product Brands" height="250">
-                            </div>
-                            <div class="p-2">
-                                <span class="fs-4">Rolex</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <!-- /.col -->
-                <div class="mb-4 col-md-3 col-sm-6 col-12">
-                    <a href="#" class="pe-auto text-decoration-none text-center">
-                        <div class="border border-5 p-2 rounded-4 bg-white">
-                            <div class="text-center">
-                                <img src="/public/assets/images/logo-rolex.png" alt="Product Brands" height="250">
-                            </div>
-                            <div class="p-2">
-                                <span class="fs-4">Rolex</span>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-                <!-- /.col -->
 
+                <% listBrandData.brands.forEach((row)=> { %>
+                    <!-- /.col -->
+                    <div class="mb-4 col-md-3 col-sm-6 col-12">
+                        <a href="#" class="pe-auto text-decoration-none text-center">
+                            <div class="border border-5 p-2 rounded-4 bg-white">
+                                <div class="text-center">
+                                    <img src="<%= row.logo %>" alt="Product Brands" height="80" />
+                                </div>
+                                <div class="p-2">
+                                    <span class="fs-4">
+                                        <%= row.name %>
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <!-- /.col -->
+                    <% }) %>
             </div>
             <!-- end row -->
         </div>
@@ -120,3 +111,130 @@
     </div>
     <!-- content -->
 </div>
+
+<script>
+    const baseURL = window.location.protocol + "//" + window.location.host;
+    let isSuccess = false;
+
+    function loadBrandData() {
+        fetch(`${baseURL}/brand/list-brands`)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log(`[web] loadBrandData -> ${JSON.stringify(data)}`);
+                const listBrandData = data; // Dữ liệu thương hiệu trả về từ máy chủ
+                const brandListContainer = document.getElementById("brandListContainer");
+
+                // Xóa tất cả các thương hiệu hiện tại
+                brandListContainer.innerHTML = '';
+
+                // Thêm dữ liệu mới
+                listBrandData.brands.forEach((row) => {
+                    const brandElement = createBrandElement(row);
+                    brandListContainer.appendChild(brandElement);
+                });
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+
+    function createBrandElement(brand) {
+        const brandElement = document.createElement("div");
+        brandElement.classList.add("mb-4", "col-md-3", "col-sm-6", "col-12");
+
+        const anchorElement = document.createElement("a");
+        anchorElement.href = "#";
+        anchorElement.classList.add("pe-auto", "text-decoration-none", "text-center");
+
+        const brandContainer = document.createElement("div");
+        brandContainer.classList.add("border", "border-5", "p-2", "rounded-4", "bg-white");
+
+        const brandImageContainer = document.createElement("div");
+        brandImageContainer.classList.add("text-center");
+
+        const brandImage = document.createElement("img");
+        brandImage.src = brand.logo;
+        brandImage.alt = "Product Brands";
+        brandImage.height = "80";
+
+        const brandNameContainer = document.createElement("div");
+        brandNameContainer.classList.add("p-2");
+
+        const brandName = document.createElement("span");
+        brandName.classList.add("fs-4");
+        brandName.textContent = brand.name;
+
+        brandImageContainer.appendChild(brandImage);
+        brandNameContainer.appendChild(brandName);
+        brandContainer.appendChild(brandImageContainer);
+        brandContainer.appendChild(brandNameContainer);
+        anchorElement.appendChild(brandContainer);
+        brandElement.appendChild(anchorElement);
+
+        return brandElement;
+    }
+
+    function addBrand() {
+        const form = document.getElementById("uploadForm");
+        const brandName = document.getElementById("name").value;
+        const brandDescription = document.getElementById("description").value;
+        const brandImage = document.getElementById("logo").files[0];
+
+        const formData = new FormData();
+        formData.append("name", brandName);
+        formData.append("description", brandDescription);
+        formData.append("file", brandImage);
+
+        showLoading();
+
+        fetch(`${baseURL}/brand/post-brands`, {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((body) => {
+                isSuccess = true;
+                hideLoading();
+                showDialog(body.message);
+                const closeButton = document.getElementById("closeDialog");
+                closeButton.click();
+                loadBrandData(); // Tải lại dữ liệu sau khi thêm thành công
+            })
+            .catch((error) => {
+                isSuccess = false;
+                hideLoading();
+                showDialog("Lỗi: " + error.message);
+                console.error("Error:", error);
+            });
+    }
+
+    function showLoading() {
+        document.getElementById("loading").style.display = "block";
+    }
+
+    function hideLoading() {
+        document.getElementById("loading").style.display = "none";
+    }
+
+    function showDialog(message) {
+        document.getElementById("dialog-message").textContent = message;
+        document.getElementById("dialog").style.display = "block";
+    }
+
+    function hideDialog() {
+        document.getElementById("dialog").style.display = "none";
+        if (isSuccess) {
+            isSuccess = false;
+        }
+    }
+</script>
