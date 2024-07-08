@@ -471,9 +471,11 @@
       <!-- ============================================================== -->
 
       <% if (routerName === 'product'){ %>
-        <%-include('products/listProducts.ejs')%> 
+        <%-include('products/listProducts.ejs')%>  
+      <% } else if (routerName === 'detailProduct') { %>
+        <%-include('products/detailProducts.ejs')%> 
       <% } else if (routerName === 'brand') { %>
-        <%-include('brands/listBrands.ejs')%> 
+        <%-include('brands/listBrands.ejs')%>
       <% } else { %>
         <%-include('dashboard/dashboard.ejs')%> 
       <% } %> 

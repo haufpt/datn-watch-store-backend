@@ -15,6 +15,22 @@ const listProduct = async (req, res) => {
     }
   };
 
+  const detailProduct = async (req, res) => {
+    try {
+      res.render("./index.ejs", {
+        title: "Chi tiet san pham",
+        routerName: "detailProduct",
+        info: req.session.account,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: `${error.message}`,
+      });
+    }
+  };
+
   module.exports = {
     listProduct,
+    detailProduct
   };
