@@ -1,0 +1,112 @@
+<div class="content-page">
+    <div class="content">
+        <!-- Start Content-->
+        <div class="wrapper">
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Main content -->
+                <section class="content">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card card-primary">
+                                    <div class="card-header">
+                                        <h5 class="card-title">Thêm Sản Phẩm</h5>
+                                    </div>
+                                    <!-- /.card-header -->
+                                    <!-- form start -->
+                                    <form>
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <label for="brandId">Brand ID</label>
+                                                <select class="form-control" id="brandId">
+                                                    <option value="1">Rolex</option>
+                                                    <option value="2">Casio</option>
+                                                    <option value="3">Cartier</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="name">Tên Sản Phẩm</label>
+                                                <input type="text" class="form-control" id="name"
+                                                    placeholder="Enter Product Name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="images">Hình Ảnh</label>
+                                                <input type="file" class="form-control" id="images" multiple
+                                                    accept="image/*">
+                                                <div class="image-preview" id="imagePreview"></div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="description">Mô Tả</label>
+                                                <textarea class="form-control" id="description" rows="3"
+                                                    placeholder="Enter Description"></textarea>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-md-4">
+                                                    <label for="price">Giá</label>
+                                                    <input type="number" class="form-control" id="price"
+                                                        placeholder="Enter Price">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="quantity">Số Lượng</label>
+                                                    <input type="number" class="form-control" id="quantity"
+                                                        placeholder="Enter Quantity">
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label for="size">Kích Thước</label>
+                                                    <input type="number" class="form-control" id="size"
+                                                        placeholder="Enter Size">
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="machineCategory">Machine Category</label>
+                                                    <select class="form-control" id="machineCategory">
+                                                        <option value="">-- Select Option --</option>
+                                                        <option value="A">AUTOMATIC_MECHANICAL</option>
+                                                        <option value="B">BATTERY</option>
+                                                        <option value="C">LIGHT_ENERGY</option>
+                                                    </select>
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label for="wireCategory">Wire Category</label>
+                                                    <select class="form-control" id="wireCategory">
+                                                        <option value="">-- Select Option --</option>
+                                                        <option value="metal">Metal</option>
+                                                        <option value="skin">Skin</option>
+                                                        <option value="plastic">Plastic</option>
+                                                        <option value="fabric">Fabric</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /.card-body -->
+                                        <div class="mr-4 mb-4 float-right">
+                                            <button type="submit" class="btn btn-success">Submit</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- /.content -->
+            </div>
+            <!-- /.content-wrapper -->
+        </div>
+        <!-- ./wrapper -->
+    </div>
+</div>
+<script>
+    document.getElementById('images').addEventListener('change', function () {
+        const imagePreview = document.getElementById('imagePreview');
+        imagePreview.innerHTML = '';
+        Array.from(this.files).forEach(file => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                imagePreview.appendChild(img);
+            }
+            reader.readAsDataURL(file);
+        });
+    });
+</script>
