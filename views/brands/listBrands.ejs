@@ -103,7 +103,7 @@
                         </a>
                     </div>
                     <!-- /.col -->
-                    <% }) %>
+                <% }) %>
             </div>
             <!-- end row -->
         </div>
@@ -128,11 +128,7 @@
                 console.log(`[web] loadBrandData -> ${JSON.stringify(data)}`);
                 const listBrandData = data; // Dữ liệu thương hiệu trả về từ máy chủ
                 const brandListContainer = document.getElementById("brandListContainer");
-
-                // Xóa tất cả các thương hiệu hiện tại
                 brandListContainer.innerHTML = '';
-
-                // Thêm dữ liệu mới
                 listBrandData.brands.forEach((row) => {
                     const brandElement = createBrandElement(row);
                     brandListContainer.appendChild(brandElement);
@@ -144,6 +140,7 @@
     }
 
     function createBrandElement(brand) {
+        console.log(`[web] createBrandElement -> start`);
         const brandElement = document.createElement("div");
         brandElement.classList.add("mb-4", "col-md-3", "col-sm-6", "col-12");
 
@@ -200,6 +197,7 @@
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
+                loadBrandData()
                 return response.json();
             })
             .then((body) => {
