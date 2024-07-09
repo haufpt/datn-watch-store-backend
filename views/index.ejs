@@ -358,6 +358,21 @@
       .custom-file-input:lang(en)~.custom-file-label::after {
             content: "Chọn tệp";
       }
+      .image-preview {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 10px;
+      border: 1px solid #ddd;
+      padding: 10px;
+      margin-top: 10px;
+    }
+    .image-preview img {
+      width: 50px;
+      height: 50px;
+      object-fit: cover;
+      border: 1px solid #ccc;
+    }
     </style>
   </head>
 
@@ -474,6 +489,8 @@
         <%-include('products/listProducts.ejs')%>  
       <% } else if (routerName === 'detailProduct') { %>
         <%-include('products/detailProducts.ejs')%> 
+      <% } else if (routerName === 'addProduct') { %>
+        <%-include('products/addProducts.ejs')%> 
       <% } else if (routerName === 'brand') { %>
         <%-include('brands/listBrands.ejs')%>
       <% } else { %>

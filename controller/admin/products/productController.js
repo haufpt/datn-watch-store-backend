@@ -15,6 +15,21 @@ const listProduct = async (req, res) => {
     }
   };
 
+  const addProduct = async (req, res) => {
+    try {
+      res.render("./index.ejs", {
+        title: "Them moi san pham",
+        routerName: "addProduct",
+        info: req.session.account,
+      });
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: `${error.message}`,
+      });
+    }
+  };
+
   const detailProduct = async (req, res) => {
     try {
       res.render("./index.ejs", {
@@ -32,5 +47,6 @@ const listProduct = async (req, res) => {
 
   module.exports = {
     listProduct,
+    addProduct,
     detailProduct
   };
