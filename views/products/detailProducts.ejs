@@ -17,10 +17,10 @@
                     <div class="card-body">
                       <div class="form-group">
                         <label for="productImages">Hình Ảnh Sản Phẩm</label>
-                        <div class="image-container" id="imageContainer">
+                        <div class="image-container" id="imageContainer" disable>
                           <!-- Hiển thị hình ảnh sản phẩm -->
-                          <img src="path/to/image1.jpg" alt="Product Image">
-                          <img src="path/to/image2.jpg" alt="Product Image">
+                          <img src="/public/assets/images/users/user-6.jpg" alt="Product Image">
+                          <img src="/public/assets/images/users/user-2.jpg" alt="Product Image">
                         </div>
                         <input type="file" class="form-control" id="productImages" multiple accept="image/*"
                           style="display: none;">
@@ -77,8 +77,11 @@
                     <!-- /.card-body -->
 
                     <div class="card-footer text-right">
-                      <button type="button" class="btn btn-primary" id="editButton">Edit</button>
-                      <button type="submit" class="btn btn-success" id="saveButton" style="display: none;">Save</button>
+                      <button type="button" class="btn btn-success" id="deleteButton">Delete</button>
+                      <button type="button" class="btn btn-warning" id="editButton">Edit</button>
+                      <a href="#">
+                        <button type="submit" class="btn btn-success" id="saveButton" style="display: none;">Save</button>
+                      </a>
                       <button type="button" class="btn btn-secondary" id="cancelButton"
                         style="display: none;">Cancel</button>
                     </div>
@@ -100,6 +103,7 @@
   $(document).ready(function () {
     $('#editButton').on('click', function () {
       $(this).hide();
+      $('#deleteButton').hide();
       $('#saveButton').show();
       $('#cancelButton').show();
       $('#brandId, #name, #description, #price, #quantity, #size, #machineCategory, #wireCategory').prop('disabled', false);
@@ -109,6 +113,7 @@
     $('#cancelButton').on('click', function () {
       $(this).hide();
       $('#saveButton').hide();
+      $('#deleteButton').show();
       $('#editButton').show();
       $('#brandId, #name, #description, #price, #quantity, #size, #machineCategory, #wireCategory').prop('disabled', true);
       $('#productImages').hide();
