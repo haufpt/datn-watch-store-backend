@@ -11,4 +11,3 @@ module.exports.initDbConnection = async () => {
       console.log(`Error connecting: ${err.message}`);
     });
 };
-//mongodb+srv://minhquan:quan1452003@phamminhquan145.ilzcilm.mongodb.net/Apolis
