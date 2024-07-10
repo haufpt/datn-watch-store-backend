@@ -3,17 +3,91 @@
     <!-- Start Content-->
     <div class="container-fluid">
       <div class="row">
-        <div class="col-xl-12 mb-0">
-          <div class="card">
-            <div class="card-body">
-              <div class="card-body-action-course">
-                <h1 class="header-title mt-0">Danh sách sản phẩm</h1>
+        <section class="content">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card card-primary">
+                  <div class="card-header">
+                    <h5 class="card-title">Thông Tin Sản Phẩm</h5>
+                  </div>
+                  <!-- /.card-header -->
+                  <!-- form start -->
+                  <form>
+                    <div class="card-body">
+                      <div class="form-group">
+                        <label for="productImages">Hình Ảnh Sản Phẩm</label>
+                        <div class="image-container" id="imageContainer">
+                          <!-- Hiển thị hình ảnh sản phẩm -->
+                          <img src="path/to/image1.jpg" alt="Product Image">
+                          <img src="path/to/image2.jpg" alt="Product Image">
+                        </div>
+                        <input type="file" class="form-control" id="productImages" multiple accept="image/*"
+                          style="display: none;">
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-3">
+                          <label for="brandId">Brand</label>
+                          <select class="form-control" id="brandId" disabled>
+                            <option value="1">Brand 1</option>
+                            <option value="2">Brand 2</option>
+                            <option value="3">Brand 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-9">
+                          <label for="name">Tên Sản Phẩm</label>
+                          <input type="text" class="form-control" id="name" value="Sample Product" disabled>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="description">Mô Tả</label>
+                        <textarea class="form-control" id="description" rows="3" disabled>Sample description</textarea>
+                      </div>
+                      <div class="row">
+                        <div class="form-group col-md-4">
+                          <label for="price">Giá</label>
+                          <input type="number" class="form-control" id="price" value="1000" disabled>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="quantity">Số Lượng</label>
+                          <input type="number" class="form-control" id="quantity" value="10" disabled>
+                        </div>
+                        <div class="form-group col-md-4">
+                          <label for="size">Kích Thước</label>
+                          <input type="number" class="form-control" id="size" value="20" disabled>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="machineCategory">Machine Category</label>
+                          <select class="form-control" id="machineCategory" disabled>
+                            <option value="1">Category 1</option>
+                            <option value="2">Category 2</option>
+                            <option value="3">Category 3</option>
+                          </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                          <label for="wireCategory">Wire Category</label>
+                          <select class="form-control" id="wireCategory" disabled>
+                            <option value="1">Wire 1</option>
+                            <option value="2">Wire 2</option>
+                            <option value="3">Wire 3</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer text-right">
+                      <button type="button" class="btn btn-primary" id="editButton">Edit</button>
+                      <button type="submit" class="btn btn-success" id="saveButton" style="display: none;">Save</button>
+                      <button type="button" class="btn btn-secondary" id="cancelButton"
+                        style="display: none;">Cancel</button>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <!-- end col -->
-        
+        </section>
       </div>
       <!-- end row -->
     </div>
@@ -21,3 +95,36 @@
   </div>
   <!-- content -->
 </div>
+
+<script>
+  $(document).ready(function () {
+    $('#editButton').on('click', function () {
+      $(this).hide();
+      $('#saveButton').show();
+      $('#cancelButton').show();
+      $('#brandId, #name, #description, #price, #quantity, #size, #machineCategory, #wireCategory').prop('disabled', false);
+      $('#productImages').show();
+    });
+
+    $('#cancelButton').on('click', function () {
+      $(this).hide();
+      $('#saveButton').hide();
+      $('#editButton').show();
+      $('#brandId, #name, #description, #price, #quantity, #size, #machineCategory, #wireCategory').prop('disabled', true);
+      $('#productImages').hide();
+    });
+
+    $('#productImages').on('change', function () {
+      const imageContainer = $('#imageContainer');
+      imageContainer.empty();
+      Array.from(this.files).forEach(file => {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const img = $('<img>').attr('src', e.target.result);
+          imageContainer.append(img);
+        }
+        reader.readAsDataURL(file);
+      });
+    });
+  });
+</script>
