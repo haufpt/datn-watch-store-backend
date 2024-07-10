@@ -5,8 +5,21 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Main content -->
+                <div id="loading" class="loading-container">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
+
+                <div id="dialog" class="dialog-container">
+                    <div class="dialog-content">
+                        <span id="dialog-message"></span>
+                        <button onclick="hideDialog()">Ok</button>
+                    </div>
+                </div>
                 <section class="content">
                     <div class="container-fluid">
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="card card-primary">
@@ -15,15 +28,18 @@
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
-                                    <form>
+                                    <form id="uploadForm">
                                         <div class="card-body">
                                             <div class="form-group">
-                                                <label for="brandId">Brand ID</label>
+                                                <label for="brandId">Tên Thương Hiệu</label>
                                                 <select class="form-control" id="brandId">
-                                                    <option value="1">Rolex</option>
-                                                    <option value="2">Casio</option>
-                                                    <option value="3">Cartier</option>
+                                                    <% listBrandData.forEach((row)=> { %>
+                                                        <option value="<%= row._id %>">
+                                                            <%= row.name %>
+                                                        </option>
+                                                        <% }) %>
                                                 </select>
+
                                             </div>
                                             <div class="form-group">
                                                 <label for="name">Tên Sản Phẩm</label>
@@ -31,8 +47,9 @@
                                                     placeholder="Enter Product Name">
                                             </div>
                                             <div class="form-group">
-                                                <label for="images">Hình Ảnh</label>
-                                                <input type="file" class="form-control" id="images" accept="image/*">
+                                                <label for="photoUrls">Hình Ảnh</label>
+                                                <input type="file" class="form-control" id="photoUrls" multiple
+                                                    accept="image/*">
                                                 <div class="image-preview" id="imagePreview"></div>
                                             </div>
                                             <div class="form-group">
@@ -60,26 +77,28 @@
                                                     <label for="machineCategory">Machine Category</label>
                                                     <select class="form-control" id="machineCategory">
                                                         <option value="">-- Select Option --</option>
-                                                        <option value="A">AUTOMATIC_MECHANICAL</option>
-                                                        <option value="B">BATTERY</option>
-                                                        <option value="C">LIGHT_ENERGY</option>
+                                                        <option value="AUTOMATIC_MECHANICAL">AUTOMATIC_MECHANICAL
+                                                        </option>
+                                                        <option value="BATTERY">BATTERY</option>
+                                                        <option value="LIGHT_ENERGY">LIGHT_ENERGY</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label for="wireCategory">Wire Category</label>
                                                     <select class="form-control" id="wireCategory">
                                                         <option value="">-- Select Option --</option>
-                                                        <option value="metal">Metal</option>
-                                                        <option value="skin">Skin</option>
-                                                        <option value="plastic">Plastic</option>
-                                                        <option value="fabric">Fabric</option>
+                                                        <option value="METAL">Metal</option>
+                                                        <option value="SKIN">Skin</option>
+                                                        <option value="PLASTIC">Plastic</option>
+                                                        <option value="FABRIC">Fabric</option>
                                                     </select>
                                                 </div>
                                             </div>
                                         </div>
                                         <!-- /.card-body -->
                                         <div class="mr-4 mb-4 float-right">
-                                            <button type="submit" class="btn btn-success">Submit</button>
+                                            <button type="submit" class="btn btn-success"
+                                                onclick="addProduct()">Submit</button>
                                         </div>
                                     </form>
                                 </div>
@@ -95,7 +114,7 @@
     </div>
 </div>
 <script>
-    document.getElementById('images').addEventListener('change', function () {
+    document.getElementById('photoUrls').addEventListener('change', function () {
         const imagePreview = document.getElementById('imagePreview');
         imagePreview.innerHTML = '';
         Array.from(this.files).forEach(file => {
@@ -108,4 +127,97 @@
             reader.readAsDataURL(file);
         });
     });
+</script>
+
+
+<script>
+    const baseURL = window.location.protocol + '//' + window.location.host;
+    var isSuccess = false;
+    function addProduct() {
+        const formData = new FormData();
+
+        const brandID = document.getElementById('brandId').value;
+        console.log(`[web] addProducts: brandID -> ${brandID}`);
+        formData.append('brandId', brandID);
+
+        const productName = document.getElementById("name").value;
+        formData.append('name', productName)
+
+        const productDescription = document.getElementById("description").value;
+        formData.append('description', productDescription)
+
+        const fileProductImage = document.getElementById('photoUrls');
+        const fileMedias = fileProductImage.files;
+        for (let i = 0; i < fileMedias.length; i++) {
+            console.log(`[web] addProducts: fileMedias -> ${ fileMedias[i]}`);
+            formData.append('photoUrls', fileMedias[i]);
+        }
+
+        const productPrice = document.getElementById("price").value;
+        formData.append('price', productPrice);
+
+        const productQuantity = document.getElementById("quantity").value;
+        formData.append('quantity', productQuantity);
+
+        const productSize = document.getElementById("size").value;
+        formData.append('size', productSize);
+
+        const productMachineCategory = document.getElementById('machineCategory').value;
+        console.log(`[web] addProducts: machineCategory -> ${productMachineCategory}`);
+        formData.append('machineCategory', productMachineCategory);
+
+        const productWireCategory = document.getElementById('wireCategory').value;
+        console.log(`[web] addProducts: wireCategory -> ${productWireCategory}`);
+        formData.append('wireCategory', productWireCategory);
+
+        console.log(`[web] addProducts: formData -> ${JSON.stringify(formData)}`);
+        showLoading();
+
+        fetch(`${baseURL}/product/add-products`, {
+            method: "POST",
+            body: formData,
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                loadBrandData()
+                return response.json();
+            })
+            .then((body) => {
+                isSuccess = true;
+                hideLoading();
+                showDialog(body.message);
+                loadBrandData(); // Tải lại dữ liệu sau khi thêm thành công
+            })
+            .catch((error) => {
+                isSuccess = false;
+                hideLoading();
+                showDialog("Lỗi: " + error.message);
+                console.error("Error:", error);
+            });
+
+    };
+
+    function showLoading() {
+        document.getElementById("loading").style.display = "block";
+    }
+
+    function hideLoading() {
+        document.getElementById("loading").style.display = "none";
+    }
+
+    function showDialog(message) {
+        document.getElementById("dialog-message").textContent = message;
+        document.getElementById("dialog").style.display = "block";
+    }
+
+    function hideDialog() {
+        document.getElementById("dialog").style.display = "none";
+        if (isSuccess) {
+            form.reset();
+            isSuccess = false;
+        }
+    }
+
 </script>
