@@ -12,7 +12,7 @@ const checkFile = require("../../../middleware/file");
 router.get("/list-products",
     productRouter.listProduct);
 
-router.get("/detail-products", 
+router.get("/detail-products/:idProduct", 
     productRouter.detailProduct);
 
 router.get("/add-products", 
