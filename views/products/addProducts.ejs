@@ -32,7 +32,7 @@
                                         <div class="card-body">
                                             <div class="form-group">
                                                 <label for="brandId">Tên Thương Hiệu</label>
-                                                <select class="form-control" id="brandId">
+                                                <select class="form-control" id="brandId" name="brandId">
                                                     <% listBrandData.forEach((row)=> { %>
                                                         <option value="<%= row._id %>">
                                                             <%= row.name %>
@@ -43,39 +43,40 @@
                                             </div>
                                             <div class="form-group">
                                                 <label for="name">Tên Sản Phẩm</label>
-                                                <input type="text" class="form-control" id="name"
+                                                <input type="text" class="form-control" id="name" name="name"
                                                     placeholder="Enter Product Name">
                                             </div>
                                             <div class="form-group">
                                                 <label for="photoUrls">Hình Ảnh</label>
                                                 <input type="file" class="form-control" id="photoUrls" multiple
-                                                    accept="image/*">
+                                                    name="files" accept="image/*">
                                                 <div class="image-preview" id="imagePreview"></div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="description">Mô Tả</label>
                                                 <textarea class="form-control" id="description" rows="3"
-                                                    placeholder="Enter Description"></textarea>
+                                                    name="description" placeholder="Enter Description"></textarea>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-4">
                                                     <label for="price">Giá</label>
-                                                    <input type="number" class="form-control" id="price"
+                                                    <input type="number" class="form-control" id="price" name="price"
                                                         placeholder="Enter Price">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="quantity">Số Lượng</label>
                                                     <input type="number" class="form-control" id="quantity"
-                                                        placeholder="Enter Quantity">
+                                                        name="quantity" placeholder="Enter Quantity">
                                                 </div>
                                                 <div class="form-group col-md-4">
                                                     <label for="size">Kích Thước</label>
-                                                    <input type="number" class="form-control" id="size"
+                                                    <input type="number" class="form-control" id="size" name="size"
                                                         placeholder="Enter Size">
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label for="machineCategory">Machine Category</label>
-                                                    <select class="form-control" id="machineCategory">
+                                                    <select class="form-control" id="machineCategory"
+                                                        name="machineCategory">
                                                         <option value="">-- Select Option --</option>
                                                         <option value="AUTOMATIC_MECHANICAL">AUTOMATIC_MECHANICAL
                                                         </option>
@@ -85,7 +86,7 @@
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label for="wireCategory">Wire Category</label>
-                                                    <select class="form-control" id="wireCategory">
+                                                    <select class="form-control" id="wireCategory" name="">
                                                         <option value="">-- Select Option --</option>
                                                         <option value="METAL">Metal</option>
                                                         <option value="SKIN">Skin</option>
@@ -97,8 +98,7 @@
                                         </div>
                                         <!-- /.card-body -->
                                         <div class="mr-4 mb-4 float-right">
-                                            <button type="submit" class="btn btn-success"
-                                                onclick="addProduct()">Submit</button>
+                                            <button type="submit" class="btn btn-success">Submit</button>
                                         </div>
                                     </form>
                                 </div>
@@ -129,11 +129,12 @@
     });
 </script>
 
-
 <script>
     const baseURL = window.location.protocol + '//' + window.location.host;
     var isSuccess = false;
-    function addProduct() {
+    const form = document.getElementById('uploadForm');
+    form.addEventListener('submit', function (event) {
+         event.preventDefault();
         const formData = new FormData();
 
         const brandID = document.getElementById('brandId').value;
@@ -149,7 +150,7 @@
         const fileProductImage = document.getElementById('photoUrls');
         const fileMedias = fileProductImage.files;
         for (let i = 0; i < fileMedias.length; i++) {
-            console.log(`[web] addProducts: fileMedias -> ${ fileMedias[i]}`);
+            console.log(`[web] addProducts: fileMedias -> ${fileMedias[i]}`);
             formData.append('photoUrls', fileMedias[i]);
         }
 
@@ -172,8 +173,7 @@
 
         console.log(`[web] addProducts: formData -> ${JSON.stringify(formData)}`);
         showLoading();
-
-        fetch(`${baseURL}/product/add-products`, {
+        fetch(`${baseURL}/product/post-product`, {
             method: "POST",
             body: formData,
         })
@@ -181,14 +181,12 @@
                 if (!response.ok) {
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                loadBrandData()
                 return response.json();
             })
             .then((body) => {
                 isSuccess = true;
                 hideLoading();
                 showDialog(body.message);
-                loadBrandData(); // Tải lại dữ liệu sau khi thêm thành công
             })
             .catch((error) => {
                 isSuccess = false;
@@ -196,8 +194,7 @@
                 showDialog("Lỗi: " + error.message);
                 console.error("Error:", error);
             });
-
-    };
+    });
 
     function showLoading() {
         document.getElementById("loading").style.display = "block";

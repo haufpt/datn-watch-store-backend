@@ -6,17 +6,8 @@ const ProductValidation = require("../../../validation/product");
 const postProduct = async (req, res) => {
   try {
     const baseUrl = req.protocol + "://" + req.get("host") + "/";
-
-    const formData = {
-      brandId: req.body.brandId,
-      name: req.body.name,
-      description: req.body.description,
-      price: parseFloat(req.body.price),
-      quantity: parseInt(req.body.quantity),
-      size: parseFloat(req.body.size),
-      machineCategory: req.body.machineCategory,
-      wireCategory: req.body.wireCategory,
-    };
+    const formData = req.body;
+    console.log(`[productController][postProduct] formData _> ${JSON.stringify(formData)}`);
 
     const { error } = ProductValidation.addProduct.validate(formData, {
       abortEarly: false,
@@ -81,7 +72,7 @@ const addProduct = async (req, res) => {
       title: "Thêm mới sản phẩm",
       routerName: "addProduct",
       info: req.session.account,
-      listBrandData: listBrand
+      listBrandData: listBrand,
     });
   } catch (error) {
     res.status(500).json({
@@ -110,5 +101,5 @@ module.exports = {
   listProduct,
   addProduct,
   detailProduct,
-  postProduct
+  postProduct,
 };

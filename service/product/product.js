@@ -6,18 +6,16 @@ const { TopProductTypeEnum } = require("../../common/enum.js");
 const createNewProduct = async (data) => {
   try {
     const product = new productModel(data);
-    console.log("[ProductService] createNewProduct:  ", product);
-
     const existBrand = await BrandService.findBrandById(product.brandId);
     if (!existBrand) {
       throw new Error("Brand không tồn tại.");
     }
-
-    const existProduct = await getProducts({ name: product.name });
+    console.log("[ProductService] createNewProduct:  ", product);
+    const existProduct = await getProducts(product.name);
     if (existProduct.length !== 0) {
       throw new Error("Tên sản phẩm đã tồn tại.");
     }
-
+    
     return await product.save();
   } catch (error) {
     throw error;
@@ -232,6 +230,15 @@ const findProductByID = async (idProduct) => {
     return product[0];
   } catch (error) {
     console.error(error);
+  }
+};
+
+const getProducts = async (name) => {
+  try {
+    const products = await productModel.find({ name: name });
+    return products;
+  } catch (error) {
+    throw error;
   }
 };
 
