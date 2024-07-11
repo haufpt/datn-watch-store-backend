@@ -7,7 +7,24 @@ const listBrand = async (req, res) => {
     console.log("[brandController] listBrand -> ", listBrand);
     res.render("./index.ejs", {
       title: "Danh sach thuong hieu",
-      routerName: "brand",
+      routerName: "list-brand",
+      info: req.session.account,
+      listBrandData: listBrand,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
+const detailBrand = async (req, res) => {
+  try {
+    console.log("[brandController] listBrand -> ", listBrand);
+    res.render("./index.ejs", {
+      title: "Danh sach thuong hieu",
+      routerName: "detail-brand",
       info: req.session.account,
       listBrandData: listBrand,
     });
@@ -62,5 +79,6 @@ const postBrand = async (req, res) => {
 
 module.exports = {
   listBrand,
+  detailBrand,
   postBrand,
 };

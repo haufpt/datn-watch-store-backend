@@ -1,0 +1,52 @@
+<div class="content-page">
+    <div class="content">
+        <!-- Start Content-->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-primary">
+                            <div class="card-header">
+                                <h3 class="card-title">Thông Tin Thương Hiệu</h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="brandLogo">Logo Thương Hiệu</label>
+                                        <div class="image-container" id="imageContainer">
+                                            <!-- Hiển thị logo thương hiệu -->
+                                            <img src="path/to/logo.jpg" alt="Brand Logo">
+                                        </div>
+                                        <input type="file" class="form-control" id="brandLogo" accept="image/*"
+                                            style="display: none;">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="brandName">Tên Thương Hiệu</label>
+                                        <input type="text" class="form-control" id="brandName" value="Sample Brand"
+                                            disabled>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="brandDescription">Mô Tả Thương Hiệu</label>
+                                        <textarea class="form-control" id="brandDescription" rows="3"
+                                            disabled>Sample brand description</textarea>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer text-right">
+                                    <button type="button" class="btn btn-primary" id="editButton">Edit</button>
+                                    <button type="submit" class="btn btn-success" id="saveButton"
+                                        style="display: none;">Save</button>
+                                    <button type="button" class="btn btn-secondary" id="cancelButton"
+                                        style="display: none;">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
