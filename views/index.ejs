@@ -503,8 +503,10 @@
         <%-include('products/detailProducts.ejs')%> 
       <% } else if (routerName === 'addProduct') { %>
         <%-include('products/addProducts.ejs')%> 
-      <% } else if (routerName === 'brand') { %>
+      <% } else if (routerName === 'list-brand') { %>
         <%-include('brands/listBrands.ejs')%>
+        <% } else if (routerName === 'detail-brand') { %>
+          <%-include('brands/detailBrand.ejs')%>
       <% } else { %>
         <%-include('dashboard/dashboard.ejs')%> 
       <% } %> 
