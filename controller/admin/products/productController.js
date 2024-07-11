@@ -51,10 +51,13 @@ const postProduct = async (req, res) => {
 
 const listProduct = async (req, res) => {
   try {
+    const listProduct = await productService.getListProduct();
+    console.log("[productController] listProduct -> ", listProduct);
     res.render("./index.ejs", {
       title: "Danh sách sản phẩm",
       routerName: "product",
       info: req.session.account,
+      listProductData: listProduct
     });
   } catch (error) {
     res.status(500).json({
@@ -84,10 +87,21 @@ const addProduct = async (req, res) => {
 
 const detailProduct = async (req, res) => {
   try {
+    let idProduct = req.params.idProduct;
+    const product = await productService.findProductByID(idProduct);
+    console.log("[productController] detailProduct -> ", product);
+
+    if (!product) {
+      return res.status(301).json({
+        success: false,
+        message: `Product not found`,
+      });
+    }
     res.render("./index.ejs", {
-      title: "Chi tiet san pham",
+      title: "Chi tiết sản phẩm",
       routerName: "detailProduct",
       info: req.session.account,
+      productData: product
     });
   } catch (error) {
     res.status(500).json({

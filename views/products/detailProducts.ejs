@@ -36,30 +36,30 @@
                         </div>
                         <div class="form-group col-md-9">
                           <label for="name">Tên Sản Phẩm</label>
-                          <input type="text" class="form-control" id="name" value="Sample Product" disabled>
+                          <input type="text" class="form-control" id="name" value="<%= productData.name %>" disabled>
                         </div>
                       </div>
                       <div class="form-group">
                         <label for="description">Mô Tả</label>
-                        <textarea class="form-control" id="description" rows="3" disabled>Sample description</textarea>
+                        <textarea class="form-control" id="description" rows="3" disabled><%= productData.description %></textarea>
                       </div>
                       <div class="row">
                         <div class="form-group col-md-4">
                           <label for="price">Giá</label>
-                          <input type="number" class="form-control" id="price" value="1000" disabled>
+                          <input type="number" class="form-control" id="price" value="<%= productData.price %>" disabled>
                         </div>
                         <div class="form-group col-md-4">
                           <label for="quantity">Số Lượng</label>
-                          <input type="number" class="form-control" id="quantity" value="10" disabled>
+                          <input type="number" class="form-control" id="quantity" value="<%= productData.quantity %>" disabled>
                         </div>
                         <div class="form-group col-md-4">
                           <label for="size">Kích Thước</label>
-                          <input type="number" class="form-control" id="size" value="20" disabled>
+                          <input type="number" class="form-control" id="size" value="<%= productData.size %>" disabled>
                         </div>
                         <div class="form-group col-md-6">
                           <label for="machineCategory">Machine Category</label>
                           <select class="form-control" id="machineCategory" disabled>
-                            <option value="1">Category 1</option>
+                            <option value="<%= productData.machineCategory %>"><%= productData.machineCategory %></option>
                             <option value="2">Category 2</option>
                             <option value="3">Category 3</option>
                           </select>
@@ -67,7 +67,7 @@
                         <div class="form-group col-md-6">
                           <label for="wireCategory">Wire Category</label>
                           <select class="form-control" id="wireCategory" disabled>
-                            <option value="1">Wire 1</option>
+                            <option value="<%= productData.wireCategory %>"><%= productData.wireCategory %></option>
                             <option value="2">Wire 2</option>
                             <option value="3">Wire 3</option>
                           </select>

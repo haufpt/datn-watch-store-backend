@@ -76,22 +76,24 @@
           </div>
         </div>
         <!-- end col -->
-
+        <% listProductData.forEach((row)=> { %>
         <div class="mb-4 col-md-3 col-sm-6 col-12">
-            <a href="/product/detail-products" class="pe-auto text-decoration-none">
+            <a href="/product/detail-products/<%= row._id %>" class="pe-auto text-decoration-none">
                 <div class="border border-5 p-2 rounded-4 bg-white">
+                 
                     <div class="text-center">
-                        <img src="/public/assets/images/test1.png" alt="Product Image" height="250">
+                        <img src="<%= row.photoUrls[0] %>" alt="Product Image" height="250">
                     </div>
                     <div class="p-2">
-                        <span class="fs-4">Đồng hồ Rolex Day-Date 36</span>
+                        <span class="fs-4"><%= row.name %></span>
                         <br>
-                        <span class="text-danger">₫</span><span class="text-danger">1.000.000 $</span>
+                        <span class="text-danger">₫</span><span class="text-danger"><%= row.price %></span>
                         <br><span class="fs-6">Đã bán 1.0k</span>
                       </div>
                 </div>
             </a>
         </div>
+        <% }) %>
         <!-- /.col -->
         <ul class="pagination justify-content-end">
           <li class="page-item disabled">
