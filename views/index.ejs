@@ -1,364 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title><%= title %> | Watch Store</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      content="A fully featured admin theme which can be used to build CRM, CMS, etc."
-      name="description"
-    />
-    <meta content="Coderthemes" name="author" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- App favicon -->
-    <link rel="shortcut icon" href="/public/assets/images/favicon.ico" />
+<head>
+  <meta charset="utf-8" />
+  <title>
+    <%= title %> | Watch Store
+  </title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+  <meta content="Coderthemes" name="author" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
-    <!-- App css -->
-    <link
-      href="/public/assets/css/app.min.css"
-      rel="stylesheet"
-      type="text/css"
-      id="app-style"
-    />
+  <!-- App favicon -->
+  <link rel="shortcut icon" href="/public/assets/images/favicon.ico" />
 
-    <!-- icons -->
-    <link
-      href="/public/assets/css/icons.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
+  <!-- App css -->
+  <link href="/public/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
 
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-    />
+  <!-- icons -->
+  <link href="/public/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
 
-    <!-- third party css -->
-    <link
-      href="/public/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      href="/public/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      href="/public/assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      href="/public/assets/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <!-- third party css end -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
 
-    <link
-      rel="stylesheet"
-      href="/public/datatables-bs4/css/dataTables.bootstrap4.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="/public/datatables-responsive/css/responsive.bootstrap4.min.css"
-    />
-    <link
-      rel="stylesheet"
-      href="/public/datatables-buttons/css/buttons.bootstrap4.min.css"
-    />
+  <!-- third party css -->
+  <link href="/public/assets/libs/datatables.net-bs5/css/dataTables.bootstrap5.min.css" rel="stylesheet"
+    type="text/css" />
+  <link href="/public/assets/libs/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css" rel="stylesheet"
+    type="text/css" />
+  <link href="/public/assets/libs/datatables.net-buttons-bs5/css/buttons.bootstrap5.min.css" rel="stylesheet"
+    type="text/css" />
+  <link href="/public/assets/libs/datatables.net-select-bs5/css//select.bootstrap5.min.css" rel="stylesheet"
+    type="text/css" />
+  <!-- third party css end -->
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <link rel="stylesheet" href="/public/datatables-bs4/css/dataTables.bootstrap4.min.css" />
+  <link rel="stylesheet" href="/public/datatables-responsive/css/responsive.bootstrap4.min.css" />
+  <link rel="stylesheet" href="/public/datatables-buttons/css/buttons.bootstrap4.min.css" />
 
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 
-    <style>
-      body {
-        background-color: #ebeff2;
-      }
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-      .col-course-id {
-        max-width: 4%;
-      }
+  <style>
+    body {
+      background-color: #ebeff2;
+    }
 
-      .col-course-name {
-        max-width: 30%;
-      }
+    .col-course-id {
+      max-width: 4%;
+    }
 
-      .col-course-start {
-        max-width: 14%;
-      }
+    .col-course-name {
+      max-width: 30%;
+    }
 
-      .col-course-end {
-        max-width: 14%;
-      }
+    .col-course-start {
+      max-width: 14%;
+    }
 
-      .col-course-category {
-        max-width: 12%;
-      }
+    .col-course-end {
+      max-width: 14%;
+    }
 
-      .col-course-fee {
-        max-width: 12%;
-      }
+    .col-course-category {
+      max-width: 12%;
+    }
 
-      .col-course-detail {
-        max-width: 14%;
-      }
+    .col-course-fee {
+      max-width: 12%;
+    }
 
-      .card-body-action-course {
-        display: flex;
-        flex-direction: row;
-        align-items: baseline;
-        justify-content: space-between;
-      }
+    .col-course-detail {
+      max-width: 14%;
+    }
 
-      .card-body-action-right {
-        display: flex;
-        flex-direction: row;
-        align-items: baseline;
-      }
+    .card-body-action-course {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      justify-content: space-between;
+    }
 
-      .card-body-action-right .dropdown {
-        margin-right: 10px;
-      }
+    .card-body-action-right {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+    }
 
-      .connectedSortable .img-fluid {
-        background: gainsboro;
-        height: fit-content;
-        margin-right: 10px;
-      }
+    .card-body-action-right .dropdown {
+      margin-right: 10px;
+    }
 
-      .carousel-inner {
-        height: 300px;
-      }
+    .connectedSortable .img-fluid {
+      background: gainsboro;
+      height: fit-content;
+      margin-right: 10px;
+    }
 
-      .accordion.custom-accordion .form-check-input:disabled {
-        opacity: 1;
-      }
+    .carousel-inner {
+      height: 300px;
+    }
 
-      .accordion.custom-accordion
-        .form-check-input:disabled
-        ~ .form-check-label,
-      .form-check-input[disabled] ~ .form-check-label {
-        opacity: 1;
-        color: #212529;
-      }
+    .accordion.custom-accordion .form-check-input:disabled {
+      opacity: 1;
+    }
 
-      .file-container {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 10px;
-      }
+    .accordion.custom-accordion .form-check-input:disabled~.form-check-label,
+    .form-check-input[disabled]~.form-check-label {
+      opacity: 1;
+      color: #212529;
+    }
 
-      .file-item {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-        position: relative;
-        border: 1px solid aqua;
-        border-radius: 8px;
-      }
+    .file-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
 
-      .file-item .delete-icon {
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        right: 0;
-        top: 5px;
-        cursor: pointer;
-      }
+    .file-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      position: relative;
+      border: 1px solid aqua;
+      border-radius: 8px;
+    }
 
-      .file-item img,
-      .file-item video {
-        width: 100%;
-        height: auto;
-        margin-right: 10px;
-      }
+    .file-item .delete-icon {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      right: 0;
+      top: 5px;
+      cursor: pointer;
+    }
 
-      .file-item button {
-        padding: 5px 10px;
-        background-color: #ff0000;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-      }
+    .file-item img,
+    .file-item video {
+      width: 100%;
+      height: auto;
+      margin-right: 10px;
+    }
 
-      .tab-bar {
-        display: flex;
-      }
+    .file-item button {
+      padding: 5px 10px;
+      background-color: #ff0000;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
 
-      .tab {
-        flex: 1;
-        padding: 10px;
-        background-color: #f0f0f0;
-        cursor: pointer;
-        max-width: 100px;
-        margin-right: 2px;
-      }
+    .tab-bar {
+      display: flex;
+    }
 
-      .tab.active {
-        background-color: #ccc;
-      }
+    .tab {
+      flex: 1;
+      padding: 10px;
+      background-color: #f0f0f0;
+      cursor: pointer;
+      max-width: 100px;
+      margin-right: 2px;
+    }
 
-      .tab-content-course {
-        display: none;
-      }
+    .tab.active {
+      background-color: #ccc;
+    }
 
-      .tab-content-course.active {
-        display: block;
-      }
+    .tab-content-course {
+      display: none;
+    }
 
-      .container-quiz {
-        display: flex;
-      }
+    .tab-content-course.active {
+      display: block;
+    }
 
-      .left-column-quiz {
-        width: 100px;
-        background-color: #f2f2f2;
-        display: flex;
-        flex-direction: column;
-      }
+    .container-quiz {
+      display: flex;
+    }
 
-      .right-column-quiz {
-        flex: 1;
-        background-color: #fff;
-      }
+    .left-column-quiz {
+      width: 100px;
+      background-color: #f2f2f2;
+      display: flex;
+      flex-direction: column;
+    }
 
-      .tab-header-quiz {
-        list-style-type: none;
-        margin: 0;
-        padding: 0;
-        width: 100%;
-      }
+    .right-column-quiz {
+      flex: 1;
+      background-color: #fff;
+    }
 
-      .tab-header-quiz li {
-        padding: 10px;
-        background-color: #ddd;
-        cursor: pointer;
-        margin-bottom: 2px;
-      }
+    .tab-header-quiz {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
 
-      .tab-header-quiz li.selected {
-        background-color: #ccc;
-      }
+    .tab-header-quiz li {
+      padding: 10px;
+      background-color: #ddd;
+      cursor: pointer;
+      margin-bottom: 2px;
+    }
 
-      .tab-content-course-quiz {
-        display: none;
-        padding: 20px;
-        background-color: #f9f9f9;
-      }
+    .tab-header-quiz li.selected {
+      background-color: #ccc;
+    }
 
-      .tab-content-course-quiz.selected {
-        display: block;
-      }
+    .tab-content-course-quiz {
+      display: none;
+      padding: 20px;
+      background-color: #f9f9f9;
+    }
 
-      .textarea-quiz {
-        width: 70%;
-        height: 120px;
-        resize: none;
-      }
+    .tab-content-course-quiz.selected {
+      display: block;
+    }
 
-      .quiz-answer {
-        display: flex;
-        margin-top: 10px;
-        width: 70%;
-      }
+    .textarea-quiz {
+      width: 70%;
+      height: 120px;
+      resize: none;
+    }
 
-      .quiz-answer textarea {
-        margin-left: 10px;
-        resize: none;
-        height: 50px;
-        width: 100%;
-      }
+    .quiz-answer {
+      display: flex;
+      margin-top: 10px;
+      width: 70%;
+    }
 
-      .quiz-answer p {
-        width: 15px;
-      }
+    .quiz-answer textarea {
+      margin-left: 10px;
+      resize: none;
+      height: 50px;
+      width: 100%;
+    }
 
-      .add-tab-quiz {
-        width: 100%;
-      }
+    .quiz-answer p {
+      width: 15px;
+    }
 
-      .loading-container {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-      }
+    .add-tab-quiz {
+      width: 100%;
+    }
 
-      .loading-spinner {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
+    .loading-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+    }
 
-      .loading-spinner i {
-        font-size: 40px;
-        color: #3498db;
-      }
+    .loading-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
 
-      .dialog-container {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 9999;
-      }
+    .loading-spinner i {
+      font-size: 40px;
+      color: #3498db;
+    }
 
-      .dialog-content {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        padding: 20px;
-        text-align: center;
-        border-radius: 5px;
-        display: flex;
-        flex-direction: column;
-      }
+    .dialog-container {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+    }
 
-      .dialog-content span {
-        font-size: 18px;
-        margin-bottom: 20px;
-      }
+    .dialog-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      text-align: center;
+      border-radius: 5px;
+      display: flex;
+      flex-direction: column;
+    }
 
-      .dialog-content button {
-        background-color: #3498db;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-      }
+    .dialog-content span {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
 
-      .vertical-line {
-        width: 2px; /* Chiều rộng của đường kẻ */
-        height: 500px; /* Chiều cao của đường kẻ */
-        background-color: rgb(189, 186, 186); /* Màu sắc của đường kẻ */
-        margin-left: 20px; /* Khoảng cách từ lề trái */
-      }
+    .dialog-content button {
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
 
-      div.scrollmenu {
-        overflow: auto;
-        white-space: nowrap;
-      }
+    .vertical-line {
+      width: 2px;
+      /* Chiều rộng của đường kẻ */
+      height: 500px;
+      /* Chiều cao của đường kẻ */
+      background-color: rgb(189, 186, 186);
+      /* Màu sắc của đường kẻ */
+      margin-left: 20px;
+      /* Khoảng cách từ lề trái */
+    }
 
-      .custom-file-input:lang(en)~.custom-file-label::after {
-            content: "Chọn tệp";
-      }
-      .image-preview {
+    div.scrollmenu {
+      overflow: auto;
+      white-space: nowrap;
+    }
+
+    .custom-file-input:lang(en)~.custom-file-label::after {
+      content: "Chọn tệp";
+    }
+
+    .image-preview {
       display: flex;
       flex-wrap: nowrap;
       overflow-x: auto;
@@ -367,12 +337,14 @@
       padding: 10px;
       margin-top: 10px;
     }
+
     .image-preview img {
       width: 50px;
       height: 50px;
       object-fit: cover;
       border: 1px solid #ccc;
     }
+
     .image-container {
       display: flex;
       flex-wrap: wrap;
@@ -380,6 +352,7 @@
       padding: 10px;
       margin-bottom: 10px;
     }
+
     .image-container img {
       width: 50px;
       height: 50px;
@@ -387,462 +360,364 @@
       margin-right: 10px;
       border: 1px solid #ccc;
     }
-    </style>
-  </head>
 
-  <!-- body start -->
+    .card-header,
+    .card-body {
+      border-radius: 10px;
+    }
 
-  <body
-    class="loading"
-    data-layout-color="light"
-    data-layout-mode="default"
-    data-layout-size="fluid"
-    data-topbar-color="light"
-    data-leftbar-position="fixed"
-    data-leftbar-color="light"
-    data-leftbar-size="default"
-    data-sidebar-user="true"
-  >
-    <!-- Begin page -->
-    <div id="wrapper">
-      <!-- Topbar Start -->
-      <div class="navbar-custom">
-        <!-- LOGO -->
-        <div class="logo-box">
-          <a href="/admin" class="logo logo-dark text-center">
-            <span class="logo-lg">
-              <img
-                src="/public/assets/images/logo_watch_shop.png"
-                alt=""
-                height="150"
-              />
-            </span>
-          </a>
-        </div>
-        <h3 class="page-title-main topnav-menu topnav-menu-left mb-0">
-          Watch Shop
-        </h3>
+    .nav-pills .nav-link {
+      border-radius: 10px;
+    }
+
+    .product-list .card {
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+    }
+
+    .product-list .card img {
+      width: 100px;
+      height: 100px;
+      border-radius: 10px;
+      margin-right: 15px;
+    }
+
+    .product-details {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-details h5,
+    .product-details p {
+      margin: 0;
+    }
+  </style>
+</head>
+
+<!-- body start -->
+
+<body class="loading" data-layout-color="light" data-layout-mode="default" data-layout-size="fluid"
+  data-topbar-color="light" data-leftbar-position="fixed" data-leftbar-color="light" data-leftbar-size="default"
+  data-sidebar-user="true">
+  <!-- Begin page -->
+  <div id="wrapper">
+    <!-- Topbar Start -->
+    <div class="navbar-custom">
+      <!-- LOGO -->
+      <div class="logo-box">
+        <a href="/admin" class="logo logo-dark text-center">
+          <span class="logo-lg">
+            <img src="/public/assets/images/logo_watch_shop.png" alt="" height="150" />
+          </span>
+        </a>
       </div>
-      <!-- end Topbar -->
-
-      <!-- ========== Left Sidebar Start ========== -->
-      <div class="left-side-menu">
-        <div class="h-100 mt-4" data-simplebar>
-          <!--- Sidemenu -->
-          <div id="sidebar-menu" class="ml-4">
-            <ul id="side-menu">
-              <li>
-                <a href="/admin">
-                  <span> Trang chủ </span>
-                </a>
-              </li>
-
-              <li>
-                <a href="#course" data-bs-toggle="collapse">
-                  <span> Sản phẩm </span>
-                  <span class="menu-arrow"></span>
-                </a>
-                <div class="collapse" id="course">
-                  <ul class="nav-second-level">
-                    <li>
-                      <a href="/product/list-products">Quản lý</a>
-                    </li>
-                    <li>
-                      <a href="/product/add-products">Thêm sản phẩm</a>
-                    </li>
-                  </ul>
-                </div>
-              </li>
-              
-              <li>
-                <a href="/brand/list-brands">
-                  <span> Thương hiệu </span>
-                </a>
-              </li>
-
-              <li>
-                <a href="">
-                  <span> Khách hàng </span>
-                </a>
-              </li>
-
-              <li>
-                <a href="">
-                  <span> Đơn hàng </span>
-                </a>
-              </li>
-
-              <li>
-                <a href="">
-                  <span> Thông báo </span>
-                </a>
-              </li>
-
-              <li>
-                <a href="">
-                  <span> Khuyến mại </span>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <!-- End Sidebar -->
-          <div class="clearfix"></div>
-        </div>
-        <!-- Sidebar -left -->
-      </div>
-
-      <!-- Left Sidebar End -->
-
-      <!-- ============================================================== -->
-      <!-- Start Page Content here -->
-      <!-- ============================================================== -->
-
-      <% if (routerName === 'product'){ %>
-        <%-include('products/listProducts.ejs')%>  
-      <% } else if (routerName === 'detailProduct') { %>
-        <%-include('products/detailProducts.ejs')%> 
-      <% } else if (routerName === 'addProduct') { %>
-        <%-include('products/addProducts.ejs')%> 
-      <% } else if (routerName === 'list-brand') { %>
-        <%-include('brands/listBrands.ejs')%>
-        <% } else if (routerName === 'detail-brand') { %>
-          <%-include('brands/detailBrand.ejs')%>
-      <% } else { %>
-        <%-include('dashboard/dashboard.ejs')%> 
-      <% } %> 
-
-      <!-- ============================================================== -->
-      <!-- End Page content -->
-      <!-- ============================================================== -->
-
-      <!-- Footer Start -->
-
-      <footer class="footer">
-        <div class="container-fluid">
-          <div class="row"></div>
-        </div>
-      </footer>
-      <!-- end Footer -->
+      <h3 class="page-title-main topnav-menu topnav-menu-left mb-0">
+        Watch Shop
+      </h3>
     </div>
-    <!-- END wrapper -->
+    <!-- end Topbar -->
 
-    <!-- Right Sidebar -->
-    <div class="right-bar">
-      <div data-simplebar class="h-100">
-        <div class="rightbar-title">
-          <a href="javascript:void(0);" class="right-bar-toggle float-end">
-            <i class="mdi mdi-close"></i>
-          </a>
-          <h4 class="font-16 m-0 text-white">Theme Customizer</h4>
+    <!-- ========== Left Sidebar Start ========== -->
+    <div class="left-side-menu">
+      <div class="h-100 mt-4" data-simplebar>
+        <!--- Sidemenu -->
+        <div id="sidebar-menu" class="ml-4">
+          <ul id="side-menu">
+            <li>
+              <a href="/admin">
+                <span> Trang chủ </span>
+              </a>
+            </li>
+
+            <li>
+              <a href="#course" data-bs-toggle="collapse">
+                <span> Sản phẩm </span>
+                <span class="menu-arrow"></span>
+              </a>
+              <div class="collapse" id="course">
+                <ul class="nav-second-level">
+                  <li>
+                    <a href="/product/list-products">Quản lý</a>
+                  </li>
+                  <li>
+                    <a href="/product/add-products">Thêm sản phẩm</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+
+            <li>
+              <a href="/brand/list-brands">
+                <span> Thương hiệu </span>
+              </a>
+            </li>
+
+            <li>
+              <a href="">
+                <span> Khách hàng </span>
+              </a>
+            </li>
+
+            <li>
+              <a href="/order/list-order">
+                <span> Đơn hàng </span>
+              </a>
+            </li>
+
+            <li>
+              <a href="">
+                <span> Thông báo </span>
+              </a>
+            </li>
+
+            <li>
+              <a href="">
+                <span> Khuyến mại </span>
+              </a>
+            </li>
+          </ul>
         </div>
+        <!-- End Sidebar -->
+        <div class="clearfix"></div>
+      </div>
+      <!-- Sidebar -left -->
+    </div>
 
-        <!-- Tab panes -->
-        <div class="tab-content-course pt-0">
-          <div class="tab-pane active" id="settings-tab" role="tabpanel">
-            <div class="p-3">
-              <div class="alert alert-warning" role="alert">
-                <strong>Customize </strong> the overall color scheme, Layout,
-                etc.
-              </div>
+    <!-- Left Sidebar End -->
 
-              <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">Color Scheme</h6>
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="layout-color"
-                  value="light"
-                  id="light-mode-check"
-                  checked
-                />
-                <label class="form-check-label" for="light-mode-check"
-                  >Light Mode</label
-                >
-              </div>
+    <!-- ============================================================== -->
+    <!-- Start Page Content here -->
+    <!-- ============================================================== -->
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="layout-color"
-                  value="dark"
-                  id="dark-mode-check"
-                />
-                <label class="form-check-label" for="dark-mode-check"
-                  >Dark Mode</label
-                >
-              </div>
+    <% if (routerName==='product'){ %>
+      <%-include('products/listProducts.ejs')%>
+    <% } else if (routerName==='detailProduct') { %>
+      <%-include('products/detailProducts.ejs')%>
+    <% } else if (routerName==='addProduct') { %>
+      <%-include('products/addProducts.ejs')%>
+    <% } else if (routerName==='list-brand') { %>
+      <%-include('brands/listBrands.ejs')%>
+    <% } else if (routerName==='list-order') { %>
+      <%-include('order/orderStatus.ejs')%>
+    <% } else { %>
+      <%-include('dashboard/dashboard.ejs')%>
+    <% } %>
 
-              <!-- Width -->
-              <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">Width</h6>
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="layout-size"
-                  value="fluid"
-                  id="fluid"
-                  checked
-                />
-                <label class="form-check-label" for="fluid-check">Fluid</label>
-              </div>
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="layout-size"
-                  value="boxed"
-                  id="boxed"
-                />
-                <label class="form-check-label" for="boxed-check">Boxed</label>
-              </div>
+    <!-- ============================================================== -->
+    <!-- End Page content -->
+    <!-- ============================================================== -->
 
-              <!-- Menu positions -->
-              <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">
-                Menus (Leftsidebar and Topbar) Positon
-              </h6>
+    <!-- Footer Start -->
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="leftbar-position"
-                  value="fixed"
-                  id="fixed-check"
-                  checked
-                />
-                <label class="form-check-label" for="fixed-check">Fixed</label>
-              </div>
+    <footer class="footer">
+      <div class="container-fluid">
+        <div class="row"></div>
+      </div>
+    </footer>
+    <!-- end Footer -->
+  </div>
+  <!-- END wrapper -->
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="leftbar-position"
-                  value="scrollable"
-                  id="scrollable-check"
-                />
-                <label class="form-check-label" for="scrollable-check"
-                  >Scrollable</label
-                >
-              </div>
+  <!-- Right Sidebar -->
+  <div class="right-bar">
+    <div data-simplebar class="h-100">
+      <div class="rightbar-title">
+        <a href="javascript:void(0);" class="right-bar-toggle float-end">
+          <i class="mdi mdi-close"></i>
+        </a>
+        <h4 class="font-16 m-0 text-white">Theme Customizer</h4>
+      </div>
 
-              <!-- Left Sidebar-->
-              <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">
-                Left Sidebar Color
-              </h6>
+      <!-- Tab panes -->
+      <div class="tab-content-course pt-0">
+        <div class="tab-pane active" id="settings-tab" role="tabpanel">
+          <div class="p-3">
+            <div class="alert alert-warning" role="alert">
+              <strong>Customize </strong> the overall color scheme, Layout,
+              etc.
+            </div>
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="leftbar-color"
-                  value="light"
-                  id="light"
-                />
-                <label class="form-check-label" for="light-check">Light</label>
-              </div>
+            <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">Color Scheme</h6>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="layout-color" value="light" id="light-mode-check"
+                checked />
+              <label class="form-check-label" for="light-mode-check">Light Mode</label>
+            </div>
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="leftbar-color"
-                  value="dark"
-                  id="dark"
-                  checked
-                />
-                <label class="form-check-label" for="dark-check">Dark</label>
-              </div>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="layout-color" value="dark" id="dark-mode-check" />
+              <label class="form-check-label" for="dark-mode-check">Dark Mode</label>
+            </div>
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="leftbar-color"
-                  value="brand"
-                  id="brand"
-                />
-                <label class="form-check-label" for="brand-check">Brand</label>
-              </div>
+            <!-- Width -->
+            <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">Width</h6>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="layout-size" value="fluid" id="fluid" checked />
+              <label class="form-check-label" for="fluid-check">Fluid</label>
+            </div>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="layout-size" value="boxed" id="boxed" />
+              <label class="form-check-label" for="boxed-check">Boxed</label>
+            </div>
 
-              <div class="form-check form-switch mb-3">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="leftbar-color"
-                  value="gradient"
-                  id="gradient"
-                />
-                <label class="form-check-label" for="gradient-check"
-                  >Gradient</label
-                >
-              </div>
+            <!-- Menu positions -->
+            <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">
+              Menus (Leftsidebar and Topbar) Positon
+            </h6>
 
-              <!-- size -->
-              <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">
-                Left Sidebar Size
-              </h6>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="leftbar-position" value="fixed" id="fixed-check"
+                checked />
+              <label class="form-check-label" for="fixed-check">Fixed</label>
+            </div>
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="leftbar-size"
-                  value="default"
-                  id="default-size-check"
-                  checked
-                />
-                <label class="form-check-label" for="default-size-check"
-                  >Default</label
-                >
-              </div>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="leftbar-position" value="scrollable"
+                id="scrollable-check" />
+              <label class="form-check-label" for="scrollable-check">Scrollable</label>
+            </div>
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="leftbar-size"
-                  value="condensed"
-                  id="condensed-check"
-                />
-                <label class="form-check-label" for="condensed-check"
-                  >Condensed <small>(Extra Small size)</small></label
-                >
-              </div>
+            <!-- Left Sidebar-->
+            <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">
+              Left Sidebar Color
+            </h6>
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="leftbar-size"
-                  value="compact"
-                  id="compact-check"
-                />
-                <label class="form-check-label" for="compact-check"
-                  >Compact <small>(Small size)</small></label
-                >
-              </div>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="leftbar-color" value="light" id="light" />
+              <label class="form-check-label" for="light-check">Light</label>
+            </div>
 
-              <!-- User info -->
-              <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">
-                Sidebar User Info
-              </h6>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="leftbar-color" value="dark" id="dark" checked />
+              <label class="form-check-label" for="dark-check">Dark</label>
+            </div>
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="sidebar-user"
-                  value="true"
-                  id="sidebaruser-check"
-                />
-                <label class="form-check-label" for="sidebaruser-check"
-                  >Enable</label
-                >
-              </div>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="leftbar-color" value="brand" id="brand" />
+              <label class="form-check-label" for="brand-check">Brand</label>
+            </div>
 
-              <!-- Topbar -->
-              <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">Topbar</h6>
+            <div class="form-check form-switch mb-3">
+              <input type="checkbox" class="form-check-input" name="leftbar-color" value="gradient" id="gradient" />
+              <label class="form-check-label" for="gradient-check">Gradient</label>
+            </div>
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="topbar-color"
-                  value="dark"
-                  id="darktopbar-check"
-                  checked
-                />
-                <label class="form-check-label" for="darktopbar-check"
-                  >Dark</label
-                >
-              </div>
+            <!-- size -->
+            <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">
+              Left Sidebar Size
+            </h6>
 
-              <div class="form-check form-switch mb-1">
-                <input
-                  type="checkbox"
-                  class="form-check-input"
-                  name="topbar-color"
-                  value="light"
-                  id="lighttopbar-check"
-                />
-                <label class="form-check-label" for="lighttopbar-check"
-                  >Light</label
-                >
-              </div>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="leftbar-size" value="default"
+                id="default-size-check" checked />
+              <label class="form-check-label" for="default-size-check">Default</label>
+            </div>
 
-              <div class="d-grid mt-4">
-                <button class="btn btn-primary" id="resetBtn">
-                  Reset to Default
-                </button>
-                <a
-                  href="https://1.envato.market/admintoadmin"
-                  class="btn btn-danger mt-3"
-                  target="_blank"
-                  ><i class="mdi mdi-basket me-1"></i> Purchase Now</a
-                >
-              </div>
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="leftbar-size" value="condensed"
+                id="condensed-check" />
+              <label class="form-check-label" for="condensed-check">Condensed <small>(Extra Small size)</small></label>
+            </div>
+
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="leftbar-size" value="compact" id="compact-check" />
+              <label class="form-check-label" for="compact-check">Compact <small>(Small size)</small></label>
+            </div>
+
+            <!-- User info -->
+            <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">
+              Sidebar User Info
+            </h6>
+
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="sidebar-user" value="true" id="sidebaruser-check" />
+              <label class="form-check-label" for="sidebaruser-check">Enable</label>
+            </div>
+
+            <!-- Topbar -->
+            <h6 class="fw-medium font-14 mt-4 mb-2 pb-1">Topbar</h6>
+
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="topbar-color" value="dark" id="darktopbar-check"
+                checked />
+              <label class="form-check-label" for="darktopbar-check">Dark</label>
+            </div>
+
+            <div class="form-check form-switch mb-1">
+              <input type="checkbox" class="form-check-input" name="topbar-color" value="light"
+                id="lighttopbar-check" />
+              <label class="form-check-label" for="lighttopbar-check">Light</label>
+            </div>
+
+            <div class="d-grid mt-4">
+              <button class="btn btn-primary" id="resetBtn">
+                Reset to Default
+              </button>
+              <a href="https://1.envato.market/admintoadmin" class="btn btn-danger mt-3" target="_blank"><i
+                  class="mdi mdi-basket me-1"></i> Purchase Now</a>
             </div>
           </div>
         </div>
       </div>
-      <!-- end slimscroll-menu-->
     </div>
-    <!-- /Right-bar -->
+    <!-- end slimscroll-menu-->
+  </div>
+  <!-- /Right-bar -->
 
-    <!-- Right bar overlay-->
-    <div class="rightbar-overlay"></div>
+  <!-- Right bar overlay-->
+  <div class="rightbar-overlay"></div>
 
-    <!-- Vendor -->
-    <script src="/public/assets/libs/jquery/jquery.min.js"></script>
-    <script src="/public/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="/public/assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="/public/assets/libs/node-waves/waves.min.js"></script>
-    <script src="/public/assets/libs/waypoints/lib/jquery.waypoints.min.js"></script>
-    <script src="/public/assets/libs/jquery.counterup/jquery.counterup.min.js"></script>
-    <script src="/public/assets/libs/feather-icons/feather.min.js"></script>
+  <!-- Vendor -->
+  <script src="/public/assets/libs/jquery/jquery.min.js"></script>
+  <script src="/public/assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/public/assets/libs/simplebar/simplebar.min.js"></script>
+  <script src="/public/assets/libs/node-waves/waves.min.js"></script>
+  <script src="/public/assets/libs/waypoints/lib/jquery.waypoints.min.js"></script>
+  <script src="/public/assets/libs/jquery.counterup/jquery.counterup.min.js"></script>
+  <script src="/public/assets/libs/feather-icons/feather.min.js"></script>
 
-    <!-- third party js -->
-    <script src="/public/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="/public/assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
-    <script src="/public/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="/public/assets/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
-    <script src="/public/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="/public/assets/libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
-    <script src="/public/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
-    <script src="/public/assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
-    <script src="/public/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
-    <script src="/public/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
-    <script src="/public/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
-    <script src="/public/assets/libs/pdfmake/build/pdfmake.min.js"></script>
-    <script src="/public/assets/libs/pdfmake/build/vfs_fonts.js"></script>
-    <!-- third party js ends -->
+  <!-- third party js -->
+  <script src="/public/assets/libs/datatables.net/js/jquery.dataTables.min.js"></script>
+  <script src="/public/assets/libs/datatables.net-bs5/js/dataTables.bootstrap5.min.js"></script>
+  <script src="/public/assets/libs/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/public/assets/libs/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js"></script>
+  <script src="/public/assets/libs/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/public/assets/libs/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js"></script>
+  <script src="/public/assets/libs/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/public/assets/libs/datatables.net-buttons/js/buttons.flash.min.js"></script>
+  <script src="/public/assets/libs/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/public/assets/libs/datatables.net-keytable/js/dataTables.keyTable.min.js"></script>
+  <script src="/public/assets/libs/datatables.net-select/js/dataTables.select.min.js"></script>
+  <script src="/public/assets/libs/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/public/assets/libs/pdfmake/build/vfs_fonts.js"></script>
+  <!-- third party js ends -->
 
-    <script src="/public/datatables/jquery.dataTables.min.js"></script>
-    <script src="/public/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="/public/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="/public/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="/public/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="/public/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="/public/jszip/jszip.min.js"></script>
-    <script src="/public/pdfmake/pdfmake.min.js"></script>
-    <script src="/public/pdfmake/vfs_fonts.js"></script>
-    <script src="/public/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="/public/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="/public/datatables-buttons/js/buttons.colVis.min.js"></script>
+  <script src="/public/datatables/jquery.dataTables.min.js"></script>
+  <script src="/public/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="/public/datatables-responsive/js/dataTables.responsive.min.js"></script>
+  <script src="/public/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+  <script src="/public/datatables-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/public/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+  <script src="/public/jszip/jszip.min.js"></script>
+  <script src="/public/pdfmake/pdfmake.min.js"></script>
+  <script src="/public/pdfmake/vfs_fonts.js"></script>
+  <script src="/public/datatables-buttons/js/buttons.html5.min.js"></script>
+  <script src="/public/datatables-buttons/js/buttons.print.min.js"></script>
+  <script src="/public/datatables-buttons/js/buttons.colVis.min.js"></script>
 
-    <!-- knob plugin -->
-    <script src="/public/assets/libs/jquery-knob/jquery.knob.min.js"></script>
+  <!-- knob plugin -->
+  <script src="/public/assets/libs/jquery-knob/jquery.knob.min.js"></script>
 
-    <!--Morris Chart-->
-    <script src="/public/assets/libs/morris.js06/morris.min.js"></script>
-    <script src="/public/assets/libs/raphael/raphael.min.js"></script>
+  <!--Morris Chart-->
+  <script src="/public/assets/libs/morris.js06/morris.min.js"></script>
+  <script src="/public/assets/libs/raphael/raphael.min.js"></script>
 
-    <!-- Dashboar init js-->
-    <script src="/public/assets/js/pages/dashboard.init.js"></script>
+  <!-- Dashboar init js-->
+  <script src="/public/assets/js/pages/dashboard.init.js"></script>
 
-    <!-- App js-->
-    <script src="/public/assets/js/app.min.js"></script>
-  </body>
+  <!-- App js-->
+  <script src="/public/assets/js/app.min.js"></script>
+</body>
+
 </html>
