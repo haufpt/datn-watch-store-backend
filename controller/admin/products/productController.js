@@ -2,6 +2,8 @@ const productService = require("../../../service/product/product");
 const brandService = require("../../../service/brand/brand");
 const brandsModel = require("../../../model/brand.js");
 const ProductValidation = require("../../../validation/product");
+const { MachineCategoryEnum, WireCategoryEnum } = require("../../../common/enum");
+
 
 const postProduct = async (req, res) => {
   try {
@@ -49,6 +51,53 @@ const postProduct = async (req, res) => {
   }
 };
 
+const updateProduct = async (req, res) => {
+  try {
+    const baseUrl = req.protocol + "://" + req.get("host") + "/";
+    let idProduct = req.params.idProduct;
+    const formData = req.body;
+    console.log(`[productController] editProduct formData _> ${JSON.stringify(formData)}`);
+
+    const { error } = ProductValidation.addProduct.validate(formData, {
+      abortEarly: false,
+    });
+
+    if (error) {
+      return res.status(400).json({
+        message: error.details.map((detail) => detail.message),
+      });
+    }
+
+    if (!req.files || req.files.length === 0) {
+      return res
+        .status(400)
+        .json({ message: "Vui lòng tải lên ít nhất một ảnh." });
+    }
+
+    const photoUrls = req.files.map((file) => {
+      if (!file.mimetype.startsWith("image/")) {
+        throw new Error("File không phải là hình ảnh.");
+      }
+      return baseUrl + file.destination + file.filename;
+    });
+
+    formData.photoUrls = photoUrls;
+    formData.createdDate = new Date();
+
+    await productService.updateProduct(idProduct,formData);
+
+    res.status(201).json({
+      success: true,
+      message: `Sửa sản phầm thành công.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 const listProduct = async (req, res) => {
   try {
     const listProduct = await productService.getListProduct();
@@ -85,9 +134,11 @@ const addProduct = async (req, res) => {
   }
 };
 
+
 const detailProduct = async (req, res) => {
   try {
     let idProduct = req.params.idProduct;
+    const listBrand = await brandsModel.find();
     const product = await productService.findProductByID(idProduct);
     console.log("[productController] detailProduct -> ", product);
 
@@ -101,7 +152,10 @@ const detailProduct = async (req, res) => {
       title: "Chi tiết sản phẩm",
       routerName: "detailProduct",
       info: req.session.account,
-      productData: product
+      productData: product,
+      machineCategories: MachineCategoryEnum,
+      WireCategories: WireCategoryEnum,
+      listBrandData: listBrand
     });
   } catch (error) {
     res.status(500).json({
@@ -116,4 +170,5 @@ module.exports = {
   addProduct,
   detailProduct,
   postProduct,
+  updateProduct
 };

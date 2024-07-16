@@ -23,4 +23,10 @@ router.post(
   productRouter.postProduct
 );
 
+router.put(
+    "/update-product/:idProduct",
+    multerService.uploadFile(FileTypeEnum.IMAGE).array("photoUrls"),
+    checkFile("MULTIPLE"),
+    productRouter.updateProduct
+  );
 module.exports = router;

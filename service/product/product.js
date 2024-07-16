@@ -22,6 +22,28 @@ const createNewProduct = async (data) => {
   }
 };
 
+const updateProduct = async (idProduct, updatedData) => {
+  try {
+    const product = await productModel.findById(idProduct);
+    if (!product) throw new Error("Product not found");
+  
+    const existBrand = await BrandService.findBrandById(updatedData.brandId);
+    if (!existBrand) throw new Error("Brand does not exist");
+  
+    const existingProduct = await productModel.findOne({
+      name: updatedData.name,
+      _id: { $ne: idProduct },
+    });
+    if (existingProduct) throw new Error("Product name already exists");
+  
+    Object.assign(product, updatedData);
+  
+    return product.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
 const getListProduct = async ({ type, page = 1, limit = 10, brandId } = {}) => {
   let pipeline = [];
 
@@ -246,4 +268,5 @@ module.exports = {
   createNewProduct,
   getListProduct,
   findProductByID,
+  updateProduct
 };
