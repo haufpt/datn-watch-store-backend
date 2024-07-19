@@ -454,7 +454,7 @@
             </li>
 
             <li>
-              <a href="">
+              <a href="/account/list-user">
                 <span> Khách hàng </span>
               </a>
             </li>
@@ -500,6 +500,10 @@
       <%-include('brands/listBrands.ejs')%>
     <% } else if (routerName==='list-order') { %>
       <%-include('order/orderStatus.ejs')%>
+    <% } else if (routerName==='list-user') { %>
+      <%-include('user/account.ejs')%>
+    <% } else if (routerName==='detail-user') { %>
+      <%-include('user/detailUser.ejs')%>
     <% } else { %>
       <%-include('dashboard/dashboard.ejs')%>
     <% } %>
