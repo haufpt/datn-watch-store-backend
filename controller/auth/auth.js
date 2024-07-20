@@ -1,3 +1,4 @@
+const { avatarDefault } = require("../../common/constants");
 const { AccountRoleEnum } = require("../../common/enum");
 const accountService = require("../../service/account/account");
 const jwtService = require("../../shared/jwt");
@@ -76,6 +77,8 @@ const singup = async (req, res) => {
         message: `Email is exist.`,
       });
     }
+
+    newAccount.avatarUrl = avatarDefault;
 
     var isSuccess = await accountService.addAccount(newAccount);
     if (!isSuccess) {
