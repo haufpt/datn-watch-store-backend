@@ -6,6 +6,8 @@ const accessTokenExpires = "1d";
 const refreshTokenExpires = "30d";
 const fileLimitSize = "300mb";
 const fileStoragePath = "public/uploads/";
+const avatarDefault =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTy1A_k7UaDKa3ojfuawpF8JHEzQj2EzWDEH_9XLFwMDMF74o_I5n0XsiO9teBALjDkj5E&usqp=CAU";
 const FILE_MIME_TYPE_FORMAT = {
   IMAGE: {
     INDEX: "image",
@@ -28,4 +30,5 @@ module.exports = {
   fileLimitSize,
   fileStoragePath,
   FILE_MIME_TYPE_FORMAT,
+  avatarDefault,
 };
