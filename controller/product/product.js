@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const productService = require("../../service/product/product");
+const cartService = require("../../service/cart/cart");
 const ProductValidation = require("../../validation/product");
 const account = require("../../model/account");
 
@@ -127,9 +128,14 @@ const addProductToCart = async (req, res) => {
 
     await productService.addProductToCart(body);
 
+    const listCart = await cartService.getListCart(req.session.account.id);
+
     res.status(201).json({
       success: true,
       message: `Cập nhật giỏ hàng thành công.`,
+      data: {
+        carts: listCart,
+      },
     });
   } catch (error) {
     res.status(500).json({
