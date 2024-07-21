@@ -35,4 +35,11 @@ router.put(
   shippingAddressController.updateShippingAddress
 );
 
+router.delete(
+  "/:shippingAddressId",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  shippingAddressController.deleteShippingAddress
+);
+
 module.exports = router;
