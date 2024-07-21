@@ -20,4 +20,11 @@ router.post(
   shippingAddressController.createNewShippingAddress
 );
 
+router.put(
+  "/:shippingAddressId/set-default",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  shippingAddressController.setShippingAddressDefault
+);
+
 module.exports = router;
