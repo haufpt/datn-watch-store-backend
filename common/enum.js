@@ -41,6 +41,11 @@ const TopProductTypeEnum = {
   PRICE: "PRICE",
 };
 
+const UpdateCartTypeEnum = {
+  PLUS: "PLUS",
+  MINUS: "MINUS",
+};
+
 module.exports = {
   OsPlatformEnum,
   AccountRoleEnum,
@@ -49,4 +54,5 @@ module.exports = {
   FileTypeEnum,
   ResponseStatusEnum,
   TopProductTypeEnum,
+  UpdateCartTypeEnum,
 };

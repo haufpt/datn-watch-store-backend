@@ -3,6 +3,7 @@ const {
   MachineCategoryEnum,
   WireCategoryEnum,
   TopProductTypeEnum,
+  UpdateCartTypeEnum,
 } = require("../common/enum");
 const { param } = require("../routes/api/product/product");
 
@@ -36,6 +37,18 @@ class ProductValidation {
   static getDetailProduct = {
     param: Joi.object().keys({
       idProduct: Joi.string().max(255).required(),
+    }),
+  };
+
+  static addProductToCart = {
+    param: Joi.object().keys({
+      productId: Joi.string().max(255).required(),
+    }),
+    body: Joi.object().keys({
+      quantity: Joi.number().integer().required(),
+      type: Joi.string()
+        .valid(...Object.values(UpdateCartTypeEnum))
+        .required(),
     }),
   };
 }

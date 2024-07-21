@@ -34,4 +34,12 @@ router.post(
   productController.postProduct
 );
 
+router.post(
+  "/:productId/add-to-cart",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  validateSchema(ProductValidation.addProductToCart),
+  productController.addProductToCart
+);
+
 module.exports = router;

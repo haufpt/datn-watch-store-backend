@@ -1,7 +1,12 @@
 const mongoose = require("mongoose");
 const productModel = require("../../model/product.js");
 const BrandService = require("../../service/brand/brand.js");
-const { TopProductTypeEnum } = require("../../common/enum.js");
+const CartService = require("../../service/cart/cart.js");
+const {
+  TopProductTypeEnum,
+  UpdateCartTypeEnum,
+} = require("../../common/enum.js");
+const account = require("../../model/account.js");
 
 const createNewProduct = async (data) => {
   try {
@@ -15,7 +20,7 @@ const createNewProduct = async (data) => {
     if (existProduct.length !== 0) {
       throw new Error("Tên sản phẩm đã tồn tại.");
     }
-    
+
     return await product.save();
   } catch (error) {
     throw error;
@@ -26,18 +31,18 @@ const updateProduct = async (idProduct, updatedData) => {
   try {
     const product = await productModel.findById(idProduct);
     if (!product) throw new Error("Product not found");
-  
+
     const existBrand = await BrandService.findBrandById(updatedData.brandId);
     if (!existBrand) throw new Error("Brand does not exist");
-  
+
     const existingProduct = await productModel.findOne({
       name: updatedData.name,
       _id: { $ne: idProduct },
     });
     if (existingProduct) throw new Error("Product name already exists");
-  
+
     Object.assign(product, updatedData);
-  
+
     return product.save();
   } catch (error) {
     throw error;
@@ -264,9 +269,35 @@ const getProducts = async (name) => {
   }
 };
 
+const addProductToCart = async (body) => {
+  try {
+    let existCart = await CartService.findCart({
+      accountId: new mongoose.Types.ObjectId(body.accountId),
+      productId: new mongoose.Types.ObjectId(body.productId),
+    });
+
+    if (existCart) {
+      existCart.quantity =
+        body.type === UpdateCartTypeEnum.PLUS
+          ? existCart.quantity + body.quantity
+          : existCart.quantity - body.quantity;
+
+      if (existCart.quantity <= 0) {
+        return CartService.deleteCartById(existCart._id);
+      }
+      return CartService.findByIdAndUpdate(existCart._id, existCart);
+    }
+
+    return await CartService.addCart(body);
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createNewProduct,
   getListProduct,
   findProductByID,
-  updateProduct
+  updateProduct,
+  addProductToCart,
 };

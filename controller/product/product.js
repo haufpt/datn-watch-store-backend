@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const productService = require("../../service/product/product");
 const ProductValidation = require("../../validation/product");
+const account = require("../../model/account");
 
 const postProduct = async (req, res) => {
   try {
@@ -111,8 +112,36 @@ const findProductById = async (req, res) => {
   }
 };
 
+const addProductToCart = async (req, res) => {
+  try {
+    console.log(
+      `[ProductController] addProductToCart req.params: ${req.params}`
+    );
+    console.log("[ProductController] addProductToCart req.body: ", req.body);
+    const body = {
+      accountId: req.session.account.id,
+      productId: req.params.productId,
+      quantity: req.body.quantity,
+      type: req.body.type,
+    };
+
+    await productService.addProductToCart(body);
+
+    res.status(201).json({
+      success: true,
+      message: `Cập nhật giỏ hàng thành công.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   postProduct,
   listProduct,
   findProductById,
+  addProductToCart,
 };
