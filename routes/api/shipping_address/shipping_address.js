@@ -12,4 +12,12 @@ router.get(
   shippingAddressController.getListShippingAddress
 );
 
+router.post(
+  "/new",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  validateSchema(ShippingAddressValidation.createNewShippingAddress),
+  shippingAddressController.createNewShippingAddress
+);
+
 module.exports = router;
