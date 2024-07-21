@@ -27,4 +27,12 @@ router.put(
   shippingAddressController.setShippingAddressDefault
 );
 
+router.put(
+  "/:shippingAddressId",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  validateSchema(ShippingAddressValidation.updateShippingAddress),
+  shippingAddressController.updateShippingAddress
+);
+
 module.exports = router;
