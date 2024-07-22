@@ -1,4 +1,3 @@
-const { boolean } = require("joi");
 const mongoose = require("mongoose");
 
 const shippingAddressModelSchema = mongoose.Schema(
@@ -20,7 +19,7 @@ const shippingAddressModelSchema = mongoose.Schema(
       required: true,
     },
     isDefault: {
-      type: boolean,
+      type: Boolean,
       required: false,
     },
   },
