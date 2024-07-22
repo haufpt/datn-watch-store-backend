@@ -8,15 +8,15 @@ const shippingAddressModelSchema = mongoose.Schema(
       ref: "accounts",
     },
     title: {
-      type: string,
+      type: String,
       required: true,
     },
     address: {
-      type: string,
+      type: String,
       required: true,
     },
     phoneNumber: {
-      type: string,
+      type: String,
       required: true,
     },
     isDefault: {
