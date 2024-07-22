@@ -10,7 +10,7 @@ const getListShippingAddress = async (accountId) => {
     {
       $project: {
         _id: 1,
-        title: 1,
+        receiver: 1,
         address: 1,
         phoneNumber: 1,
         isDefault: 1,

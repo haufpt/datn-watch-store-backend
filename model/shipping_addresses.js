@@ -6,6 +6,10 @@ const shippingAddressModelSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "accounts",
     },
+    receiver: {
+      type: String,
+      required: true,
+    },
     title: {
       type: String,
       required: true,
