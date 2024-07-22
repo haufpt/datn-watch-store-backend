@@ -4,6 +4,7 @@ const shippingAddressController = require("../../../controller/shipping_address/
 const { checkLogin, checkPermission } = require("../../../middleware/auth");
 const { AccountRoleEnum } = require("../../../common/enum");
 const ShippingAddressValidation = require("../../../validation/shipping_address");
+const { validateSchema } = require("../../../middleware/validate");
 
 router.get(
   "/",
