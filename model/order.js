@@ -17,6 +17,10 @@ const ordersModelSchema = mongoose.Schema(
       ref: "discounts",
       required: false,
     },
+    code: {
+      type: String,
+      required: true,
+    },
     totalAmount: {
       type: Number,
       required: true,
@@ -29,13 +33,17 @@ const ordersModelSchema = mongoose.Schema(
       type: Date,
       required: true,
     },
+    estDeliveryDate: {
+      type: Date,
+      required: true,
+    },
     status: {
       type: String,
       required: true,
     },
     paymentMethod: {
       type: String,
-      required: true,
+      required: false,
     },
     code: {
       type: String,
