@@ -55,10 +55,15 @@ const addCart = async (cartInfo) => {
   return await newCart.save();
 };
 
+const deleteMany = async (filter, session) => {
+  return await cartItemsModel.deleteMany(filter, { session });
+};
+
 module.exports = {
   findCart,
   findByIdAndUpdate,
   addCart,
   deleteCartById,
   getListCart,
+  deleteMany,
 };

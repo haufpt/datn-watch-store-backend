@@ -76,56 +76,78 @@ const confirmOrder = async (data) => {
   const { accountId, orderId, body } = data;
   console.log("[OrderService] confirmOrder data: ", data);
 
-  const existingAccount = await AccountService.findAccount({
-    _id: new mongoose.Types.ObjectId(accountId),
-  });
-  if (!existingAccount) {
-    throw new Error("Tài khoản không tồn tại.");
-  }
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
-  const existingOrder = await findOrder({
-    _id: new mongoose.Types.ObjectId(orderId),
-    accountId: new mongoose.Types.ObjectId(accountId),
-    status: OrderStatusEnum.PROCESSING,
-  });
-  if (!existingOrder) {
-    throw new Error("Đơn hàng không tồn tại.");
-  }
-
-  const existingShippingAddress = await ShippingAddressService.findOne({
-    _id: new mongoose.Types.ObjectId(body.shippingAddressId),
-    accountId: new mongoose.Types.ObjectId(accountId),
-  });
-  if (!existingShippingAddress) {
-    throw new Error("Địa chỉ giao hàng không tồn tại.");
-  }
-
-  if (body.discountId) {
-    const existingDiscount = await DiscountService.findDiscount({
-      _id: new mongoose.Types.ObjectId(body.discountId),
+  try {
+    const existingAccount = await AccountService.findAccount({
+      _id: new mongoose.Types.ObjectId(accountId),
     });
-    if (!existingDiscount) {
-      throw new Error("Khuyến mãi không tồn tại.");
+    if (!existingAccount) {
+      throw new Error("Tài khoản không tồn tại.");
     }
 
-    existingOrder.discountId = new mongoose.Types.ObjectId(body.discountId);
+    const existingOrder = await findOrder({
+      _id: new mongoose.Types.ObjectId(orderId),
+      accountId: new mongoose.Types.ObjectId(accountId),
+      status: OrderStatusEnum.PROCESSING,
+    });
+    if (!existingOrder) {
+      throw new Error("Đơn hàng không tồn tại.");
+    }
+
+    const existingShippingAddress = await ShippingAddressService.findOne({
+      _id: new mongoose.Types.ObjectId(body.shippingAddressId),
+      accountId: new mongoose.Types.ObjectId(accountId),
+    });
+    if (!existingShippingAddress) {
+      throw new Error("Địa chỉ giao hàng không tồn tại.");
+    }
+
+    if (body.discountId) {
+      const existingDiscount = await DiscountService.findDiscount({
+        _id: new mongoose.Types.ObjectId(body.discountId),
+      });
+      if (!existingDiscount) {
+        throw new Error("Khuyến mãi không tồn tại.");
+      }
+
+      existingOrder.discountId = new mongoose.Types.ObjectId(body.discountId);
+    }
+
+    existingOrder.shippingAddressId = new mongoose.Types.ObjectId(
+      body.shippingAddressId
+    );
+    existingOrder.paymentMethod = body.paymentMethod;
+    existingOrder.status = OrderStatusEnum.PENDING;
+
+    await findByIdAndUpdate(existingOrder._id, existingOrder, session);
+
+    await CartService.deleteMany(
+      {
+        accountId: new mongoose.Types.ObjectId(accountId),
+      },
+      session
+    );
+
+    await session.commitTransaction();
+    session.endSession();
+  } catch (error) {
+    await session.abortTransaction();
+    session.endSession();
+    throw error;
   }
-
-  existingOrder.shippingAddressId = new mongoose.Types.ObjectId(
-    body.shippingAddressId
-  );
-  existingOrder.paymentMethod = body.paymentMethod;
-  existingOrder.status = OrderStatusEnum.PENDING;
-
-  return await findByIdAndUpdate(existingOrder._id, existingOrder);
 };
 
 const findOrder = async (filter) => {
   return await orderModel.findOne(filter);
 };
 
-const findByIdAndUpdate = async (orderId, newInfomation) => {
-  return await orderModel.findByIdAndUpdate(orderId, newInfomation);
+const findByIdAndUpdate = async (orderId, newInfomation, session) => {
+  return await orderModel.findByIdAndUpdate(orderId, newInfomation, {
+    new: true,
+    session,
+  });
 };
 
 module.exports = {
