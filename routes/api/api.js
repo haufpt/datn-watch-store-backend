@@ -5,6 +5,8 @@ const brandRouter = require("./brand/brand");
 const productRouter = require("./product/product");
 const cartRouter = require("./cart/cart");
 const shippingAddressRouter = require("./shipping_address/shipping_address");
+const orderRouter = require("./order/order");
+const discountRouter = require("./discount/discount");
 
 router.use("/auth", authRouter);
 
@@ -15,5 +17,9 @@ router.use("/product", productRouter);
 router.use("/cart", cartRouter);
 
 router.use("/shipping-address", shippingAddressRouter);
+
+router.use("/order", orderRouter);
+
+router.use("/discount", discountRouter);
 
 module.exports = router;

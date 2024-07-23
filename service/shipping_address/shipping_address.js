@@ -35,6 +35,10 @@ const findShippingAddress = async (filter) => {
   return await shippingAddressesModel.find(filter);
 };
 
+const findOne = async (filter) => {
+  return await shippingAddressesModel.findOne(filter);
+};
+
 const updateShippingAddressById = async (
   accountId,
   shippingAddressId,
@@ -98,4 +102,5 @@ module.exports = {
   updateShippingAddressById,
   setShippingAddressDefault,
   findShippingAddress,
+  findOne,
 };

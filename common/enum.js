@@ -46,6 +46,19 @@ const UpdateCartTypeEnum = {
   MINUS: "MINUS",
 };
 
+const OrderStatusEnum = {
+  PROCESSING: "PROCESSING",
+  PENDING: "PENDING",
+  SHIPPING: "SHIPPING",
+  DELIVERED: "DELIVERED",
+  CANCELLED: "CANCELLED",
+};
+
+const PaymentStatusEnum = {
+  VNPAY: "VNPAY",
+  CASH: "CASH",
+};
+
 module.exports = {
   OsPlatformEnum,
   AccountRoleEnum,
@@ -55,4 +68,6 @@ module.exports = {
   ResponseStatusEnum,
   TopProductTypeEnum,
   UpdateCartTypeEnum,
+  OrderStatusEnum,
+  PaymentStatusEnum,
 };
