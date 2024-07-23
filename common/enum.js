@@ -59,6 +59,11 @@ const PaymentStatusEnum = {
   CASH: "CASH",
 };
 
+const DiscountTypeEnum = {
+  PERCENT: "PERCENT",
+  PERMANENT: "PERMANENT",
+};
+
 module.exports = {
   OsPlatformEnum,
   AccountRoleEnum,
@@ -70,4 +75,5 @@ module.exports = {
   UpdateCartTypeEnum,
   OrderStatusEnum,
   PaymentStatusEnum,
+  DiscountTypeEnum,
 };

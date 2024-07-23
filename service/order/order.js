@@ -1,4 +1,4 @@
-const { OrderStatusEnum } = require("../../common/enum");
+const { OrderStatusEnum, DiscountTypeEnum } = require("../../common/enum");
 const orderModel = require("../../model/order");
 const orderItemModel = require("../../model/order_item");
 const AccountService = require("../../service/account/account");
@@ -112,7 +112,12 @@ const confirmOrder = async (data) => {
         throw new Error("Khuyến mãi không tồn tại.");
       }
 
+      const discountAmount =
+        existingDiscount.discountType === DiscountTypeEnum.PERCENT
+          ? (existingDiscount.discountValue / 100) * existingOrder.totalAmount
+          : existingDiscount.discountValue;
       existingOrder.discountId = new mongoose.Types.ObjectId(body.discountId);
+      existingOrder.discountAmount = discountAmount;
     }
 
     existingOrder.shippingAddressId = new mongoose.Types.ObjectId(

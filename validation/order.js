@@ -14,6 +14,16 @@ class OrderValidation {
         .required(),
     }),
   };
+
+  static createPayment = {
+    param: Joi.object().keys({
+      orderId: Joi.string().max(255).required(),
+    }),
+    body: Joi.object().keys({
+      shippingAddressId: Joi.string().max(255).required(),
+      discountId: Joi.string().max(255).optional(),
+    }),
+  };
 }
 
 module.exports = OrderValidation;

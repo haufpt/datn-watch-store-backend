@@ -21,4 +21,14 @@ router.post(
   orderController.confirmOrder
 );
 
+router.post(
+  "/:orderId/create-payment",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  validateSchema(OrderValidation.createPayment),
+  orderController.createPayment
+);
+
+router.get("/vnpay-return", orderController.vnpay_return);
+
 module.exports = router;
