@@ -13,36 +13,28 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <a href="/account/detail-user" class="text-decoration-none text-black">
-                    <div class="row gap-3 justify-content-center">
+                  <div class="row gap-3 justify-content-center">
+                    <% listAccountUserData.accounts.forEach((row)=> { %>
                       <div class="col-md-5 mr-4">
+                        <a href="/account/detail-user/<%= row._id %>" class="text-decoration-none text-black">
                         <div class="row border rounded rounded-lg pt-3 pb-3 mb-3">
                           <div class="col-md-3">
-                            <img src="/public/assets/images/users/user-4.jpg" alt="Product Image"
+                            <img src="<%= row.avatarUrl %>" alt="Product Image"
                               style="width: 100px; height: 100px; border-radius: 10px;">
                           </div>
                           <div class="col-md-9">
-                            <h5 class="font-weight-bold">Ten: Nguyen Hoang Phi</h5>
-                            <p class="font-weight-normal">Email: phihoang1705@gmail.com</p>
-                            <p class="font-weight-normal">So dien thoai: 098924576</p>
+                            <h5 class="font-weight-bold">Tên: <%= row.userName %>
+                            </h5>
+                            <p class="font-weight-normal">Email: <%= row.email %>
+                            </p>
+                            <p class="font-weight-normal">So dien thoai: <%= row.phoneNumber %>
+                            </p>
                           </div>
                         </div>
+                      </a>
                       </div>
-                      <div class="col-md-5 mr-4">
-                        <div class="row border rounded rounded-lg pt-3 pb-3 mb-3">
-                          <div class="col-md-3">
-                            <img src="/public/assets/images/users/user-9.jpg" alt="Product Image"
-                              style="width: 100px; height: 100px; border-radius: 10px;">
-                          </div>
-                          <div class="col-md-9">
-                            <h5 class="font-weight-bold">Ten: Nguyen Hoang Phi</h5>
-                            <p class="font-weight-normal">Email: phihoang1705@gmail.com</p>
-                            <p class="font-weight-normal">So dien thoai: 098924576</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </a>
+                      <% }) %>
+                  </div>
                 </div>
                 <!-- /.card-body -->
               </div>

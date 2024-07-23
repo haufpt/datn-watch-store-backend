@@ -23,12 +23,11 @@
                                                     <div class="dropdown-menu" aria-labelledby="dropdownCategoryButton"
                                                         data-popper-placement="bottom-start"
                                                         style=" position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 40px, 0px);">
-                                                        <a class="dropdown-item" href="#">Tất cả</a>
-                                                        <a class="dropdown-item" href="#">Chờ xác nhận</a>
-                                                        <a class="dropdown-item" href="#">Chờ giao hàng</a>
-                                                        <a class="dropdown-item" href="#">Đã giao</a>
-                                                        <a class="dropdown-item" href="#">Hoàn thành</a>
-                                                        <a class="dropdown-item" href="#">Đã hủy</a>
+                                                        <a class="dropdown-item" data-status>Tất cả</a>
+                                                        <a class="dropdown-item" data-status="PENDING">Chờ xác nhận</a>
+                                                        <a class="dropdown-item" data-status="SHIPPING">Chờ giao hàng</a>
+                                                        <a class="dropdown-item" data-status="DELIVERED">Đã giao</a>
+                                                        <a class="dropdown-item" data-status="CANCELLED">Đã hủy</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -46,34 +45,27 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td><a href="/order/detail-order" class="order-link">DH001</a></td>
-                                                    <td>01/01/2023</td>
-                                                    <td>Thanh toán khi nhận hàng</td>
-                                                    <td>Đang Giao</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td><a href="/order/detail-order" class="order-link">DH002</a></td>
-                                                    <td>02/01/2023</td>
-                                                    <td>Chuyển khoản</td>
-                                                    <td>Hoàn Thành</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td><a href="/order/detail-order" class="order-link">DH003</a></td>
-                                                    <td>03/01/2023</td>
-                                                    <td>Thanh toán khi nhận hàng</td>
-                                                    <td>Hủy</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>4</td>
-                                                    <td><a href="/order/detail-order" class="order-link">DH004</a></td>
-                                                    <td>04/01/2023</td>
-                                                    <td>Thanh toán khi nhận hàng</td>
-                                                    <td>Đã Đặt Hàng</td>
-                                                </tr>
+                                                <% let index=1; %>
+                                                    <% listOrderData.forEach((row)=> { %>
+                                                        <tr>
+                                                            <td>
+                                                                <%= index %>
+                                                            </td>
+                                                            <td><a href="/order/detail-order/<%= row._id %>" class="order-link">
+                                                                    <%= row.code %>
+                                                                </a></td>
+                                                            <td>
+                                                                <%= row.orderDate %>
+                                                            </td>
+                                                            <td>
+                                                                <%= row.paymentMethod %>
+                                                            </td>
+                                                            <td>
+                                                                <%= row.status %>
+                                                            </td>
+                                                        </tr>
+                                                        <% index++; %>
+                                                            <% }) %>
                                             </tbody>
                                         </table>
                                     </div>
@@ -91,3 +83,15 @@
 </div>
 
 </div>
+
+<script>
+    const baseURL = window.location.protocol + '//' + window.location.host;
+    const dropdownMenu = document.querySelector(".dropdown-menu");
+    dropdownMenu.querySelectorAll("a").forEach((item) => {
+        item.addEventListener("click", (event) => {
+            event.preventDefault();
+            const status = item.getAttribute("data-status");
+            window.location.href = `${baseURL}/order/list-order?status=${status}`;
+        });
+    });
+</script>
