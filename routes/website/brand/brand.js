@@ -8,7 +8,7 @@ const multerService = require("../../../shared/multer");
 const checkFile = require("../../../middleware/file");
 
 router.get("/list-brands", brandController.listBrand);
-router.get("/detail-brands", brandController.detailBrand);
+router.get("/detail-brands/:idBrand", brandController.detailBrand);
 
 router.post("/post-brands", 
     multerService.uploadFile(FileTypeEnum.IMAGE).single("file"),

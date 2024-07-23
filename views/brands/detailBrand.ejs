@@ -17,14 +17,14 @@
                                         <label for="brandLogo">Logo Thương Hiệu</label>
                                         <div class="image-container" id="imageContainer">
                                             <!-- Hiển thị logo thương hiệu -->
-                                            <img src="path/to/logo.jpg" alt="Brand Logo">
+                                            <img src="<%= brandData.logo %>" alt="Brand Logo">
                                         </div>
                                         <input type="file" class="form-control" id="brandLogo" accept="image/*"
                                             style="display: none;">
                                     </div>
                                     <div class="form-group">
                                         <label for="brandName">Tên Thương Hiệu</label>
-                                        <input type="text" class="form-control" id="brandName" value="Sample Brand"
+                                        <input type="text" class="form-control" id="brandName" value="<%= brandData.name %>"
                                             disabled>
                                     </div>
                                     <div class="form-group">

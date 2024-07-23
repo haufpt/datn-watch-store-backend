@@ -18,27 +18,27 @@
                                         <div class="form-group row justify-content-center">
                                             <label for="userImage" class="col-sm-2 col-form-label">Ảnh</label>
                                             <div class="col-sm-10">
-                                                <img id="userImage"
-                                                    src="https://adminlte.io/themes/v3/dist/img/user4-128x128.jpg"
+                                                <img id="userImage" height="120px"
+                                                    src="<%= detailUserData.avatarUrl %>"
                                                     alt="User Image">
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="userName" class="col-sm-2 col-form-label">Tên</label>
                                             <div class="col-sm-10">
-                                                <p class="form-control-plaintext" id="userName">Nguyễn Hoàng Phi</p>
+                                                <p class="form-control-plaintext" id="userName"><%= detailUserData.name %></p>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="userUsername" class="col-sm-2 col-form-label">Username</label>
                                             <div class="col-sm-10">
-                                                <p class="form-control-plaintext" id="userUsername">nguyenhoangphi</p>
+                                                <p class="form-control-plaintext" id="userUsername"><%= detailUserData.userName %></p>
                                             </div>
                                         </div>
                                         <div class="form-group row">
                                             <label for="userEmail" class="col-sm-2 col-form-label">Email</label>
                                             <div class="col-sm-10">
-                                                <p class="form-control-plaintext" id="userEmail">phihoang1705@gmail.com
+                                                <p class="form-control-plaintext" id="userEmail"><%= detailUserData.email %>
                                                 </p>
                                             </div>
                                         </div>
@@ -46,15 +46,10 @@
                                             <label for="userPhoneNumber" class="col-sm-2 col-form-label">Số Điện
                                                 Thoại</label>
                                             <div class="col-sm-10">
-                                                <p class="form-control-plaintext" id="userPhoneNumber">098924576</p>
+                                                <p class="form-control-plaintext" id="userPhoneNumber"><%= detailUserData.phoneNumber %></p>
                                             </div>
                                         </div>
-                                        <div class="form-group row">
-                                            <label for="userRole" class="col-sm-2 col-form-label">Role</label>
-                                            <div class="col-sm-10">
-                                                <p class="form-control-plaintext" id="userRole">Admin</p>
-                                            </div>
-                                        </div>
+                                       
                                         <div class="form-group row">
                                             <div class="col-sm-10 offset-sm-2">
                                                 <button class="btn btn-danger" id="deleteUserBtn" data-toggle="modal"

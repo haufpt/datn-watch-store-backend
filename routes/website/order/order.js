@@ -2,6 +2,6 @@ var express = require("express");
 var router = express.Router();
 var orderController = require("../../../controller/admin/order/orderController");
 
-router.use("/list-order",  orderController.listOrder);
-router.use("/detail-order",  orderController.detailOrder);
+router.get("/list-order",orderController.listOrder);
+router.get("/detail-order/:orderId", orderController.getDetailOrder);
 module.exports = router;

@@ -16,70 +16,67 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="info-label">Tên Người Mua:</div>
-                                                <div class="info-value">Nguyễn Văn A</div>
+                                                <div class="info-value"><%= orderData.orders.accounts.name %></div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="info-label">Địa Chỉ:</div>
-                                                <div class="info-value">123 Đường ABC, Phường XYZ</div>
+                                                <div class="info-value"><%= orderData.orders.shipping_addresses.address %></div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="info-label">Số Điện Thoại:</div>
-                                                <div class="info-value">0909123456</div>
+                                                <div class="info-value"><%= orderData.orders.shipping_addresses.phoneNumber %></div>
                                             </div>
                                         </div>
 
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="info-label">Thời Gian Đặt Hàng:</div>
-                                                <div class="info-value">01/01/2023</div>
+                                                <% const formatDate=(dateString)=> {
+                                                    const date = new Date(dateString);
+                                                    const day = date.getDate();
+                                                    const month = date.getMonth() + 1;
+                                                    const year = date.getFullYear();
+                                                    return `${day}/${month}/${year}`;
+                                                    };
+                                                    %>
+                                                <div class="info-value">
+                                                    <%= formatDate(orderData.orders.orderDate) %></div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="info-label">Phương Thức Thanh Toán:</div>
-                                                <div class="info-value">Thanh toán khi nhận hàng</div>
+                                                <div class="info-value"><%= orderData.orders.paymentMethod %></div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="info-label">Trạng Thái Đơn Hàng:</div>
-                                                <select class="form-control">
-                                                    <option>Đang Giao</option>
-                                                    <option>Hoàn Thành</option>
-                                                    <option>Hủy</option>
-                                                    <option>Đã Đặt Hàng</option>
+                                                <select class="form-control" id="orderStatusSelect">
+                                                   
+                                                    <option value="PENDING">Xác nhận đơn hàng</option>
+                                                    <option value="SHIPPING">Giao hàng</option>
+                                                    <option value="DELIVERED">Đã giao</option>
+                                                    <option value="CANCELLED">Hủy</option>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="row mt-4">
                                             <div class="col-12">
+                                                <% orderData.orders.order_items.forEach((row)=> { %>
                                                 <div class="row product-item">
                                                     <div class="product-details col-md-2">
-                                                        <img src="/public/assets/images/users/user-2.jpg" alt="Product Image"
+                                                        <img src="<%= row.products.photoUrls[0] %>" alt="Product Image"
                                                             class="product-image">
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <h5 class="product-nameprd">Sản phẩm 1</h5>
-                                                        <p class="product-discount">x2</p>
-                                                        <p class="product-price">500,000 VND</p>
+                                                        <h5 class="product-nameprd"><%= row.products.name %></h5>
+                                                        <p class="product-discount"><%= row.quantity %></p> 
+                                                        <p class="product-price"><%= row.products.price %> VND</p>
                                                         <p class="product-discount">450,000 VND</p>
                                                     </div>
                                                     <div class="col-md-2">
                                                         <h5 class="product-total">900,000 VND</h5>
                                                     </div>
-                                                </div>
-                                                <div class="row product-item">
-                                                    <div class="product-details col-md-2">
-                                                        <img src="/public/assets/images/users/user-2.jpg" alt="Product Image"
-                                                            class="product-image">
-                                                    </div>
-                                                    <div class="col-md-8">
-                                                        <h5 class="product-nameprd">Sản phẩm 1</h5>
-                                                        <p class="product-discount">x2</p>
-                                                        <p class="product-price">300,000 VND</p>
-                                                        <p class="product-discount">285,000 VND</p>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <h5 class="product-total">285,000 VND</h5>
-                                                    </div>
-                                                </div>
+                                                </div>  
+                                                <% }) %>
                                             </div>
                                         </div>
 

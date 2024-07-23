@@ -85,7 +85,7 @@
                 <% listBrandData.brands.forEach((row)=> { %>
                     <!-- /.col -->
                     <div class="mb-4 col-md-3 col-sm-6 col-12">
-                        <a href="" class="pe-auto text-decoration-none text-center" data-toggle="modal"
+                        <a href="/brand/detail-brands/<%= row._id %>" class="pe-auto text-decoration-none text-center" data-toggle="modal"
                             data-target="#brandModal">
                             <div class="border border-5 p-2 rounded-4 bg-white">
                                 <div class="text-center">
@@ -118,7 +118,7 @@
                                                 <label for="brandLogo">Logo Thương Hiệu</label>
                                                 <div class="image-container" id="imageContainer">
                                                     <!-- Hiển thị logo thương hiệu -->
-                                                    <img src="path/to/logo.jpg" alt="Brand Logo">
+                                                    <img src="" alt="Brand Logo">
                                                 </div>
                                                 <input type="file" class="form-control" id="brandLogo" accept="image/*"
                                                     style="display: none;">
@@ -126,12 +126,12 @@
                                             <div class="form-group">
                                                 <label for="brandName">Tên Thương Hiệu</label>
                                                 <input type="text" class="form-control" id="brandName"
-                                                    value="Sample Brand" disabled>
+                                                    value="" disabled>
                                             </div>
                                             <div class="form-group">
                                                 <label for="brandDescription">Mô Tả Thương Hiệu</label>
                                                 <textarea class="form-control" id="brandDescription" rows="3"
-                                                    disabled>Sample brand description</textarea>
+                                                    disabled></textarea>
                                             </div>
                                         </form>
                                     </div>
@@ -153,6 +153,7 @@
         </div>
         <!-- content -->
     </div>
+</div>
 
     <script>
         $(document).ready(function () {
@@ -323,3 +324,44 @@
             }
         }
     </script>
+
+<script>
+    function showBrandDetails(brandId) {
+        const baseURL = window.location.protocol + "//" + window.location.host;
+        let isSuccess = false;
+        fetch(`${baseURL}/brand/detail-brands/${brandId}`)
+            .then(response => response.json())
+            .then(data => {
+                var brandData = {
+                    logo: data.logo,
+                    name: data.name,
+                    description: data.description
+                };
+
+                // Hiển thị thông tin chi tiết brand trong dialog
+                document.getElementById("brandModalLabel").textContent = "Chi Tiết Thương Hiệu";
+                document.getElementById("brandLogo").src = brandData.logo;
+                document.getElementById("brandName").value = brandData.name;
+                document.getElementById("brandDescription").value = brandData.description;
+
+                // Hiển thị dialog
+                $('#brandModal').modal('show');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Xử lý lỗi nếu cần thiết
+            });
+    }
+
+    // Gán sự kiện click cho tất cả các thẻ a có class "text-decoration-none" trong danh sách brand
+    var brandLinks = document.querySelectorAll(".text-decoration-none");
+    brandLinks.forEach(function(link) {
+        link.addEventListener("click", function(event) {
+            event.preventDefault(); // Ngăn chặn hành vi mặc định của thẻ a
+
+            // Lấy id của brand từ thuộc tính href của thẻ a
+            var brandId = link.getAttribute("href").split("/").pop();
+            showBrandDetails(brandId);
+        });
+    });
+</script>
