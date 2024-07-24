@@ -24,6 +24,12 @@ class OrderValidation {
       discountId: Joi.string().max(255).optional(),
     }),
   };
+
+  static checkPayment = {
+    param: Joi.object().keys({
+      orderId: Joi.string().max(255).required(),
+    }),
+  };
 }
 
 module.exports = OrderValidation;
