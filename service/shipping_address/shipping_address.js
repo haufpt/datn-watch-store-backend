@@ -45,7 +45,10 @@ const updateShippingAddressById = async (
   body
 ) => {
   const shippingAddress = await findShippingAddressById(shippingAddressId);
-  if (!shippingAddress || shippingAddress.accountId !== accountId) {
+  if (
+    !shippingAddress ||
+    shippingAddress.accountId.toString() !== accountId.toString()
+  ) {
     throw new Error("Shipping address not found");
   }
 
@@ -57,7 +60,10 @@ const updateShippingAddressById = async (
 
 const deleteShippingAddress = async (accountId, shippingAddressId) => {
   const shippingAddress = await findShippingAddressById(shippingAddressId);
-  if (!shippingAddress || shippingAddress.accountId !== accountId) {
+  if (
+    !shippingAddress ||
+    shippingAddress.accountId.toString() !== accountId.toString()
+  ) {
     throw new Error("Shipping address not found");
   }
 
