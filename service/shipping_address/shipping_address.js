@@ -74,12 +74,12 @@ const setShippingAddressDefault = async (accountId, shippingAddressId) => {
   }
 
   const listShippingAddress = await findShippingAddress({
-    accountId: accountId,
+    accountId: new mongoose.Types.ObjectId(accountId),
   });
 
   for (var i = 0; i < listShippingAddress.length; i++) {
     listShippingAddress[i].isDefault =
-      listShippingAddress[i]._id === shippingAddressId;
+      listShippingAddress[i]._id.toString() === shippingAddressId.toString();
   }
 
   const bulkOps = listShippingAddress.map((record) => ({
