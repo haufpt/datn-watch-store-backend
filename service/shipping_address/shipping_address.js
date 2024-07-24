@@ -45,7 +45,10 @@ const updateShippingAddressById = async (
   body
 ) => {
   const shippingAddress = await findShippingAddressById(shippingAddressId);
-  if (!shippingAddress || shippingAddress.accountId !== accountId) {
+  if (
+    !shippingAddress ||
+    shippingAddress.accountId.toString() !== accountId.toString()
+  ) {
     throw new Error("Shipping address not found");
   }
 
@@ -57,7 +60,10 @@ const updateShippingAddressById = async (
 
 const deleteShippingAddress = async (accountId, shippingAddressId) => {
   const shippingAddress = await findShippingAddressById(shippingAddressId);
-  if (!shippingAddress || shippingAddress.accountId !== accountId) {
+  if (
+    !shippingAddress ||
+    shippingAddress.accountId.toString() !== accountId.toString()
+  ) {
     throw new Error("Shipping address not found");
   }
 
@@ -66,7 +72,10 @@ const deleteShippingAddress = async (accountId, shippingAddressId) => {
 
 const setShippingAddressDefault = async (accountId, shippingAddressId) => {
   const shippingAddress = await findShippingAddressById(shippingAddressId);
-  if (!shippingAddress || shippingAddress.accountId !== accountId) {
+  if (
+    !shippingAddress ||
+    shippingAddress.accountId.toString() !== accountId.toString()
+  ) {
     throw new Error("Shipping address not found");
   }
 
@@ -76,7 +85,7 @@ const setShippingAddressDefault = async (accountId, shippingAddressId) => {
 
   for (var i = 0; i < listShippingAddress.length; i++) {
     listShippingAddress[i].isDefault =
-      listShippingAddress[i]._id === shippingAddressId;
+      listShippingAddress[i]._id.toString() === shippingAddressId.toString();
   }
 
   const bulkOps = listShippingAddress.map((record) => ({

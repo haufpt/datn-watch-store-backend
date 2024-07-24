@@ -12,7 +12,7 @@ const shippingAddressModelSchema = mongoose.Schema(
     },
     title: {
       type: String,
-      required: true,
+      required: false,
     },
     address: {
       type: String,

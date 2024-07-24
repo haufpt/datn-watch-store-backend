@@ -31,6 +31,33 @@ const proccessOrder = async (req, res) => {
   }
 };
 
+const checkPayment = async (req, res) => {
+  try {
+    const order = await orderService.findOrder({
+      _id: new mongoose.Types.ObjectId(req.params.orderId),
+    });
+    if (!order) {
+      return res.status(301).json({
+        success: false,
+        message: `Đơn hàng không tồn tại.`,
+      });
+    }
+
+    return res.status(201).json({
+      success: true,
+      message: `Kiểm tra đơn hàng thành công.`,
+      data: {
+        isOrder: order.status !== OrderStatusEnum.PROCESSING,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 const confirmOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
@@ -236,4 +263,5 @@ module.exports = {
   confirmOrder,
   createPayment,
   vnpay_return,
+  checkPayment,
 };
