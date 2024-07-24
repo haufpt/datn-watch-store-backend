@@ -14,11 +14,14 @@ const crypto = require("crypto");
 
 const proccessOrder = async (req, res) => {
   try {
-    await orderService.processOrder(req.session.account.id);
+    const order = await orderService.processOrder(req.session.account.id);
 
     res.status(201).json({
       success: true,
       message: `Tiến hành đơn hàng thành công.`,
+      data: {
+        order: order,
+      },
     });
   } catch (error) {
     res.status(500).json({

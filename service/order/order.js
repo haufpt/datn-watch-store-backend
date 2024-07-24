@@ -65,6 +65,7 @@ const processOrder = async (accountId) => {
     );
     await session.commitTransaction();
     session.endSession();
+    return newOrder;
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
