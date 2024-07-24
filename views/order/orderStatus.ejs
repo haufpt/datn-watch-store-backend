@@ -55,13 +55,34 @@
                                                                     <%= row.code %>
                                                                 </a></td>
                                                             <td>
-                                                                <%= row.orderDate %>
+                                                                <% const formatDate=(dateString)=> {
+                                                                    const date = new Date(dateString);
+                                                                    const day = date.getDate();
+                                                                    const month = date.getMonth() + 1;
+                                                                    const year = date.getFullYear();
+                                                                    return `${day}/${month}/${year}`;
+                                                                    };
+                                                                    %>
+                                                                <%= formatDate(row.orderDate) %>
                                                             </td>
                                                             <td>
-                                                                <%= row.paymentMethod %>
+                                                                <% if (row.paymentMethod == 'VNPAY') { %>
+                                                                    Thanh toán qua VNPAY
+                                                                    <% } else { %>
+                                                                        Thanh toán khi nhận hàng
+                                                                        <% } %>
                                                             </td>
                                                             <td>
-                                                                <%= row.status %>
+                                                                <% if (row.status == 'DELIVERED') { %>
+                                                                    Đã giao hàng
+                                                                <% } else if (row.status == 'SHIPPING'){ %>
+                                                                    Chờ giao hàng
+                                                                <% } else if (row.status == 'CANCELLED'){ %>   
+                                                                    Đã Hủy
+                                                                <% }else { %>
+                                                                    Chờ xác nhận
+                                                                 <% } %>
+                                                                
                                                             </td>
                                                         </tr>
                                                         <% index++; %>

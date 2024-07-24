@@ -7,6 +7,7 @@ const ShippingAddressService = require("../../service/shipping_address/shipping_
 const CartService = require("../../service/cart/cart");
 const mongoose = require("mongoose");
 const Helper = require("../../utils/helper");
+const account = require("../../model/account");
 
 const processOrder = async (accountId) => {
   console.log("[OrderService] processOrder: ", accountId);
@@ -180,6 +181,20 @@ const getDetailOrder = async (orderId, session) => {
     },
     {
       $lookup: {
+        from: "accounts",
+        localField: "accountId",
+        foreignField: "_id",
+        as: "account"
+      },
+    },
+    {
+      $unwind: {
+        path: "$account",
+        preserveNullAndEmptyArrays: false,
+      },
+    },
+    {
+      $lookup: {
         from: "discounts",
         localField: "discountId",
         foreignField: "_id",
@@ -188,7 +203,7 @@ const getDetailOrder = async (orderId, session) => {
     },
     {
       $addFields: {
-        shippingAddress: { $arrayElemAt: ["$discounts", 0] },
+        discount: { $cond: [{ $gt: [{ $size: "$discounts" }, 0] }, { $arrayElemAt: ["$discounts", 0] }, null] },
       },
     },
     {
@@ -233,6 +248,7 @@ const getDetailOrder = async (orderId, session) => {
         status: 1,
         paymentMethod: 1,
         code: 1,
+        account: 1
       },
     },
   ];

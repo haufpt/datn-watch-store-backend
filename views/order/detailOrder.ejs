@@ -5,6 +5,18 @@
             <div class="content-wrapper">
                 <!-- Main content -->
                 <section class="content">
+                    <div id="loading" class="loading-container">
+                        <div class="loading-spinner">
+                            <i class="fas fa-spinner fa-spin"></i>
+                        </div>
+                    </div>
+    
+                    <div id="dialog" class="dialog-container">
+                        <div class="dialog-content">
+                            <span id="dialog-message"></span>
+                            <button onclick="hideDialog()">Ok</button>
+                        </div>
+                    </div>
                     <div class="container-fluid">
                         <div class="row justify-content-center">
                             <div class="col-md-12">
@@ -13,20 +25,24 @@
                                         <h3 class="card-title">Chi Tiết Đơn Hàng</h3>
                                     </div>
                                     <div class="card-body">
+                                    <form id="uploadForm">
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="info-label">Tên Người Mua:</div>
-                                                <div class="info-value"><%= orderData.orders.accounts.name %></div>
+                                                <div class="info-value"><%= orderData.account.name %></div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="info-label">Địa Chỉ:</div>
-                                                <div class="info-value"><%= orderData.orders.shipping_addresses.address %></div>
+                                                <div class="info-value"><%= orderData.shippingAddress.address %></div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="info-label">Số Điện Thoại:</div>
-                                                <div class="info-value"><%= orderData.orders.shipping_addresses.phoneNumber %></div>
+                                                <div class="info-value"><%= orderData.shippingAddress.phoneNumber %></div>
                                             </div>
                                         </div>
+                                        <div class="col-lg-12 d-none">
+                                            <p id="orderId"><%= orderData._id %></p>
+                                          </div>
 
                                         <div class="row">
                                             <div class="col-md-4">
@@ -40,40 +56,71 @@
                                                     };
                                                     %>
                                                 <div class="info-value">
-                                                    <%= formatDate(orderData.orders.orderDate) %></div>
+                                                    <%= formatDate(orderData.orderDate) %></div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="info-label">Phương Thức Thanh Toán:</div>
-                                                <div class="info-value"><%= orderData.orders.paymentMethod %></div>
+                                                <div class="info-value">
+                                                    <% if (orderData.paymentMethod == 'VNPAY') { %>
+                                                        Thanh toán qua VNPAY
+                                                        <% } else { %>
+                                                            Thanh toán khi nhận hàng
+                                                            <% } %>
+                                                </div>
                                             </div>
                                             <div class="col-md-4">
                                                 <div class="info-label">Trạng Thái Đơn Hàng:</div>
-                                                <select class="form-control" id="orderStatusSelect">
-                                                   
-                                                    <option value="PENDING">Xác nhận đơn hàng</option>
-                                                    <option value="SHIPPING">Giao hàng</option>
-                                                    <option value="DELIVERED">Đã giao</option>
-                                                    <option value="CANCELLED">Hủy</option>
+                                                <select class="form-control" id="orderStatus" name="satus">
+                                                    <% Object.values(OrderStatusEnum).forEach(function(status) { %>
+                                                        <% if (status !== 'PROCESSING') { %>
+                                                          <% if (status === orderData.status) { %>
+                                                            
+                                                            <option value="<%= orderData.status %>" selected>
+                                                                <% if (orderData.status == 'DELIVERED') { %>
+                                                                    Đã giao hàng
+                                                                <% } else if (orderData.status == 'SHIPPING'){ %>
+                                                                    Chờ giao hàng
+                                                                <% } else if (orderData.status == 'CANCELLED'){ %>   
+                                                                    Đã Hủy
+                                                                <% }else { %>
+                                                                    Chờ xác nhận
+                                                                 <% } %>
+                                                            </option>
+                                                          <% } else { %>
+                                                            <option value="<%= status %>">
+                                                                <% if (status == 'DELIVERED') { %>
+                                                                    Đã giao hàng
+                                                                <% } else if (status == 'SHIPPING'){ %>
+                                                                    Chờ giao hàng
+                                                                <% } else if (status == 'CANCELLED'){ %>   
+                                                                    Đã Hủy
+                                                                <% }else { %>
+                                                                    Chờ xác nhận
+                                                                 <% } %>
+                                                            </option>
+                                                          <% } %>
+                                                        <% } %>
+                                                      <% }); %>
                                                 </select>
                                             </div>
                                         </div>
 
                                         <div class="row mt-4">
                                             <div class="col-12">
-                                                <% orderData.orders.order_items.forEach((row)=> { %>
+                                                <% orderData.orderItems.forEach((row)=> { %>
+
                                                 <div class="row product-item">
                                                     <div class="product-details col-md-2">
-                                                        <img src="<%= row.products.photoUrls[0] %>" alt="Product Image"
+                                                        <img src="<%= row.product.photoUrls[0] %>" alt="Product Image"
                                                             class="product-image">
                                                     </div>
                                                     <div class="col-md-8">
-                                                        <h5 class="product-nameprd"><%= row.products.name %></h5>
-                                                        <p class="product-discount"><%= row.quantity %></p> 
-                                                        <p class="product-price"><%= row.products.price %> VND</p>
-                                                        <p class="product-discount">450,000 VND</p>
+                                                        <h5 class="product-nameprd"><%= row.product.name %></h5>
+                                                        <p class="product-discount">x<%= row.quantity %></p> 
+                                                        <p class="product-discount"><%= row.product.price %>$</p>
                                                     </div>
                                                     <div class="col-md-2">
-                                                        <h5 class="product-total">900,000 VND</h5>
+                                                        <h5 class="product-total"><%= row.quantity * row.product.price %>$</h5>
                                                     </div>
                                                 </div>  
                                                 <% }) %>
@@ -82,10 +129,41 @@
 
                                         <div class="row mt-4">
                                             <div class="col-12 text-right">
-                                                <h4>Tổng Tiền: 1,185,000 VND</h4>
+                                                
+                                                <h4>Tổng tiền:  
+                                                    <% let sum = 0; %>
+                                                    <% orderData.orderItems.forEach((row)=> { %>
+                                                        <% sum += (row.quantity * row.product.price); %>
+                                                    <% }); %>
+                                                    <%= sum %>$</h4>
+                                                <h4>Giảm giá: 
+                                                    <% if(orderData.discount === null){ %>
+                                                        0%
+                                                    <% }else{ %>
+                                                        <% if(orderData.discount.discountType == "PERCENT"){ %>
+                                                            <%= orderData.discount.discountValue %> %
+                                                        <%  }else{ %>
+                                                            <%= orderData.discount.discountValue %> $
+                                                        <% } %>
+                                                    <% } %>
+                                                    </h4>
+                                                <h4>Thành tiền: 
+                                                    <% if(orderData.discount === null){ %>
+                                                        <%= sum %>$</h4>
+                                                    <% }else{ %>
+                                                        <% if(orderData.discount.discountType == "PERCENT"){ %>
+                                                            <%= sum - (sum * orderData.discount.discountValue / 100) %>$
+                                                        <%  }else{ %>
+                                                            <%= sum - orderData.discount.discountValue %>$
+                                                        <% } %>
+                                                    <% } %></h4>
                                             </div>
                                         </div>
 
+                                        <div class="row mt-4 float-right">
+                                            <button type="submit" class="btn btn-success">Cập nhật trạng thái</button>
+                                        </div>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -99,3 +177,69 @@
         <!-- ./wrapper -->
     </div>
 </div>
+
+<script>
+    const baseURL = window.location.protocol + '//' + window.location.host;
+    var isSuccess = false;
+    const form = document.getElementById('uploadForm');
+    form.addEventListener('submit', function (event) {
+         event.preventDefault();
+        const formData = new FormData();
+        var objectJson = {};
+        const orderId = document.getElementById('orderId').textContent;
+        console.log(`[web] updateOrder: orderId -> ${orderId}`);
+
+        const orderStatus = document.getElementById('orderStatus').value;
+        console.log(`[web] updateOrder: status -> ${orderStatus}`);
+        objectJson.status = orderStatus
+
+        console.log(`[web] updateOrder: formData -> ${JSON.stringify(objectJson)}`);
+        showLoading();
+        fetch(`${baseURL}/order/update-order/${orderId}`, {
+            method: "POST",
+            body: JSON.stringify(objectJson),
+            headers: {
+            'Content-Type': 'application/json'
+          },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then((body) => {
+                isSuccess = true;
+                hideLoading();
+                showDialog(body.message);
+            })
+            .catch((error) => {
+                isSuccess = false;
+                hideLoading();
+                showDialog("Lỗi: " + error.message);
+                console.error("Error:", error);
+            });
+    });
+
+    function showLoading() {
+        document.getElementById("loading").style.display = "block";
+    }
+
+    function hideLoading() {
+        document.getElementById("loading").style.display = "none";
+    }
+
+    function showDialog(message) {
+        document.getElementById("dialog-message").textContent = message;
+        document.getElementById("dialog").style.display = "block";
+    }
+
+    function hideDialog() {
+        document.getElementById("dialog").style.display = "none";
+        if (isSuccess) {
+            form.reset();
+            isSuccess = false;
+        }
+    }
+
+</script>
