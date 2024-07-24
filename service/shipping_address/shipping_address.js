@@ -66,12 +66,15 @@ const deleteShippingAddress = async (accountId, shippingAddressId) => {
 
 const setShippingAddressDefault = async (accountId, shippingAddressId) => {
   const shippingAddress = await findShippingAddressById(shippingAddressId);
-  if (!shippingAddress || shippingAddress.accountId.toString() !== accountId.toString()) {
+  if (
+    !shippingAddress ||
+    shippingAddress.accountId.toString() !== accountId.toString()
+  ) {
     throw new Error("Shipping address not found");
   }
 
   const listShippingAddress = await findShippingAddress({
-    accountId: new mongoose.Types.ObjectId(accountId),
+    accountId: accountId,
   });
 
   for (var i = 0; i < listShippingAddress.length; i++) {
