@@ -55,7 +55,35 @@ const findDiscount = async (filter) => {
   return await discountModel.findOne(filter);
 };
 
+const getListDiscount = async () => {
+  try {
+    const pipeline = [
+      {
+        $match: {
+          isDelete: { $ne: false }
+        }
+      },
+      {
+        $project: {
+          _id: 1,
+          content: 1,
+          createdDate: 1,
+          discountType: 1,
+          discountValue: 1,
+          expirationDate: 1,
+          code: 1
+        },
+      },
+    ];
+
+    return await discountModel.aggregate(pipeline);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   getListDiscountByUser,
   findDiscount,
+  getListDiscount
 };
