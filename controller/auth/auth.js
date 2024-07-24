@@ -143,7 +143,7 @@ const loginWeb = async (req, res) => {
     });
 
     req.session.account = isExistUserName;    
-    return res.redirect("/home");
+    return res.redirect("/product/list-products");
   } catch (error) {
     res.status(500).json({
       success: false,

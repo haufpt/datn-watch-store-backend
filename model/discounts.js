@@ -1,3 +1,4 @@
+const { required } = require("joi");
 const mongoose = require("mongoose");
 
 const discountsModelSchema = mongoose.Schema(
@@ -26,6 +27,10 @@ const discountsModelSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
+    isDelete:{
+      type: Boolean,
+      required: false
+    }
   },
   { collection: "discounts" }
 );

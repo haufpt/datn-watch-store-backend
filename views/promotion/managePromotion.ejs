@@ -1,216 +1,312 @@
 <div class="content-page">
-    <div class="content">
-        <!-- Start Content-->
-        <div class="wrapper">
-            <div class="content-wrapper">
-                <!-- Content Header (Page header) -->
+  <div class="content">
+    <!-- Start Content-->
+    <div class="wrapper">
+      <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="container-fluid">
+          <div class="row">
+            <div class="card">
+              <section class="content-header">
                 <div class="container-fluid">
-                    <div class="row">
-                        <div class="card">
-                            <section class="content-header">
-                                <div class="container-fluid">
-                                    <div class="row p-3">
-                                        <div class="col-sm-6">
-                                            <h3>Quản lí khuyến mãi</h3>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <button class="btn btn-primary float-right" id="create-promotion-btn">Tạo
-                                                khuyến
-                                                mãi</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </section>
-                            <!-- Main content -->
-                            <section class="content">
-                                <div class="container-fluid">
-                                    <div class="card-body">
-                                        <table class="table table-tripped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Tiêu đề</th>
-                                                    <th>Khuyến mãi</th>
-                                                    <th>Ngày bắt đầu</th>
-                                                    <th>Ngày kết thúc</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Summer Sale</td>
-                                                    <td class="promotion-type">100$</td>
-                                                    <td class="date">2023-06-01</td>
-                                                    <td class="date">2023-08-31</td>
-                                                    <td>
-                                                        <i class="edit-icon mr-3 fa fa-pen"></i>
-                                                        <i class="delete-icon fa fa-trash"></i>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Back to School</td>
-                                                    <td class="promotion-type">10%</td>
-                                                    <td class="date">2023-09-01</td>
-                                                    <td class="date">2023-09-30</td>
-                                                    <td>
-                                                        <i class="edit-icon mr-3 fa fa-pen"></i>
-                                                        <i class="delete-icon fa fa-trash"></i>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Holiday Deals</td>
-                                                    <td class="promotion-type">10%</td>
-                                                    <td class="date">2023-12-01</td>
-                                                    <td class="date">2023-12-31</td>
-                                                    <td>
-                                                        <i class="edit-icon mr-3 fa fa-pen"></i>
-                                                        <i class="delete-icon fa fa-trash"></i>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </section>
-                        </div>
-                        <!-- Create Promotion Modal -->
-                        <div class="modal fade" id="createPromotionModal" tabindex="-1" role="dialog"
-                            aria-labelledby="createPromotionModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="createPromotionModalLabel">Tạo khuyến mãi</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="promotionName">Tiêu đề khuyến mãi</label>
-                                                <input type="text" class="form-control" id="promotionName"
-                                                    placeholder="">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="createDate">Ngày bắt đầu</label>
-                                                <input type="date" class="form-control" id="createDate">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="endDate">Ngày kết thúc</label>
-                                                <input type="date" class="form-control" id="endDate">
-                                            </div>
-                                            <div class="row">
-                                                <label for="discountType">Giảm giá</label>
-                                                <div class="form-group col-md-9">
-                                                    <input type="number" class="form-control" id="percentDiscount"
-                                                        min="0" max="100" placeholder="0">
-                                                </div>
-                                                <div class="form-group col-md-3">
-                                                    <select class="form-control" id="discountType">
-                                                        <option value="percentage">$</option>
-                                                        <option value="fixed">%</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Hủy</button>
-                                        <button type="button" class="btn btn-primary" id="savePromotion">Lưu</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Edit Promotion Modal -->
-                        <div class="modal fade" id="editPromotionModal" tabindex="-1" role="dialog"
-                            aria-labelledby="editPromotionModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editPromotionModalLabel">Chỉnh sửa khuyến mãi</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form>
-                                            <div class="form-group">
-                                                <label for="promotionName">Tiêu đề</label>
-                                                <input type="text" class="form-control" id="promotionName"
-                                                    placeholder="Tiêu đề khuyến mãi">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="createDate">Ngày bắt đầu</label>
-                                                <input type="date" class="form-control" id="createDate">
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="endDate">Ngày kết thúc</label>
-                                                <input type="date" class="form-control" id="endDate">
-                                            </div>
-                                            <div class="row">
-                                                <label for="discountType">Giảm giá</label>
-                                                <div class="form-group col-md-9">
-                                                    <input type="number" class="form-control" id="percentDiscount"
-                                                        min="0" max="100" placeholder="0">
-                                                </div>
-                                                <div class="form-group col-md-3">
-                                                    <select class="form-control" id="discountType">
-                                                        <option value="percentage">$</option>
-                                                        <option value="fixed">%</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Hủy</button>
-                                        <button type="button" class="btn btn-primary" id="updatePromotion">Cập
-                                            nhật</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                  <div class="row p-3">
+                    <div class="col-sm-6">
+                      <h3>Quản lí khuyến mãi</h3>
                     </div>
+                    <div class="col-sm-6">
+                      <button
+                        class="btn btn-primary float-right"
+                        id="create-promotion-btn"
+                      >
+                        Tạo khuyến mãi
+                      </button>
+                    </div>
+                  </div>
                 </div>
+              </section>
+              <!-- Main content -->
+              <section class="content">
+                <div class="container-fluid">
+                  <div class="card-body">
+                    <table class="table table-tripped">
+                      <thead>
+                        <tr>
+                          <th>Tiêu đề</th>
+                          <th>Khuyến mãi</th>
+                          <th>Ngày bắt đầu</th>
+                          <th>Ngày kết thúc</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% promotionData.forEach((row)=> { %>
+                        <tr>
+                         
+                            <% const formatDate=(dateString)=> {
+                                const date = new Date(dateString);
+                                const day = date.getDate();
+                                const month = date.getMonth() + 1;
+                                const year = date.getFullYear();
+                                return `${day}/${month}/${year}`;
+                                };
+                                %>
+                          <td><%= row.content %></td>
+                          <td class="promotion-type">
+                            <% if(row.discountType == "PERCENT"){ %>
+                                <%= row.discountValue %>%
+                            <%  }else{ %>
+                                <%= row.discountValue %>$
+                            <% } %>
+                        </td>
+                          <td class="date"><%= formatDate(row.createdDate) %></td>
+                          <td class="date"><%= row.expirationDate %></td>
+                          <td>
+                            <i class="edit-icon mr-3 fa fa-pen"></i>
+                            <i class="delete-icon fa fa-trash"></i>
+                          </td>
+                          
+                        </tr>
+                        <% }); %>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
             </div>
-        </div>
-    </div>
-    <!-- Delete Promotion Confirmation Modal -->
-    <div class="modal fade" id="deletePromotionModal" tabindex="-1" role="dialog"
-        aria-labelledby="deletePromotionModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deletePromotionModalLabel">Xóa khuyến mãi</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+            <!-- Create Promotion Modal -->
+            <div
+              class="modal fade"
+              id="createPromotionModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="createPromotionModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="createPromotionModalLabel">
+                      Tạo khuyến mãi
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
                     </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="form-group">
+                        <label for="promotionName">Tiêu đề khuyến mãi</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="promotionName"
+                          placeholder=""
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="createDate">Ngày bắt đầu</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="createDate"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="endDate">Ngày kết thúc</label>
+                        <input type="date" class="form-control" id="endDate" />
+                      </div>
+                      <div class="row">
+                        <label for="discountType">Giảm giá</label>
+                        <div class="form-group col-md-9">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="percentDiscount"
+                            min="0"
+                            max="100"
+                            placeholder="0"
+                          />
+                        </div>
+                        <div class="form-group col-md-3">
+                          <select class="form-control" id="discountType">
+                            <option value="percentage">$</option>
+                            <option value="fixed">%</option>
+                          </select>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Hủy
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      id="savePromotion"
+                    >
+                      Lưu
+                    </button>
+                  </div>
                 </div>
-                <div class="modal-body">
-                    Bạn có chắc chắn muốn xóa khuyến mãi này?
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                    <button type="button" class="btn btn-danger" id="deletePromotionConfirm">Đồng ý!</button>
-                </div>
+              </div>
             </div>
+            <!-- Edit Promotion Modal -->
+            <div
+              class="modal fade"
+              id="editPromotionModal"
+              tabindex="-1"
+              role="dialog"
+              aria-labelledby="editPromotionModalLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="editPromotionModalLabel">
+                      Chỉnh sửa khuyến mãi
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Close"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form>
+                      <div class="form-group">
+                        <label for="promotionName">Tiêu đề</label>
+                        <input
+                          type="text"
+                          class="form-control"
+                          id="promotionName"
+                          placeholder="Tiêu đề khuyến mãi"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="createDate">Ngày bắt đầu</label>
+                        <input
+                          type="date"
+                          class="form-control"
+                          id="createDate"
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="endDate">Ngày kết thúc</label>
+                        <input type="date" class="form-control" id="endDate" />
+                      </div>
+                      <div class="row">
+                        <label for="discountType">Giảm giá</label>
+                        <div class="form-group col-md-9">
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="percentDiscount"
+                            min="0"
+                            max="100"
+                            placeholder="0"
+                          />
+                        </div>
+                        <div class="form-group col-md-3">
+                          <select class="form-control" id="discountType">
+                            <option value="percentage">$</option>
+                            <option value="fixed">%</option>
+                          </select>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Hủy
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-primary"
+                      id="updatePromotion"
+                    >
+                      Cập nhật
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
+  <!-- Delete Promotion Confirmation Modal -->
+  <div
+    class="modal fade"
+    id="deletePromotionModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="deletePromotionModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deletePromotionModalLabel">
+            Xóa khuyến mãi
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">Bạn có chắc chắn muốn xóa khuyến mãi này?</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Hủy
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger"
+            id="deletePromotionConfirm"
+          >
+            Đồng ý!
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-    <script>
-        // Create Promotion modal
-        $('#create-promotion-btn').on('click', function () {
-            $('#createPromotionModal').modal('show');
-        });
+  <script>
+    // Create Promotion modal
+    $("#create-promotion-btn").on("click", function () {
+      $("#createPromotionModal").modal("show");
+    });
 
-        // Edit Promotion modal
-        $('.edit-icon').on('click', function () {
-            $('#editPromotionModal').modal('show');
-        });
+    // Edit Promotion modal
+    $(".edit-icon").on("click", function () {
+      $("#editPromotionModal").modal("show");
+    });
 
-        // Delete Promotion confirmation modal
-        $('.delete-icon').on('click', function () {
-            $('#deletePromotionModal').modal('show');
-        });
-    </script>
+    // Delete Promotion confirmation modal
+    $(".delete-icon").on("click", function () {
+      $("#deletePromotionModal").modal("show");
+    });
+  </script>
+</div>
