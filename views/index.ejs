@@ -462,6 +462,32 @@
           font-style: bold;
           color: #060201;
         }
+
+        .promotion-list {
+      list-style-type: none;
+      padding: 0;
+    }
+    .promotion-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    .promotion-list li .actions {
+      display: flex;
+      gap: 10px;
+    }
+    .promotion-list li .actions button {
+      background-color: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .promotion-list li .actions button.edit {
+      background-color: #4CAF50;
+    }
   </style>
 </head>
 
@@ -536,14 +562,14 @@
             </li>
 
             <li>
-              <a href="">
-                <span> Thông báo </span>
+              <a href="/promotion/promotion">
+                <span> Khuyến mãi</span>
               </a>
             </li>
 
             <li>
               <a href="">
-                <span> Khuyến mại </span>
+                <span> Thông báo </span>
               </a>
             </li>
           </ul>
@@ -576,6 +602,8 @@
       <%-include('user/account.ejs')%>
     <% } else if (routerName==='detail-user') { %>
       <%-include('user/detailUser.ejs')%>
+    <% } else if (routerName==='promotion') { %>
+      <%-include('promotion/managePromotion.ejs')%>
     <% } else { %>
       <%-include('dashboard/dashboard.ejs')%>
     <% } %>
