@@ -63,9 +63,10 @@ const processOrder = async (accountId) => {
       "[OrderService] processOrder resultOrderItems: ",
       resultOrderItems
     );
+    const orderSaved = await getDetailOrder(resultOrder._id, session);
     await session.commitTransaction();
     session.endSession();
-    return newOrder;
+    return orderSaved;
   } catch (error) {
     await session.abortTransaction();
     session.endSession();
@@ -156,9 +157,97 @@ const findByIdAndUpdate = async (orderId, newInfomation, session) => {
   });
 };
 
+const getDetailOrder = async (orderId, session) => {
+  console.log("getDetailOrder: ", orderId.toString());
+  const pipeline = [
+    {
+      $match: {
+        _id: new mongoose.Types.ObjectId(orderId.toString()),
+      },
+    },
+    {
+      $lookup: {
+        from: "shipping_addresses",
+        localField: "shippingAddressId",
+        foreignField: "_id",
+        as: "shippingAddresses",
+      },
+    },
+    {
+      $addFields: {
+        shippingAddress: { $arrayElemAt: ["$shippingAddresses", 0] },
+      },
+    },
+    {
+      $lookup: {
+        from: "discounts",
+        localField: "discountId",
+        foreignField: "_id",
+        as: "discounts",
+      },
+    },
+    {
+      $addFields: {
+        shippingAddress: { $arrayElemAt: ["$discounts", 0] },
+      },
+    },
+    {
+      $lookup: {
+        from: "order_items",
+        localField: "_id",
+        foreignField: "orderId",
+        as: "orderItems",
+        pipeline: [
+          {
+            $lookup: {
+              from: "products",
+              localField: "productId",
+              foreignField: "_id",
+              as: "product",
+            },
+          },
+          {
+            $unwind: {
+              path: "$product",
+              preserveNullAndEmptyArrays: false,
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              quantity: 1,
+              product: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        shippingAddress: 1,
+        discount: 1,
+        orderItems: 1,
+        orderDate: 1,
+        estDeliveryDate: 1,
+        status: 1,
+        paymentMethod: 1,
+        code: 1,
+      },
+    },
+  ];
+
+  const orders = await orderModel.aggregate(pipeline).session(session);
+  if (orders.length != 1) {
+    return null;
+  }
+  return orders[0];
+};
+
 module.exports = {
   processOrder,
   confirmOrder,
   findOrder,
   findByIdAndUpdate,
+  getDetailOrder,
 };
