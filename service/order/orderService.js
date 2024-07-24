@@ -73,6 +73,7 @@ const getListOrderById = async (orderID) => {
           preserveNullAndEmptyArrays: false,
         },
       },
+      
       {
         $lookup: {
           from: "order_items",
@@ -112,6 +113,19 @@ const getListOrderById = async (orderID) => {
         },
       },
       {
+        $lookup: {
+          from: "discounts",
+          localField: "discountId",
+          foreignField: "_id",
+          as: "discounts",
+        },
+      },
+      {
+        $addFields: {
+          discount: { $arrayElemAt: ["$discounts", 0] },
+        },
+      },
+      {
         $group: {
           _id: "$_id",
           orders: { $first: "$$ROOT" },
@@ -130,8 +144,25 @@ const getListOrderById = async (orderID) => {
   }
 };
 
+const  isUpdateOrder = async (orderId, status) => {
+  try {
+    console.log(`[orderService] isUpdateOrder: orderId -> ${orderId}`);
+
+    const updateOrder = await orderModel.findByIdAndUpdate(
+      orderId,
+      { status: status },
+      { new: true }
+    );
+    console.log(`[orderService] isUpdateOrder: updateOrder -> ${updateOrder}`);
+    return updateOrder;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getListOrder,
   getListOrderByStatus,
   getListOrderById,
+  isUpdateOrder
 };

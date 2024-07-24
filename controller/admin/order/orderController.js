@@ -1,4 +1,6 @@
 const orderService = require("../../../service/order/orderService");
+const service = require("../../../service/order/order");
+const {OrderStatusEnum} = require("../../../common/enum");
 
 const listOrder = async (req, res, status) => {
   try {
@@ -40,7 +42,7 @@ const getDetailOrder = async (req, res) => {
     let orderId = req.params.orderId;
     console.log("[orderController] getDetailOrder: id -> ", orderId);
 
-    const orderData = await orderService.getListOrderById(orderId);
+    const orderData = await service.getDetailOrder(orderId);
     console.log(
       `[orderController] getDetailOrder: data -> ${JSON.stringify(orderData)}`
     );
@@ -50,6 +52,39 @@ const getDetailOrder = async (req, res) => {
       routerName: "detail-order",
       info: req.session.account,
       orderData: orderData,
+      OrderStatusEnum: OrderStatusEnum
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
+const putOrder = async (req, res) => {
+  try {
+    let orderId = req.params.orderId;
+    console.log("[orderController] putOrder: id -> ", orderId);
+    const {status} = req.body;
+    
+    if (!status) {
+      return res.status(400).json({
+        success: false,
+        message: `Dữ liệu đơn hàng không hợp lệ.`,
+      });
+    }
+
+    const updateResult = await orderService.isUpdateOrder(orderId, status);
+     if (!updateResult) {
+      return res.status(404).json({
+        success: false,
+        message: `Không tìm thấy đơn hàng cần cập nhật.`,
+      });
+    }
+    res.status(201).json({
+      success: true,
+      message: `Cập nhật đơn hàng thành công.`,
     });
   } catch (error) {
     res.status(500).json({
@@ -62,4 +97,5 @@ const getDetailOrder = async (req, res) => {
 module.exports = {
   listOrder,
   getDetailOrder,
+  putOrder
 };
