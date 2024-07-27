@@ -36,12 +36,11 @@
                         <div class="image-container" id="imageContainer" disable>
                           <!-- Hiển thị hình ảnh sản phẩm -->
                           <% productData.photoUrls.forEach((row)=> { %>
-                          <img src="<%= row %>" alt="Product Image">
+                          <img src="<%= row %>" alt="Product Image" onclick="selectImage(event)">
                           <% }) %>
                         </div>
                         <input type="file" class="form-control" id="photoUrls" multiple
                         name="files" accept="image/*">
-        
                       </div>
                       <div class="row">
                         <div class="form-group col-md-3">
@@ -223,6 +222,9 @@
               isSuccess = true;
               hideLoading();
               showDialog(body.message);
+              setTimeout(() => {
+              window.location.href = baseURL + '/product/list-products';
+              }, 1300);
           })
           .catch((error) => {
               isSuccess = false;

@@ -187,6 +187,9 @@
                 isSuccess = true;
                 hideLoading();
                 showDialog(body.message);
+                setTimeout(() => {
+                window.location.href = baseURL + '/product/list-products';
+                }, 2000);
             })
             .catch((error) => {
                 isSuccess = false;

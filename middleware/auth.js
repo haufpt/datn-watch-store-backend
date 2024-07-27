@@ -66,4 +66,15 @@ const checkPermission = (roles) =>
     return next();
   });
 
-module.exports = { checkPermission, checkLogin };
+  const checkRole = (roles) => {
+    return (req, res, next) => {
+      if (req.session.account && roles.includes(req.session.account.role)) {
+        // Vai trò hợp lệ, cho phép truy cập
+        next();
+      } else {
+        // Vai trò không hợp lệ, chuyển hướng người dùng về trang lỗi hoặc trang khác
+        res.redirect("/login");
+      }
+    };
+  };
+module.exports = { checkPermission, checkLogin ,checkRole};
