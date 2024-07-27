@@ -11,33 +11,14 @@
                 <div class="card-body-action-right">
                   <div class="dropdown float-end">
                     <div class="dropdown">
-                      <button
-                        class="btn btn-info dropdown-toggle"
-                        type="button"
-                        id="dropdownCategoryButton"
-                        data-bs-toggle="dropdown"
-                        aria-haspopup="true"
-                        aria-expanded="true"
-                      >
+                      <button class="btn btn-info dropdown-toggle" type="button" id="dropdownCategoryButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                         Thương hiệu
                       </button>
-                      <div
-                        class="dropdown-menu"
-                        aria-labelledby="dropdownCategoryButton"
-                        data-popper-placement="bottom-start"
-                        style="
-                          position: absolute;
-                          inset: 0px auto auto 0px;
-                          margin: 0px;
-                          transform: translate3d(0px, 40px, 0px);
-                        "
-                      >
-                        <a class="dropdown-item" href="#">Tất cả</a>
-                        <a class="dropdown-item" href="#">Orient</a>
-                        <a class="dropdown-item" href="#">Rolex</a>
-                        <a class="dropdown-item" href="#">Daniel Wellington</a>
-                        <a class="dropdown-item" href="#">Cartier</a>
-                        <a class="dropdown-item" href="#">Audemars Piguet</a>
+                      <div class="dropdown-menu" aria-labelledby="dropdownCategoryButton" data-popper-placement="bottom-start" style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 40px, 0px);">
+                        <a class="dropdown-item" data-brand="">Tất cả</a>
+                        <% listBrandData.forEach((row) => { %>
+                          <a class="dropdown-item" data-brand="<%= row.name %>"><%= row.name %></a>
+                        <% }); %>
                       </div>
                     </div>
                   </div>
@@ -64,9 +45,9 @@
                           transform: translate3d(0px, 40px, 0px);
                         "
                       >
-                        <a class="dropdown-item" href="#">Mặc định</a>
-                        <a class="dropdown-item" href="#">Giá tăng dần</a>
-                        <a class="dropdown-item" href="#">Giá giảm dần</a>
+                        <a class="dropdown-item" data-status="default">Mặc định</a>
+                        <a class="dropdown-item" data-status="asc">Giá tăng dần</a>
+                        <a class="dropdown-item" data-status="desc">Giá giảm dần</a>
                       </div>
                     </div>
                   </div>
@@ -87,7 +68,7 @@
                     <div class="p-2">
                         <span class="fs-4"><%= row.name %></span>
                         <br>
-                        <span class="text-danger">₫</span><span class="text-danger"><%= row.price %></span>
+                        <span class="text-danger"></span><span class="text-danger"><%= row.price %>$</span>
                         <br><span class="fs-6">Đã bán 1.0k</span>
                       </div>
                 </div>
@@ -121,3 +102,29 @@
   </div>
   <!-- content -->
 </div>
+
+<script>
+  const baseURL = window.location.protocol + '//' + window.location.host;
+  const dropdownMenu = document.querySelector("#dropdownMenuButton + .dropdown-menu");
+  dropdownMenu.querySelectorAll("a").forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      const sortBy = item.getAttribute("data-status");
+      window.location.href = `${baseURL}/product/list-products?sortBy=${sortBy}`;
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdownBrandMenu = document.querySelector('.dropdown-menu');
+    dropdownBrandMenu.addEventListener('click', function(e) {
+      if (e.target && e.target.matches('a.dropdown-item')) {
+        const selectedBrand = e.target.getAttribute('data-brand');
+        let url = new URL(window.location.href);
+        url.searchParams.set('brandName', selectedBrand);
+        window.location.href = url.toString();
+      }
+    });
+  });
+  </script>
