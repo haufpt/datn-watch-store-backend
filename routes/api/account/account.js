@@ -4,6 +4,8 @@ const accountController = require("../../../controller/account/account");
 const { checkLogin, checkPermission } = require("../../../middleware/auth");
 const { AccountRoleEnum, FileTypeEnum } = require("../../../common/enum");
 const multerService = require("../../../shared/multer");
+const { validateSchema } = require("../../../middleware/validate");
+const AccountValidation = require("../../../validation/account");
 
 router.put(
   "/",
@@ -11,6 +13,14 @@ router.put(
   checkPermission([AccountRoleEnum.CLIENT]),
   multerService.uploadFile(FileTypeEnum.IMAGE).single("file"),
   accountController.updateProfile
+);
+
+router.put(
+  "/change-password",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  validateSchema(AccountValidation.changePassword),
+  accountController.changePassword
 );
 
 module.exports = router;

@@ -86,6 +86,45 @@ const updateProfile = async (req, res) => {
   }
 };
 
+const changePassword = async (req, res) => {
+  try {
+    console.log("[AccountController] changePassword body: ", req.body);
+    const { oldPassword, newPassword } = req.body;
+
+    const accountId = req.session.account.id;
+    var existAccount = await accountService.findAccount({
+      _id: accountId,
+    });
+
+    if (existAccount.password !== oldPassword) {
+      return res.status(301).json({
+        success: false,
+        message: `Sai mật khẩu hiện tại.`,
+      });
+    }
+
+    await accountService.findByIdAndUpdate(accountId, {
+      password: newPassword,
+    });
+
+    const newAccount = await accountService.findAccount(accountId);
+
+    res.status(201).json({
+      success: true,
+      message: `Đổi mật khẩu thành công.`,
+      data: {
+        account: newAccount,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   updateProfile,
+  changePassword,
 };
