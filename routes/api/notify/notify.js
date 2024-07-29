@@ -11,4 +11,11 @@ router.get(
   notifyController.getListNotify
 );
 
+router.put(
+  "/read-notify",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  notifyController.readNotify
+);
+
 module.exports = router;

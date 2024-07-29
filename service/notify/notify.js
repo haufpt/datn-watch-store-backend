@@ -37,6 +37,14 @@ const getListNotify = async (accountId) => {
   return notifications;
 };
 
+const markAllNotificationsAsRead = async (accountId) => {
+  await notificationRecipientsModel.updateMany(
+    { accountId: new mongoose.Types.ObjectId(accountId) },
+    { $set: { isRead: true } }
+  );
+};
+
 module.exports = {
   getListNotify,
+  markAllNotificationsAsRead,
 };

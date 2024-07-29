@@ -21,6 +21,25 @@ const getListNotify = async (req, res) => {
   }
 };
 
+const readNotify = async (req, res) => {
+  try {
+    const accountId = req.session.account.id.toString();
+
+    await notifyService.markAllNotificationsAsRead(accountId);
+
+    res.status(201).json({
+      success: true,
+      message: `Đã đọc các thông báo.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   getListNotify,
+  readNotify,
 };
