@@ -8,6 +8,7 @@ const shippingAddressRouter = require("./shipping_address/shipping_address");
 const orderRouter = require("./order/order");
 const discountRouter = require("./discount/discount");
 const accountRouter = require("./account/account");
+const notifyRouter = require("./notify/notify");
 
 router.use("/auth", authRouter);
 
@@ -24,5 +25,7 @@ router.use("/order", orderRouter);
 router.use("/discount", discountRouter);
 
 router.use("/account", accountRouter);
+
+router.use("/notify", notifyRouter);
 
 module.exports = router;
