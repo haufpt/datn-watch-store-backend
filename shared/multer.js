@@ -79,6 +79,7 @@ const fileFilter = {
       FILE_MIME_TYPE_FORMAT.IMAGE.JPG,
       FILE_MIME_TYPE_FORMAT.IMAGE.JPEG,
     ];
+    console.log("[fileFilter] image mimetype: ", file.mimetype);
     if (!whiteList.includes(file.mimetype)) {
       return callback(
         new AppError(400, "Only accepts image files: PNG, JPG, JPEG", 39004)
