@@ -13,28 +13,38 @@
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body">
-                  <div class="row gap-3 justify-content-center">
-                    <% listAccountUserData.accounts.forEach((row)=> { %>
-                      <div class="col-md-5 mr-4">
-                        <a href="/account/detail-user/<%= row._id %>" class="text-decoration-none text-black">
-                        <div class="row border rounded rounded-lg pt-3 pb-3 mb-3">
-                          <div class="col-md-3">
-                            <img src="<%= row.avatarUrl %>" alt="Product Image"
-                              style="width: 100px; height: 100px; border-radius: 10px;">
-                          </div>
-                          <div class="col-md-9">
-                            <h5 class="font-weight-bold">Tên: <%= row.userName %>
-                            </h5>
-                            <p class="font-weight-normal">Email: <%= row.email %>
-                            </p>
-                            <p class="font-weight-normal">So dien thoai: <%= row.phoneNumber %>
-                            </p>
-                          </div>
-                        </div>
-                      </a>
-                      </div>
-                      <% }) %>
-                  </div>
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% let index=1; %>
+                        <% listAccountUserData.accounts.forEach((row)=> { %>
+                          <tr>
+                            <td>
+                              <%= index %>
+                            </td>
+                            <td>
+                              <a href="/account/detail-user/<%= row._id %>" class="text-decoration-none text-black">
+                                <%= row.userName %>
+                              </a>
+                            </td>
+                            <td>
+                              <%= row.email %>
+                            </td>
+                            <td>
+                              <%= row.phoneNumber %>
+                            </td>
+                          </tr>
+                          <% index++; %>
+                            <% }) %>
+                    </tbody>
+                  </table>
                 </div>
                 <!-- /.card-body -->
               </div>
