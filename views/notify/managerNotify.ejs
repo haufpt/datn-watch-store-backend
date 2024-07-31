@@ -1,0 +1,196 @@
+<div class="content-page">
+    <div class="content">
+        <!-- Start Content-->
+        <div class="wrapper">
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="card">
+                            <section class="content-header">
+                                <div class="container-fluid">
+                                    <div class="row p-3">
+                                        <div class="col-sm-6">
+                                            <h3>Quản lí thông báo</h3>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <button class="btn btn-primary float-right" id="create-notify-btn">
+                                                Tạo thông báo
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <!-- Main content -->
+                            <section class="content">
+                                <div class="container-fluid">
+                                    <div class="card-body">
+                                        <table class="table table-tripped">
+                                            <thead>
+                                                <tr>
+                                                    <th>Tiêu đề</th>
+                                                    <th>Nội dung</th>
+                                                    <th>Ngày tạo</th>
+                                                    <th>Loại</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Sale sap san 50$</td>
+                                                    <td>Khong mua hoi phi</td>
+                                                    <td>2023-01-15 11:45:00</td>
+                                                    <td>Su kien</td>
+                                                    <td>
+                                                        <i class="edit-icon mr-3 fa fa-pen"></i>
+                                                        <i class="delete-icon fa fa-trash"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <!-- Create Notify Modal -->
+                        <div class="modal fade" id="createNotifyModal" tabindex="-1" role="dialog"
+                            aria-labelledby="createNotifyModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="createNotifyModalLabel">
+                                            Tạo thông báo
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="notifyType">Tiêu đề</label>
+                                                <input type="text" class="form-control" id="notifyName"
+                                                    placeholder="Tiêu đề thông báo" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="notifyType">Nội dung</label>
+                                                <input type="text" class="form-control" id="notifyName"
+                                                    placeholder="Noi dung thong bao" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="typeEnum">Loại</label>
+                                                <select class="form-control" id="notifyType">
+                                                    <option value="type" hidden>Loại</option>
+                                                    <option value="event">Sự kiện</option>
+                                                    <option value="promotion">Khuyến mãi</option>
+                                                    <option value="update">Cập nhật</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            Hủy
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="saveNotify">
+                                            Lưu
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Edit Notify Modal -->
+                        <div class="modal fade" id="editNotifyModal" tabindex="-1" role="dialog"
+                            aria-labelledby="editNotifyModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="editNotifyModalLabel">
+                                            Chỉnh sửa thông báo
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form>
+                                            <div class="form-group">
+                                                <label for="notifyType">Tiêu đề</label>
+                                                <input type="text" class="form-control" id="notifyName"
+                                                    placeholder="Tiêu đề thông báo" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="notifyType">Nội dung</label>
+                                                <input type="text" class="form-control" id="notifyName"
+                                                    placeholder="Noi dung thong bao" />
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="typeEnum">Loại</label>
+                                                <select class="form-control" id="notifyType">
+                                                    <option value="type" hidden>Loại</option>
+                                                    <option value="event">Sự kiện</option>
+                                                    <option value="promotion">Khuyến mãi</option>
+                                                    <option value="update">Cập nhật</option>
+                                                </select>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                            Hủy
+                                        </button>
+                                        <button type="button" class="btn btn-primary" id="updateNotify">
+                                            Cập nhật
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Delete Promotion Confirmation Modal -->
+    <div class="modal fade" id="deleteNotifyModal" tabindex="-1" role="dialog" aria-labelledby="deleteNotifyModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteNotifyModalLabel">
+                        Xóa thông báo
+                    </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">Bạn có chắc chắn muốn xóa thông báo này?</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        Hủy
+                    </button>
+                    <button type="button" class="btn btn-danger" id="deleteNotifyConfirm">
+                        Đồng ý!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Create Promotion modal
+        $("#create-notify-btn").on("click", function () {
+            $("#createNotifyModal").modal("show");
+        });
+
+        // Edit Promotion modal
+        $(".edit-icon").on("click", function () {
+            $("#editNotifyModal").modal("show");
+        });
+
+        // Delete Promotion confirmation modal
+        $(".delete-icon").on("click", function () {
+            $("#deleteNotifyModal").modal("show");
+        });
+    </script>
+</div>
