@@ -595,7 +595,7 @@
             </li>
             
             <li>
-              <a href="/notify">
+              <a href="/notify/managerNotify">
                 <span> Thông báo </span>
               </a>
             </li>
@@ -634,8 +634,10 @@
       <%-include('promotion/managePromotion.ejs')%>
     <% } else if (routerName==='statistical') { %>
       <%-include('statistical/statisticalStore.ejs')%>
+    <% } else if (routerName==='notify') { %>
+      <%-include('notify/managerNotify.ejs')%>
     <% } else { %>
-      <%-include('dashboard/dashboard.ejs')%>
+      <%-include('products/listProducts.ejs')%>
     <% } %>
 
     <!-- ============================================================== -->
