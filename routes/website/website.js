@@ -7,6 +7,7 @@ const brandRouter = require("./brand/brand");
 const orderRouter = require("./order/order");
 const userRouter = require("./account/user");
 const promotionRouter = require("./promotion/promotion");
+const statisticalRouter = require("./statistical/statistical");
 
 router.use("/auth", authRouter);
 router.use("/home", homeRouter);
@@ -15,5 +16,6 @@ router.use("/product", productRouter);
 router.use("/order", orderRouter);
 router.use("/account", userRouter);
 router.use("/promotion", promotionRouter);
+router.use("/statistical", statisticalRouter);
 
 module.exports = router;
