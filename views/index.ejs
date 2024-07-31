@@ -488,6 +488,27 @@
     .promotion-list li .actions button.edit {
       background-color: #4CAF50;
     }
+    .table-responsive {
+            max-height: 350px; 
+            overflow-y: auto;
+        }
+        .table-valign-middle td {
+            vertical-align: middle;
+        }
+        .product-name {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 300px; 
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background: #fff; 
+            z-index: 1;
+        }
   </style>
 </head>
 
@@ -568,10 +589,17 @@
             </li>
 
             <li>
+              <a href="/statistical/statisticalStore">
+                <span> Thống kê </span>
+              </a>
+            </li>
+            
+            <li>
               <a href="/notify">
                 <span> Thông báo </span>
               </a>
             </li>
+
           </ul>
         </div>
         <!-- End Sidebar -->
@@ -604,6 +632,8 @@
       <%-include('user/detailUser.ejs')%>
     <% } else if (routerName==='promotion') { %>
       <%-include('promotion/managePromotion.ejs')%>
+    <% } else if (routerName==='statistical') { %>
+      <%-include('statistical/statisticalStore.ejs')%>
     <% } else { %>
       <%-include('dashboard/dashboard.ejs')%>
     <% } %>
