@@ -9,4 +9,9 @@ router.get(
   checkRole([AccountRoleEnum.ADMIN]),
   promotionController.getListPromotion
 );
+
+router.post(
+  "/post-promotion",
+  promotionController.postDiscount
+);
 module.exports = router;

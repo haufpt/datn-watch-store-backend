@@ -3,6 +3,18 @@
     <!-- Start Content-->
     <div class="wrapper">
       <div class="content-wrapper">
+        <div id="loading" class="loading-container">
+          <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+          </div>
+        </div>
+
+        <div id="dialog" class="dialog-container">
+          <div class="dialog-content">
+            <span id="dialog-message"></span>
+            <button onclick="hideDialog()">Ok</button>
+          </div>
+        </div>
         <!-- Content Header (Page header) -->
         <div class="container-fluid">
           <div class="row">
@@ -14,10 +26,7 @@
                       <h3>Quản lí khuyến mãi</h3>
                     </div>
                     <div class="col-sm-6">
-                      <button
-                        class="btn btn-primary float-right"
-                        id="create-promotion-btn"
-                      >
+                      <button class="btn btn-primary float-right" id="create-promotion-btn">
                         Tạo khuyến mãi
                       </button>
                     </div>
@@ -32,6 +41,7 @@
                       <thead>
                         <tr>
                           <th>Tiêu đề</th>
+                          <th>Mã khuyến mãi</th>
                           <th>Khuyến mãi</th>
                           <th>Ngày bắt đầu</th>
                           <th>Ngày kết thúc</th>
@@ -40,33 +50,42 @@
                       </thead>
                       <tbody>
                         <% promotionData.forEach((row)=> { %>
-                        <tr>
-                         
+                          <tr>
+
                             <% const formatDate=(dateString)=> {
-                                const date = new Date(dateString);
-                                const day = date.getDate();
-                                const month = date.getMonth() + 1;
-                                const year = date.getFullYear();
-                                return `${day}/${month}/${year}`;
-                                };
-                                %>
-                          <td><%= row.content %></td>
-                          <td class="promotion-type">
-                            <% if(row.discountType == "PERCENT"){ %>
-                                <%= row.discountValue %>%
-                            <%  }else{ %>
-                                <%= row.discountValue %>$
-                            <% } %>
-                        </td>
-                          <td class="date"><%= formatDate(row.createdDate) %></td>
-                          <td class="date"><%= row.expirationDate %></td>
-                          <td>
-                            <i class="edit-icon mr-3 fa fa-pen"></i>
-                            <i class="delete-icon fa fa-trash"></i>
-                          </td>
-                          
-                        </tr>
-                        <% }); %>
+                              const date = new Date(dateString);
+                              const day = date.getDate();
+                              const month = date.getMonth() + 1;
+                              const year = date.getFullYear();
+                              return `${day}/${month}/${year}`;
+                              };
+                              %>
+                              <td>
+                                <%= row.content %>
+                              </td>
+                              <td>
+                                <%= row.code %>
+                              </td>
+                              <td class="promotion-type">
+                                <% if(row.discountType=="PERCENT" ){ %>
+                                  <%= row.discountValue %>%
+                                    <% }else{ %>
+                                      <%= row.discountValue %>$
+                                        <% } %>
+                              </td>
+                              <td class="date">
+                                <%= formatDate(row.createdDate) %>
+                              </td>
+                              <td class="date">
+                                <%= formatDate(row.expirationDate) %>
+                              </td>
+                              <td>
+                                <i class="edit-icon mr-3 fa fa-pen"></i>
+                                <i class="delete-icon fa fa-trash"></i>
+                              </td>
+
+                          </tr>
+                          <% }); %>
                       </tbody>
                     </table>
                   </div>
@@ -74,113 +93,69 @@
               </section>
             </div>
             <!-- Create Promotion Modal -->
-            <div
-              class="modal fade"
-              id="createPromotionModal"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="createPromotionModalLabel"
-              aria-hidden="true"
-            >
+            <div class="modal fade" id="createPromotionModal" tabindex="-1" role="dialog"
+              aria-labelledby="createPromotionModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="createPromotionModalLabel">
                       Tạo khuyến mãi
                     </h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form>
+                    <form id="uploadForm">
                       <div class="form-group">
-                        <label for="promotionName">Tiêu đề khuyến mãi</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="promotionName"
-                          placeholder=""
-                        />
+                        <label for="content">Tiêu đề khuyến mãi</label>
+                        <input type="text" class="form-control" id="content" name="content" />
                       </div>
                       <div class="form-group">
-                        <label for="createDate">Ngày bắt đầu</label>
-                        <input
-                          type="date"
-                          class="form-control"
-                          id="createDate"
-                        />
+                        <label for="createdDate">Ngày bắt đầu</label>
+                        <input type="date" class="form-control" id="createdDate" name="createdDate" />
                       </div>
                       <div class="form-group">
-                        <label for="endDate">Ngày kết thúc</label>
-                        <input type="date" class="form-control" id="endDate" />
+                        <label for="expirationDate">Ngày kết thúc</label>
+                        <input type="date" class="form-control" id="expirationDate" name="expirationDate" />
                       </div>
                       <div class="row">
-                        <label for="discountType">Giảm giá</label>
+                        <label for="discountValue">Giảm giá</label>
                         <div class="form-group col-md-9">
-                          <input
-                            type="number"
-                            class="form-control"
-                            id="percentDiscount"
-                            min="0"
-                            max="100"
-                            placeholder="0"
-                          />
+                          <input type="number" class="form-control" id="discountValue" min="0" max="100"
+                            name="discountValue" placeholder="0" />
                         </div>
                         <div class="form-group col-md-3">
-                          <select class="form-control" id="discountType">
-                            <option value="percentage">$</option>
-                            <option value="fixed">%</option>
+                          <select class="form-control" id="discountType" name="discountType">
+                            <option value="PERMANENT">$</option>
+                            <option value="PERCENT">%</option>
                           </select>
                         </div>
                       </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                          Hủy
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="savePromotion">
+                          Lưu
+                        </button>
+                      </div>
                     </form>
                   </div>
-                  <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-dismiss="modal"
-                    >
-                      Hủy
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      id="savePromotion"
-                    >
-                      Lưu
-                    </button>
-                  </div>
+
                 </div>
               </div>
             </div>
             <!-- Edit Promotion Modal -->
-            <div
-              class="modal fade"
-              id="editPromotionModal"
-              tabindex="-1"
-              role="dialog"
-              aria-labelledby="editPromotionModalLabel"
-              aria-hidden="true"
-            >
+            <div class="modal fade" id="editPromotionModal" tabindex="-1" role="dialog"
+              aria-labelledby="editPromotionModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <h5 class="modal-title" id="editPromotionModalLabel">
                       Chỉnh sửa khuyến mãi
                     </h5>
-                    <button
-                      type="button"
-                      class="close"
-                      data-dismiss="modal"
-                      aria-label="Close"
-                    >
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
@@ -188,20 +163,11 @@
                     <form>
                       <div class="form-group">
                         <label for="promotionName">Tiêu đề</label>
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="promotionName"
-                          placeholder="Tiêu đề khuyến mãi"
-                        />
+                        <input type="text" class="form-control" id="promotionName" placeholder="Tiêu đề khuyến mãi" />
                       </div>
                       <div class="form-group">
                         <label for="createDate">Ngày bắt đầu</label>
-                        <input
-                          type="date"
-                          class="form-control"
-                          id="createDate"
-                        />
+                        <input type="date" class="form-control" id="createDate" />
                       </div>
                       <div class="form-group">
                         <label for="endDate">Ngày kết thúc</label>
@@ -210,14 +176,8 @@
                       <div class="row">
                         <label for="discountType">Giảm giá</label>
                         <div class="form-group col-md-9">
-                          <input
-                            type="number"
-                            class="form-control"
-                            id="percentDiscount"
-                            min="0"
-                            max="100"
-                            placeholder="0"
-                          />
+                          <input type="number" class="form-control" id="discountValue" min="0" max="100"
+                            placeholder="0" />
                         </div>
                         <div class="form-group col-md-3">
                           <select class="form-control" id="discountType">
@@ -229,18 +189,10 @@
                     </form>
                   </div>
                   <div class="modal-footer">
-                    <button
-                      type="button"
-                      class="btn btn-secondary"
-                      data-dismiss="modal"
-                    >
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeDialog">
                       Hủy
                     </button>
-                    <button
-                      type="button"
-                      class="btn btn-primary"
-                      id="updatePromotion"
-                    >
+                    <button type="button" class="btn btn-primary" id="updatePromotion" onclick="addDiscount()">
                       Cập nhật
                     </button>
                   </div>
@@ -253,26 +205,15 @@
     </div>
   </div>
   <!-- Delete Promotion Confirmation Modal -->
-  <div
-    class="modal fade"
-    id="deletePromotionModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="deletePromotionModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="deletePromotionModal" tabindex="-1" role="dialog"
+    aria-labelledby="deletePromotionModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="deletePromotionModalLabel">
             Xóa khuyến mãi
           </h5>
-          <button
-            type="button"
-            class="close"
-            data-dismiss="modal"
-            aria-label="Close"
-          >
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -281,11 +222,7 @@
           <button type="button" class="btn btn-secondary" data-dismiss="modal">
             Hủy
           </button>
-          <button
-            type="button"
-            class="btn btn-danger"
-            id="deletePromotionConfirm"
-          >
+          <button type="button" class="btn btn-danger" id="deletePromotionConfirm">
             Đồng ý!
           </button>
         </div>
@@ -310,3 +247,78 @@
     });
   </script>
 </div>
+<script>
+  const baseURL = window.location.protocol + "//" + window.location.host;
+  let isSuccess = false;
+  const form = document.getElementById("uploadForm");
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    var objectJson = {}
+    const promotionContent = document.getElementById("content").value;
+    objectJson.content = promotionContent
+    console.log(`[webDiscount] postDiscount: content -> ${promotionContent}`);
+    const createDate = document.getElementById("createdDate").value;
+    objectJson.createdDate = createDate
+    console.log(`[webDiscount] postDiscount: createDate -> ${createDate}`);
+    const expirationDate = document.getElementById("expirationDate").value;
+    objectJson.expirationDate = expirationDate
+    console.log(`[webDiscount] postDiscount: expirationDate -> ${expirationDate}`);
+    const discountValue = document.getElementById("discountValue").value;
+    objectJson.discountValue = discountValue
+    console.log(`[webDiscount] postDiscount: discountValue -> ${discountValue}`);
+    const discountType = document.getElementById("discountType").value;
+    objectJson.discountType = discountType
+    console.log(`[webDiscount] postDiscount: discountType -> ${discountType}`);
+    showLoading();
+
+    fetch(`${baseURL}/promotion/post-promotion`, {
+      method: "POST",
+      body: JSON.stringify(objectJson),
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((body) => {
+        isSuccess = true;
+        hideLoading();
+        showDialog(body.message);
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+
+      })
+      .catch((error) => {
+        isSuccess = false;
+        hideLoading();
+        showDialog("Lỗi: " + error.message);
+        console.error("Error:", error);
+      });
+  });
+
+  function showLoading() {
+    document.getElementById("loading").style.display = "block";
+  }
+
+  function hideLoading() {
+    document.getElementById("loading").style.display = "none";
+  }
+
+  function showDialog(message) {
+    document.getElementById("dialog-message").textContent = message;
+    document.getElementById("dialog").style.display = "block";
+  }
+
+  function hideDialog() {
+    document.getElementById("dialog").style.display = "none";
+    if (isSuccess) {
+      isSuccess = false;
+    }
+  }
+</script>
