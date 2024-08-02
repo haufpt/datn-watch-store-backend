@@ -69,12 +69,6 @@ const getDatailBrand = async (req, res) => {
     const brand = await brandService.findBrandById(idBrand);
     console.log("[brandController] getDatailBrand: brand -> ", brand);
 
-    if (!product) {
-      return res.status(301).json({
-        success: false,
-        message: `Brand not found`,
-      });
-    }
     res.render("./index.ejs", {
       title: "Chi tiết thương hiệu",
       routerName: "detailProduct",
