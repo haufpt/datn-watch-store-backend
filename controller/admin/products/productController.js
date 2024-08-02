@@ -98,6 +98,22 @@ const updateProduct = async (req, res) => {
   }
 };
 
+const lockProduct = async (req, res) => {
+  try {
+    const baseUrl = req.protocol + "://" + req.get("host") + "/";
+    let { idProduct } = req.params;
+    console.log("[productController] lockProduct: idProduct -> ", idProduct);
+    const lockProduct = await productService.postLockProduct(idProduct);
+    console.log(`[productController] lockProduct -> ${lockProduct}`);
+    res.redirect(`${baseUrl}product/list-products`)
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 const listProduct = async (req, res) => {
   try {
     const { type, page, limit, brandId, sortBy, brandName} = req.query;
@@ -192,5 +208,6 @@ module.exports = {
   addProduct,
   detailProduct,
   postProduct,
-  updateProduct
+  updateProduct,
+  lockProduct
 };

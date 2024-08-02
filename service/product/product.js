@@ -64,6 +64,11 @@ const getListProduct = async ({ type, page = 1, limit = 10, brandId } = {}) => {
   pipeline = [
     ...pipeline,
     {
+      $match: {
+        isDeleted: { $ne: false }
+      }
+    },
+    {
       $lookup: {
         from: "brands",
         localField: "brandId",
@@ -294,10 +299,25 @@ const addProductToCart = async (body) => {
   }
 };
 
+const postLockProduct = async (idProduct) => {
+  try {
+    const lockProduct = await productModel.findByIdAndUpdate(
+      idProduct,
+      { isDeleted: false, },
+      { new: true }
+    );
+    console.log(`[productService] postLockProduct: newData -> ${lockProduct}`);
+    return lockProduct;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createNewProduct,
   getListProduct,
   findProductByID,
   updateProduct,
   addProductToCart,
+  postLockProduct
 };

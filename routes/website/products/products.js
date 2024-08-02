@@ -33,6 +33,11 @@ router.post(
   productRouter.postProduct
 );
 
+router.post(
+  "/lock-product/:idProduct",
+  productRouter.lockProduct
+);
+
 router.put(
   "/update-product/:idProduct",
   checkRole([AccountRoleEnum.ADMIN]),
