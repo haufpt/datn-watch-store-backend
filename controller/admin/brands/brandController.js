@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const brandService = require("../../../service/brand/brand");
 const brandValidation = require("../../../validation/brand");
 
@@ -6,7 +7,7 @@ const listBrand = async (req, res) => {
     const listBrand = await brandService.listBrand();
     console.log("[brandController] listBrand -> ", listBrand);
     res.render("./index.ejs", {
-      title: "Danh sach thuong hieu",
+      title: "Danh sách thương hiệu",
       routerName: "list-brand",
       info: req.session.account,
       listBrandData: listBrand,
@@ -21,12 +22,28 @@ const listBrand = async (req, res) => {
 
 const detailBrand = async (req, res) => {
   try {
-    console.log("[brandController] listBrand -> ", listBrand);
-    res.render("./index.ejs", {
-      title: "Danh sach thuong hieu",
+    let idBrand = req.params.idBrand;
+    if (!mongoose.Types.ObjectId.isValid(idBrand)) {
+      return res.render("./index.ejs", {
+        title: "Danh sách thương hiệu",
+        routerName: "detail-brand",
+        message: `Không phải là id`,  
+      });
+    }
+    const brand = await brandService.findBrandById(idBrand);
+    if (!brand) {
+      return res.render("./index.ejs", {
+        title: "Danh sách thương hiệu",
+        routerName: "detail-brand",
+        message: `Không tìm thấy thương hiệu`,  
+      });
+    }
+    console.log("[brandController] getDatailBrand: brand -> ", brand);
+     res.render("./index.ejs", {
+      title: "Danh sách thương hiệu",
       routerName: "detail-brand",
       info: req.session.account,
-      listBrandData: listBrand,
+      brandData: brand,
     });
   } catch (error) {
     res.status(500).json({
