@@ -1,3 +1,4 @@
+const { types } = require("joi");
 const mongoose = require("mongoose");
 
 const productsModelSchema = mongoose.Schema(
@@ -43,6 +44,10 @@ const productsModelSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    isDeleted: {
+      type: Boolean,
+      required: false
+    }
   },
   { collection: "products" }
 );
