@@ -60,8 +60,8 @@ const getListDiscount = async () => {
     const pipeline = [
       {
         $match: {
-          isDelete: { $ne: false }
-        }
+          isDelete: { $ne: false },
+        },
       },
       {
         $project: {
@@ -71,7 +71,7 @@ const getListDiscount = async () => {
           discountType: 1,
           discountValue: 1,
           expirationDate: 1,
-          code: 1
+          code: 1,
         },
       },
     ];
@@ -82,8 +82,60 @@ const getListDiscount = async () => {
   }
 };
 
+const createNewDiscount = async (data) => {
+  try {
+    const discountData = new discountModel(data);
+    return await discountData.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
+function generateUniqueCode(length, existingCodes) {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  let result = '';
+  let isUnique = false;
+
+  while (!isUnique) {
+    result = '';
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    isUnique = !existingCodes.includes(result);
+  }
+
+  return result;
+}
+
+const getAllDiscountCodes = async () => {
+  try {
+    const pipeline = [
+      {
+        $match: {
+          isDelete: { $ne: false },
+        },
+      },
+      {
+        $project: {
+          _id: 1,
+          code: 1,
+        },
+      },
+    ];
+
+    const discounts = await discountModel.aggregate(pipeline);
+    console.log(`[discountService] getAllDiscountCodes: listCode -> ${JSON.stringify(discounts)} ` );
+    return discounts.map(discount => discount.code);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 module.exports = {
   getListDiscountByUser,
   findDiscount,
-  getListDiscount
+  getListDiscount,
+  createNewDiscount,
+  generateUniqueCode,
+  getAllDiscountCodes
 };

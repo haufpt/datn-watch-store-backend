@@ -293,9 +293,9 @@
                 isSuccess = true;
                 hideLoading();
                 showDialog(body.message);
-                const closeButton = document.getElementById("closeDialog");
-                closeButton.click();
-                loadBrandData(); // Tải lại dữ liệu sau khi thêm thành công
+                setTimeout(() => {
+                location.reload();
+                }, 1000);
             })
             .catch((error) => {
                 isSuccess = false;
