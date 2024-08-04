@@ -258,10 +258,40 @@ function sortObject(obj) {
   return sorted;
 }
 
+const getListOrderByClient = async (req, res) => {
+  try {
+    const accountId = req.session.account.id;
+    console.log(
+      "[OrderController] getListOrderByClient accountId: ",
+      accountId
+    );
+    console.log("[OrderController] getListOrderByClient query: ", req.query);
+
+    const orders = await orderService.getListOrderByClient(
+      accountId,
+      req.query.status
+    );
+
+    return res.status(201).json({
+      success: true,
+      message: `Lấy danh sách đơn hàng thành công.`,
+      data: {
+        orders: orders,
+      },
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   proccessOrder,
   confirmOrder,
   createPayment,
   vnpay_return,
   checkPayment,
+  getListOrderByClient,
 };

@@ -184,7 +184,7 @@ const getDetailOrder = async (orderId, session) => {
         from: "accounts",
         localField: "accountId",
         foreignField: "_id",
-        as: "account"
+        as: "account",
       },
     },
     {
@@ -203,7 +203,13 @@ const getDetailOrder = async (orderId, session) => {
     },
     {
       $addFields: {
-        discount: { $cond: [{ $gt: [{ $size: "$discounts" }, 0] }, { $arrayElemAt: ["$discounts", 0] }, null] },
+        discount: {
+          $cond: [
+            { $gt: [{ $size: "$discounts" }, 0] },
+            { $arrayElemAt: ["$discounts", 0] },
+            null,
+          ],
+        },
       },
     },
     {
@@ -248,7 +254,7 @@ const getDetailOrder = async (orderId, session) => {
         status: 1,
         paymentMethod: 1,
         code: 1,
-        account: 1
+        account: 1,
       },
     },
   ];
@@ -260,10 +266,122 @@ const getDetailOrder = async (orderId, session) => {
   return orders[0];
 };
 
+const getListOrderByClient = async (accountId, status) => {
+  const matchConditions = {
+    accountId: accountId,
+  };
+
+  if (status) {
+    matchConditions.status = status;
+  } else {
+    matchConditions.status = { $ne: OrderStatusEnum.PROCESSING };
+  }
+
+  const pipeline = [
+    {
+      $match: matchConditions,
+    },
+    {
+      $lookup: {
+        from: "shipping_addresses",
+        localField: "shippingAddressId",
+        foreignField: "_id",
+        as: "shippingAddresses",
+      },
+    },
+    {
+      $addFields: {
+        shippingAddress: { $arrayElemAt: ["$shippingAddresses", 0] },
+      },
+    },
+    {
+      $lookup: {
+        from: "accounts",
+        localField: "accountId",
+        foreignField: "_id",
+        as: "account",
+      },
+    },
+    {
+      $unwind: {
+        path: "$account",
+        preserveNullAndEmptyArrays: false,
+      },
+    },
+    {
+      $lookup: {
+        from: "discounts",
+        localField: "discountId",
+        foreignField: "_id",
+        as: "discounts",
+      },
+    },
+    {
+      $addFields: {
+        discount: {
+          $cond: [
+            { $gt: [{ $size: "$discounts" }, 0] },
+            { $arrayElemAt: ["$discounts", 0] },
+            null,
+          ],
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "order_items",
+        localField: "_id",
+        foreignField: "orderId",
+        as: "orderItems",
+        pipeline: [
+          {
+            $lookup: {
+              from: "products",
+              localField: "productId",
+              foreignField: "_id",
+              as: "product",
+            },
+          },
+          {
+            $unwind: {
+              path: "$product",
+              preserveNullAndEmptyArrays: false,
+            },
+          },
+          {
+            $project: {
+              _id: 1,
+              quantity: 1,
+              product: 1,
+            },
+          },
+        ],
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        shippingAddress: 1,
+        discount: 1,
+        orderItems: 1,
+        orderDate: 1,
+        estDeliveryDate: 1,
+        status: 1,
+        paymentMethod: 1,
+        code: 1,
+        account: 1,
+      },
+    },
+  ];
+
+  return await orderModel.aggregate(pipeline);
+};
+
 module.exports = {
   processOrder,
   confirmOrder,
   findOrder,
   findByIdAndUpdate,
   getDetailOrder,
+  getListOrderByClient,
 };

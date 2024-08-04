@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { PaymentStatusEnum } = require("../common/enum");
+const { PaymentStatusEnum, OrderStatusEnum } = require("../common/enum");
 
 class OrderValidation {
   static confirmOrder = {
@@ -28,6 +28,14 @@ class OrderValidation {
   static checkPayment = {
     param: Joi.object().keys({
       orderId: Joi.string().max(255).required(),
+    }),
+  };
+
+  static getListOrderByClient = {
+    query: Joi.object().keys({
+      status: Joi.string()
+      .valid(...Object.values(OrderStatusEnum))
+      .optional(),
     }),
   };
 }

@@ -39,4 +39,12 @@ router.get(
 
 router.get("/vnpay-return", orderController.vnpay_return);
 
+router.get(
+  "/",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  validateSchema(OrderValidation.getListOrderByClient),
+  orderController.getListOrderByClient
+);
+
 module.exports = router;
