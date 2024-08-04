@@ -44,7 +44,27 @@ const markAllNotificationsAsRead = async (accountId) => {
   );
 };
 
+const readNotify = async (accountId, notifyId) => {
+  const existedNotificationRecipient =
+    await notificationRecipientsModel.findOne({
+      accountId: new mongoose.Types.ObjectId(accountId),
+      notificationId: new mongoose.Types.ObjectId(notifyId),
+    });
+
+  if (!existedNotificationRecipient) {
+    throw new Error("Thông báo không tồn tại.");
+  }
+
+  const newInfomation = { isRead: true };
+
+  return await notificationRecipientsModel.findByIdAndUpdate(
+    existedNotificationRecipient._id,
+    newInfomation
+  );
+};
+
 module.exports = {
   getListNotify,
   markAllNotificationsAsRead,
+  readNotify,
 };

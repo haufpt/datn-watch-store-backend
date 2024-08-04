@@ -3,6 +3,8 @@ var router = express.Router();
 const notifyController = require("../../../controller/notify/notify");
 const { checkLogin, checkPermission } = require("../../../middleware/auth");
 const { AccountRoleEnum } = require("../../../common/enum");
+const { validateSchema } = require("../../../middleware/validate");
+const NotifyValidation = require("../../../validation/notify");
 
 router.get(
   "/",
@@ -12,9 +14,10 @@ router.get(
 );
 
 router.put(
-  "/read-notify",
+  "/:notifyId",
   checkLogin,
   checkPermission([AccountRoleEnum.CLIENT]),
+  validateSchema(NotifyValidation.readNotify),
   notifyController.readNotify
 );
 
