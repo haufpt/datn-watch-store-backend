@@ -1,10 +1,15 @@
-const { OrderStatusEnum, DiscountTypeEnum } = require("../../common/enum");
+const {
+  OrderStatusEnum,
+  DiscountTypeEnum,
+  PaymentStatusEnum,
+} = require("../../common/enum");
 const orderModel = require("../../model/order");
 const orderItemModel = require("../../model/order_item");
 const AccountService = require("../../service/account/account");
 const DiscountService = require("../../service/discount/discount");
 const ShippingAddressService = require("../../service/shipping_address/shipping_address");
 const CartService = require("../../service/cart/cart");
+const TransactionHistoriesService = require("../../service/transaction_histories/transaction_histories");
 const mongoose = require("mongoose");
 const Helper = require("../../utils/helper");
 const account = require("../../model/account");
@@ -130,6 +135,20 @@ const confirmOrder = async (data) => {
     existingOrder.status = OrderStatusEnum.PENDING;
 
     await findByIdAndUpdate(existingOrder._id, existingOrder, session);
+
+    if (body.paymentMethod === PaymentStatusEnum.VNPAY) {
+      await TransactionHistoriesService.createNewTransaction(
+        {
+          accountId: new mongoose.Types.ObjectId(accountId),
+          createdAt: new Date(),
+          content: `Thanh toán cho đơn hàng: ${existingOrder.code}`,
+          amount:
+            (existingOrder.totalAmount - (existingOrder.discountAmount ?? 0)) *
+            -1,
+        },
+        session
+      );
+    }
 
     await CartService.deleteMany(
       {
