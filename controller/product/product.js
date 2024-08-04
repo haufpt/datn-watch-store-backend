@@ -147,9 +147,39 @@ const addProductToCart = async (req, res) => {
   }
 };
 
+const evaluateProduct = async (req, res) => {
+  try {
+    console.log(
+      `[ProductController] evaluateProduct req.params: ${req.params}`
+    );
+    console.log("[ProductController] evaluateProduct req.body: ", req.body);
+    const body = {
+      accountId: req.session.account.id,
+      productId: new mongoose.Types.ObjectId(req.params.productId),
+      orderId: new mongoose.Types.ObjectId(req.body.orderId),
+      rate: req.body.rate,
+      comment: req.body.comment,
+      date: new Date(),
+    };
+
+    await productService.evaluateProduct(body);
+
+    res.status(201).json({
+      success: true,
+      message: `Đánh giá sản phẩm thành công.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   postProduct,
   listProduct,
   findProductById,
   addProductToCart,
+  evaluateProduct,
 };

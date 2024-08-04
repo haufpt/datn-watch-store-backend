@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const productModel = require("../../model/product.js");
+const reviewModel = require("../../model/review.js");
 const BrandService = require("../../service/brand/brand.js");
 const CartService = require("../../service/cart/cart.js");
+const OrderService = require("../../service/order/order.js");
 const SearchHistoriesService = require("../../service/search_histories/search_histories.js");
 const {
   TopProductTypeEnum,
@@ -84,7 +86,7 @@ const getListProduct = async ({
         });
       }
     }
-    
+
     pipeline.push({
       $match: {
         name: { $regex: textSearch, $options: "i" },
@@ -344,6 +346,22 @@ const postLockProduct = async (idProduct) => {
   }
 };
 
+const evaluateProduct = async (body) => {
+  try {
+    const product = await productModel.findById(body.productId);
+    if (!product) throw new Error("Sẩn phẩm không tồn tại");
+
+    const order = await OrderService.findOrder({ orderId: body.orderId });
+    if (!order) throw new Error("Đơn hàng không tồn tại");
+
+    const review = new reviewModel(body);
+
+    return await review.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createNewProduct,
   getListProduct,
@@ -351,4 +369,5 @@ module.exports = {
   updateProduct,
   addProductToCart,
   postLockProduct,
+  evaluateProduct,
 };

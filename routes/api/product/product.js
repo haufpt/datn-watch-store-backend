@@ -42,4 +42,12 @@ router.post(
   productController.addProductToCart
 );
 
+router.post(
+  "/:productId/evaluate",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  validateSchema(ProductValidation.evaluateProduct),
+  productController.evaluateProduct
+);
+
 module.exports = router;

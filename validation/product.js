@@ -52,6 +52,17 @@ class ProductValidation {
         .required(),
     }),
   };
+
+  static evaluateProduct = {
+    param: Joi.object().keys({
+      productId: Joi.string().max(255).required(),
+    }),
+    body: Joi.object().keys({
+      orderId: Joi.string().max(255).required(),
+      rate: Joi.number().required(),
+      comment: Joi.string().required(),
+    }),
+  };
 }
 
 module.exports = ProductValidation;
