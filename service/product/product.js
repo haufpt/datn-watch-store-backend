@@ -351,7 +351,7 @@ const evaluateProduct = async (body) => {
     const product = await productModel.findById(body.productId);
     if (!product) throw new Error("Sẩn phẩm không tồn tại");
 
-    const order = await OrderService.findOrder({ orderId: body.orderId });
+    const order = await OrderService.findOrder({ _id: body.orderId });
     if (!order) throw new Error("Đơn hàng không tồn tại");
 
     const review = new reviewModel(body);
