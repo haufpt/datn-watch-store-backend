@@ -344,6 +344,32 @@ const getListOrderByClient = async (accountId, status) => {
               localField: "productId",
               foreignField: "_id",
               as: "product",
+              pipeline: [
+                {
+                  $lookup: {
+                    from: "reviews",
+                    localField: "_id",
+                    foreignField: "productId",
+                    as: "reviews",
+                    pipeline: [
+                      {
+                        $lookup: {
+                          from: "accounts",
+                          localField: "accountId",
+                          foreignField: "_id",
+                          as: "account",
+                        },
+                      },
+                      {
+                        $unwind: {
+                          path: "$account",
+                          preserveNullAndEmptyArrays: false,
+                        },
+                      },
+                    ],
+                  },
+                },
+              ],
             },
           },
           {

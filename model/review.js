@@ -12,6 +12,11 @@ const reviewsModelSchema = mongoose.Schema(
       ref: "accounts",
       required: true,
     },
+    orderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "orders",
+      required: true,
+    },
     date: {
       type: Date,
       required: true,
