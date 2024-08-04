@@ -96,7 +96,7 @@ const getListProduct = async ({
     ...pipeline,
     {
       $match: {
-        isDeleted: { $ne: false },
+        isDeleted: { $ne: true },
       },
     },
     {
