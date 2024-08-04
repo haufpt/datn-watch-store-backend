@@ -24,7 +24,7 @@ const getListNotify = async (req, res) => {
 const readNotify = async (req, res) => {
   try {
     const accountId = req.session.account.id.toString();
-    const notifyId = req.param.notifyId;
+    const notifyId = req.params.notifyId;
     console.log("[NotifyController] readNotify notifyId: ", notifyId);
 
     await notifyService.readNotify(accountId, notifyId);
