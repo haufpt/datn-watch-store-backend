@@ -8,7 +8,7 @@ const getListSearchHistories = async (req, res) => {
       req.query
     );
 
-    const listSearchHistories = await searchHistoriesService.find({
+    const listSearchHistories = await searchHistoriesService.getListSearchHistories({
       page,
       limit,
       accountId: req.session.account.id,
