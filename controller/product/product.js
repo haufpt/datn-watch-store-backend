@@ -61,7 +61,7 @@ const postProduct = async (req, res) => {
 
 const listProduct = async (req, res) => {
   try {
-    const { page, limit, type, brandId } = req.query;
+    const { page, limit, type, brandId, textSearch } = req.query;
     console.log("[ProductController] listProduct req.query: ", req.query);
 
     const listProduct = await productService.getListProduct({
@@ -69,6 +69,8 @@ const listProduct = async (req, res) => {
       page,
       limit,
       brandId,
+      textSearch,
+      accountId: req.session.account.id,
     });
 
     res.status(201).json({

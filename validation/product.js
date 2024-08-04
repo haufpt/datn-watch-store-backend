@@ -28,6 +28,7 @@ class ProductValidation {
       brandId: Joi.string().max(255).optional(),
       page: Joi.number().integer().min(1).optional(),
       limit: Joi.number().integer().min(1).optional(),
+      textSearch: Joi.string().optional(),
       type: Joi.string()
         .valid(...Object.values(TopProductTypeEnum))
         .optional(),

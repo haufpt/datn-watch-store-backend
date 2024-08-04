@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const productModel = require("../../model/product.js");
 const BrandService = require("../../service/brand/brand.js");
 const CartService = require("../../service/cart/cart.js");
+const SearchHistoriesService = require("../../service/search_histories/search_histories.js");
 const {
   TopProductTypeEnum,
   UpdateCartTypeEnum,
@@ -49,7 +50,14 @@ const updateProduct = async (idProduct, updatedData) => {
   }
 };
 
-const getListProduct = async ({ type, page = 1, limit = 10, brandId } = {}) => {
+const getListProduct = async ({
+  type,
+  page = 1,
+  limit = 10,
+  brandId,
+  textSearch,
+  accountId,
+} = {}) => {
   let pipeline = [];
 
   if (brandId) {
@@ -61,12 +69,35 @@ const getListProduct = async ({ type, page = 1, limit = 10, brandId } = {}) => {
     });
   }
 
+  if (textSearch) {
+    if (accountId) {
+      const existedTextSearch = await SearchHistoriesService.findOne({
+        accountId: accountId,
+        textSearch: textSearch,
+      });
+
+      if (!existedTextSearch) {
+        await SearchHistoriesService.createNewSearchHistory({
+          accountId: accountId,
+          textSearch: textSearch,
+          createdAt: new Date(),
+        });
+      }
+    }
+    
+    pipeline.push({
+      $match: {
+        name: { $regex: textSearch, $options: "i" },
+      },
+    });
+  }
+
   pipeline = [
     ...pipeline,
     {
       $match: {
-        isDeleted: { $ne: false }
-      }
+        isDeleted: { $ne: false },
+      },
     },
     {
       $lookup: {
@@ -303,7 +334,7 @@ const postLockProduct = async (idProduct) => {
   try {
     const lockProduct = await productModel.findByIdAndUpdate(
       idProduct,
-      { isDeleted: false, },
+      { isDeleted: false },
       { new: true }
     );
     console.log(`[productService] postLockProduct: newData -> ${lockProduct}`);
@@ -319,5 +350,5 @@ module.exports = {
   findProductByID,
   updateProduct,
   addProductToCart,
-  postLockProduct
+  postLockProduct,
 };
