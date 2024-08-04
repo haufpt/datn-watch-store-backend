@@ -291,10 +291,11 @@ const cancelOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
     const body = req.body;
+    const accountId = req.session.account.id;
     console.log("[OrderController] cancelOrder body: ", body);
     console.log("[OrderController] cancelOrder orderId: ", orderId);
 
-    await orderService.cancelOrder(orderId, req.body.reason);
+    await orderService.cancelOrder(accountId, orderId, req.body.reason);
 
     res.status(201).json({
       success: true,

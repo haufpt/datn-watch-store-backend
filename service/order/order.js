@@ -257,6 +257,8 @@ const getDetailOrder = async (orderId, session) => {
         paymentMethod: 1,
         code: 1,
         account: 1,
+        cancelReason: 1,
+        cancelDate: 1,
       },
     },
   ];
@@ -374,6 +376,8 @@ const getListOrderByClient = async (accountId, status) => {
         paymentMethod: 1,
         code: 1,
         account: 1,
+        cancelReason: 1,
+        cancelDate: 1,
       },
     },
   ];
@@ -381,9 +385,10 @@ const getListOrderByClient = async (accountId, status) => {
   return await orderModel.aggregate(pipeline);
 };
 
-const cancelOrder = async (orderId, reason) => {
+const cancelOrder = async (accountId, orderId, reason) => {
   const existingOrder = await orderModel.findOne({
     _id: new mongoose.Types.ObjectId(orderId),
+    accountId: accountId,
   });
 
   if (!existingOrder) {
