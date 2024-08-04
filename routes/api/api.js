@@ -9,6 +9,7 @@ const orderRouter = require("./order/order");
 const discountRouter = require("./discount/discount");
 const accountRouter = require("./account/account");
 const notifyRouter = require("./notify/notify");
+const searchHistoriesRouter = require("./search_histories/search_histories");
 
 router.use("/auth", authRouter);
 
@@ -27,5 +28,7 @@ router.use("/discount", discountRouter);
 router.use("/account", accountRouter);
 
 router.use("/notify", notifyRouter);
+
+router.use("/search-histories", searchHistoriesRouter);
 
 module.exports = router;
