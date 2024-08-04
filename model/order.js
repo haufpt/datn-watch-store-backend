@@ -49,6 +49,14 @@ const ordersModelSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    cancelReason: {
+      type: String,
+      required: false,
+    },
+    cancelDate: {
+      type: Date,
+      required: false,
+    },
   },
   { collection: "orders" }
 );

@@ -287,6 +287,27 @@ const getListOrderByClient = async (req, res) => {
   }
 };
 
+const cancelOrder = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const body = req.body;
+    console.log("[OrderController] cancelOrder body: ", body);
+    console.log("[OrderController] cancelOrder orderId: ", orderId);
+
+    await orderService.cancelOrder(orderId, req.body.reason);
+
+    res.status(201).json({
+      success: true,
+      message: `Huỷ đơn hàng thành công.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   proccessOrder,
   confirmOrder,
@@ -294,4 +315,5 @@ module.exports = {
   vnpay_return,
   checkPayment,
   getListOrderByClient,
+  cancelOrder,
 };

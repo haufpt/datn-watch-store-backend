@@ -34,8 +34,17 @@ class OrderValidation {
   static getListOrderByClient = {
     query: Joi.object().keys({
       status: Joi.string()
-      .valid(...Object.values(OrderStatusEnum))
-      .optional(),
+        .valid(...Object.values(OrderStatusEnum))
+        .optional(),
+    }),
+  };
+
+  static cancelOrder = {
+    param: Joi.object().keys({
+      orderId: Joi.string().max(255).required(),
+    }),
+    body: Joi.object().keys({
+      reason: Joi.string().required(),
     }),
   };
 }

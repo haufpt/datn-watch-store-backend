@@ -47,4 +47,12 @@ router.get(
   orderController.getListOrderByClient
 );
 
+router.put(
+  "/:orderId/cancel",
+  checkLogin,
+  checkPermission([AccountRoleEnum.CLIENT]),
+  validateSchema(OrderValidation.cancelOrder),
+  orderController.cancelOrder
+);
+
 module.exports = router;

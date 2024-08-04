@@ -381,6 +381,25 @@ const getListOrderByClient = async (accountId, status) => {
   return await orderModel.aggregate(pipeline);
 };
 
+const cancelOrder = async (orderId, reason) => {
+  const existingOrder = await orderModel.findOne({
+    _id: new mongoose.Types.ObjectId(orderId),
+  });
+
+  if (!existingOrder) {
+    throw new Error("Đơn hàng không tồn tại.");
+  }
+
+  return await orderModel.findByIdAndUpdate(
+    new mongoose.Types.ObjectId(orderId),
+    {
+      status: OrderStatusEnum.CANCELLED,
+      cancelReason: reason,
+      cancelDate: new Date(),
+    }
+  );
+};
+
 module.exports = {
   processOrder,
   confirmOrder,
@@ -388,4 +407,5 @@ module.exports = {
   findByIdAndUpdate,
   getDetailOrder,
   getListOrderByClient,
+  cancelOrder,
 };
