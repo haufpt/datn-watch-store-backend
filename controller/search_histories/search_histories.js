@@ -8,11 +8,12 @@ const getListSearchHistories = async (req, res) => {
       req.query
     );
 
-    const listSearchHistories = await searchHistoriesService.getListSearchHistories({
-      page,
-      limit,
-      accountId: req.session.account.id,
-    });
+    const listSearchHistories =
+      await searchHistoriesService.getListSearchHistories(
+        page,
+        limit,
+        req.session.account.id
+      );
 
     res.status(201).json({
       success: true,
