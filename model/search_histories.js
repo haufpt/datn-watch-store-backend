@@ -11,7 +11,7 @@ const searchHistoriesModelSchema = mongoose.Schema(
       type: Date,
       required: true,
     },
-    comment: {
+    textSearch: {
       type: String,
       required: true,
     },
