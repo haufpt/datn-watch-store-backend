@@ -32,8 +32,28 @@ const findBrandById = async (idBrand) => {
   return await brandsModel.findById(idBrand);
 };
 
+const updateBrand = async (idBrand, updatedData) => {
+  try {
+    const brand = await brandsModel.findById(idBrand);
+    if (!brand) throw new Error("Brand not found");
+
+    const existingBrand = await brandsModel.findOne({
+      _id: { $ne: idBrand },
+      name: updatedData.name
+    });
+    if (existingBrand) throw new Error("Brand name already exists");
+
+    Object.assign(brand, updatedData);
+
+    return brand.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   createNewBrand,
   findBrandById,
   listBrand,
+  updateBrand
 };

@@ -39,11 +39,10 @@ const detailBrand = async (req, res) => {
       });
     }
     console.log("[brandController] getDatailBrand: brand -> ", brand);
-     res.render("./index.ejs", {
-      title: "Danh sách thương hiệu",
-      routerName: "detail-brand",
-      info: req.session.account,
-      brandData: brand,
+    res.status(201).json({
+      success: true,
+      message: `Lấy thông tin thành công`,
+      data: brand
     });
   } catch (error) {
     res.status(500).json({
@@ -94,8 +93,51 @@ const postBrand = async (req, res) => {
   }
 };
 
+const updateBrand = async (req, res) => {
+  try {
+    const baseUrl = req.protocol + "://" + req.get("host") + "/";
+    let idBrand = req.params.idBrand;
+    const formData = req.body;
+
+    const { error } = brandValidation.addBrand.validate(formData, {
+      abortEarly: false,
+    });
+    console.log(`[BrandController] updateBrand: formData -> ${JSON.stringify(formData)}`);
+    if (error) {
+      return res.status(400).json({
+        message: error.details.map((detail) => detail.message),
+      });
+    }
+    console.log(`[BrandController] files -> ${req.file}`);
+    if (!req.file) {
+      return res.status(400).json({ message: "Vui lòng tải lên ảnh." });
+    }
+
+    if (!req.file.mimetype.startsWith("image/")) {
+      throw new Error("File không phải là hình ảnh.");
+    }
+
+    const photoUrl = baseUrl + req.file.destination + req.file.filename;
+
+    formData.logo = photoUrl;
+    const updateBrand = await brandService.updateBrand(idBrand ,formData);
+
+    res.status(201).json({
+      success: true,
+      message: `Sửa thương hiệu thành công !`,
+      data: updateBrand
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   listBrand,
   detailBrand,
   postBrand,
+  updateBrand
 };

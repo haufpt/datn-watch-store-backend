@@ -26,4 +26,12 @@ router.post(
   brandController.postBrand
 );
 
+router.put(
+  "/update-brand/:idBrand",
+  checkRole([AccountRoleEnum.ADMIN]),
+  multerService.uploadFile(FileTypeEnum.IMAGE).single("file"),
+  checkFile("SINGLE"),
+  brandController.updateBrand
+);
+
 module.exports = router;
