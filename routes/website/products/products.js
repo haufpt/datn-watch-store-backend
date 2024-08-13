@@ -42,7 +42,6 @@ router.put(
   "/update-product/:idProduct",
   checkRole([AccountRoleEnum.ADMIN]),
   multerService.uploadFile(FileTypeEnum.IMAGE).array("photoUrls"),
-  checkFile("MULTIPLE"),
   productRouter.updateProduct
 );
 module.exports = router;

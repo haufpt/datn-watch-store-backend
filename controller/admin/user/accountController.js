@@ -2,51 +2,90 @@ const accountService = require("../../../service/account/account");
 const accountValidation = require("../../../validation/auth");
 
 const listUser = async (req, res) => {
-    try {
-      const listAccountUser = await accountService.getAllAcountUser();
-      console.log("[acountController] listAccountUser -> ", listAccountUser);
-      res.render("./index.ejs", {
-        title: "Danh sách khách hàng",
-        routerName: "list-user",
-        info: req.session.account,
-        listAccountUserData: listAccountUser,
-      });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        message: `${error.message}`,
-      });
-    }
-  };
+  try {
+    const type = req.query.type;
 
-  const detailUser = async (req, res) => {
+    const listAccountUser = await accountService.getAllAcountUser({
+      type: type,
+    });
+    console.log("[acountController] listAccountUser -> ", listAccountUser);
+    res.render("./index.ejs", {
+      title: "Danh sách khách hàng",
+      routerName: "list-user",
+      info: req.session.account,
+      listAccountUserData: listAccountUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
+const detailUser = async (req, res) => {
+  let idAccount = req.params.idAccount;
+  const account = await accountService.findAccountById(idAccount);
+  console.log("[acountController] detailAccount -> ", account);
+
+  if (!account) {
+    return res.status(301).json({
+      success: false,
+      message: `Account not found`,
+    });
+  }
+  try {
+    res.render("./index.ejs", {
+      title: "Chi tiết khách hàng",
+      routerName: "detail-user",
+      info: req.session.account,
+      detailUserData: account,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
+const changeStatus = async (req, res) => {
+  try {
     let idAccount = req.params.idAccount;
+    let status = req.body.status;
     const account = await accountService.findAccountById(idAccount);
-    console.log("[acountController] detailAccount -> ", account);
+    console.log("[acountController] changeStatus -> ", account);
 
     if (!account) {
       return res.status(301).json({
         success: false,
-        message: `Account not found`,
+        message: `Tài khoản không tồn tại.`,
       });
     }
-    try {
-      res.render("./index.ejs", {
-        title: "Chi tiết khách hàng",
-        routerName: "detail-user",
-        info: req.session.account,
-        detailUserData: account,
-      });
-    } catch (error) {
-      res.status(500).json({
+
+    if (!status) {
+      return res.status(301).json({
         success: false,
-        message: `${error.message}`,
+        message: "`status` field is required",
       });
     }
-  };
-  
-  module.exports = {
-    listUser,
-    detailUser
-  };
-  
+
+    await accountService.findByIdAndUpdate(idAccount, { isDeleted: status });
+
+    res.status(201).json({
+      success: true,
+      message: status ? "Khoá tài khoản thành công" : `Mở tài khoản thành công`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
+module.exports = {
+  listUser,
+  detailUser,
+  changeStatus,
+};

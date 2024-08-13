@@ -9,6 +9,7 @@ const getListDiscountByUser = async (accountId) => {
   const discounts = await discountModel.aggregate([
     {
       $match: {
+        isDeleted: { $ne: true },
         $or: [
           { expirationDate: { $exists: false } },
           { expirationDate: { $gte: currentDate } },
@@ -60,7 +61,7 @@ const getListDiscount = async () => {
     const pipeline = [
       {
         $match: {
-          isDelete: { $ne: false },
+          isDeleted: { $ne: true },
         },
       },
       {
@@ -92,14 +93,16 @@ const createNewDiscount = async (data) => {
 };
 
 function generateUniqueCode(length, existingCodes) {
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  let result = '';
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+  let result = "";
   let isUnique = false;
 
   while (!isUnique) {
-    result = '';
+    result = "";
     for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
     }
     isUnique = !existingCodes.includes(result);
   }
@@ -124,11 +127,19 @@ const getAllDiscountCodes = async () => {
     ];
 
     const discounts = await discountModel.aggregate(pipeline);
-    console.log(`[discountService] getAllDiscountCodes: listCode -> ${JSON.stringify(discounts)} ` );
-    return discounts.map(discount => discount.code);
+    console.log(
+      `[discountService] getAllDiscountCodes: listCode -> ${JSON.stringify(
+        discounts
+      )} `
+    );
+    return discounts.map((discount) => discount.code);
   } catch (error) {
     console.error(error);
   }
+};
+
+const findByIdAndUpdate = async (discountId, newInfomation) => {
+  return await discountModel.findByIdAndUpdate(discountId, newInfomation);
 };
 
 module.exports = {
@@ -137,5 +148,6 @@ module.exports = {
   getListDiscount,
   createNewDiscount,
   generateUniqueCode,
-  getAllDiscountCodes
+  getAllDiscountCodes,
+  findByIdAndUpdate,
 };

@@ -1,7 +1,5 @@
 const Joi = require("joi");
-const {
-  DiscountTypeEnum,
-} = require("../common/enum");
+const { DiscountTypeEnum } = require("../common/enum");
 const { param } = require("../routes/api/discount/discount");
 
 class DiscountValidation {
@@ -13,6 +11,16 @@ class DiscountValidation {
     discountType: Joi.string()
       .valid(...Object.values(DiscountTypeEnum))
       .required(),
+  });
+
+  static updateDiscount = Joi.object({
+    content: Joi.string().max(255).optional(),
+    createdDate: Joi.date().iso().optional(),
+    discountValue: Joi.number().integer().optional(),
+    expirationDate: Joi.date().iso().optional(),
+    discountType: Joi.string()
+      .valid(...Object.values(DiscountTypeEnum))
+      .optional(),
   });
 }
 

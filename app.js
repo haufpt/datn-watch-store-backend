@@ -3,7 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-
+const firsebase = require("./modules/firsebase");
 const route = require("./routes/index");
 
 const { initDbConnection } = require("./modules/db");
@@ -46,6 +46,9 @@ initDbConnection().catch(() => {
   console.log(`error db connection`);
   process.exit(1);
 });
+
+// Init FiseBase
+firsebase.initializeFiseBase();
 
 // app.listen(3000,'192.168.1.12',function(){
 //   console.log('Run 3000');

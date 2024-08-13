@@ -21,4 +21,18 @@ router.put(
   notifyController.readNotify
 );
 
+router.post(
+  "/",
+  validateSchema(NotifyValidation.createNotify),
+  notifyController.createNotify
+);
+
+router.put(
+  "/:notifyId/update",
+  validateSchema(NotifyValidation.updateNotify),
+  notifyController.updateNotify
+);
+
+router.delete("/:notifyId", notifyController.deleteNotify);
+
 module.exports = router;

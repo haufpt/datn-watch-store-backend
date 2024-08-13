@@ -30,6 +30,10 @@ const accountModelSchema = mongoose.Schema(
       type: String,
       require: true,
     },
+    isDeleted: {
+      type: Boolean,
+      required: false,
+    },
     firebaseNotifications: [
       {
         deviceId: { type: String, required: true },

@@ -6,99 +6,122 @@
         <section class="content">
           <div id="loading" class="loading-container">
             <div class="loading-spinner">
-                <i class="fas fa-spinner fa-spin"></i>
+              <i class="fas fa-spinner fa-spin"></i>
             </div>
-        </div>
+          </div>
 
-        <div id="dialog" class="dialog-container">
+          <div id="dialog" class="dialog-container">
             <div class="dialog-content">
-                <span id="dialog-message"></span>
-                <button onclick="hideDialog()">Ok</button>
+              <span id="dialog-message"></span>
+              <button onclick="hideDialog()">Ok</button>
             </div>
-        </div>
+          </div>
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-12">
                 <div class="card card-primary">
                   <div class="card-header">
-                    <h5 class="card-title">Thông Tin Sản Phẩm</h5>
+                    <h5 class="card-title">Thông tin sản phẩm</h5>
                   </div>
                   <div class="col-lg-12 d-none">
-                    <p id="productID"><%= productData._id %></p>
+                    <p id="productID">
+                      <%= productData._id %>
+                    </p>
                   </div>
                   <!-- /.card-header -->
                   <!-- form start -->
                   <form id="uploadForm">
-                   
+
                     <div class="card-body">
                       <div class="form-group">
-                        <label for="productImages">Hình Ảnh Sản Phẩm</label>
+                        <label for="productImages">Hình ảnh sản phẩm</label>
                         <div class="image-container" id="imageContainer" disable>
                           <!-- Hiển thị hình ảnh sản phẩm -->
                           <% productData.photoUrls.forEach((row)=> { %>
-                          <img src="<%= row %>" alt="Product Image" onclick="selectImage(event)">
-                          <% }) %>
+                            <img src="<%= row %>" alt="Product Image" onclick="selectImage(event)"
+                              style="height: 100px;width:100px; object-fit: contain;">
+                            <% }) %>
                         </div>
-                        <input type="file" class="form-control" id="photoUrls" multiple
-                        name="files" accept="image/*">
+                        <input type="file" class="form-control" id="photoUrls" multiple name="files" accept="image/*">
                       </div>
                       <div class="row">
                         <div class="form-group col-md-3">
-                          <label for="brandId">Brand</label>
+                          <label for="brandId">Thương hiệu</label>
                           <select class="form-control" id="brandId" disabled>
                             <% Object.values(listBrandData).forEach(function(brand) { %>
-                              <% if (brand.name === productData.brand.name) { %>
-                                <option value="<%= brand._id %>" selected><%= brand.name %></option>
-                              <% } else { %>
-                                <option value="<%= brand._id %>"><%= brand.name %></option>
-                              <% } %>
-                            <% }); %>
+                              <% if (brand.name===productData.brand.name) { %>
+                                <option value="<%= brand._id %>" selected>
+                                  <%= brand.name %>
+                                </option>
+                                <% } else { %>
+                                  <option value="<%= brand._id %>">
+                                    <%= brand.name %>
+                                  </option>
+                                  <% } %>
+                                    <% }); %>
                           </select>
                         </div>
                         <div class="form-group col-md-9">
-                          <label for="name">Tên Sản Phẩm</label>
-                          <input type="text" class="form-control" id="name" name="name" value="<%= productData.name %>" disabled>
+                          <label for="name">Tên sản phẩm</label>
+                          <input type="text" class="form-control" id="name" name="name" value="<%= productData.name %>"
+                            disabled>
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="description">Mô Tả</label>
-                        <textarea class="form-control" id="description" rows="3" disabled><%= productData.description %></textarea>
+                        <label for="description">Mô tả</label>
+                        <textarea class="form-control" id="description" rows="3"
+                          disabled><%= productData.description %></textarea>
                       </div>
                       <div class="row">
                         <div class="form-group col-md-4">
                           <label for="price">Giá</label>
-                          <input type="number" class="form-control" id="price" value="<%= productData.price %>" disabled>
+                          <input type="number" class="form-control" id="price" value="<%= productData.price %>"
+                            disabled>
                         </div>
                         <div class="form-group col-md-4">
-                          <label for="quantity">Số Lượng</label>
-                          <input type="number" class="form-control" id="quantity" value="<%= productData.quantity %>" disabled>
+                          <label for="quantity">Số lượng</label>
+                          <input type="number" class="form-control" id="quantity" value="<%= productData.quantity %>"
+                            disabled>
                         </div>
                         <div class="form-group col-md-4">
-                          <label for="size">Kích Thước</label>
+                          <label for="size">Kích thước</label>
                           <input type="number" class="form-control" id="size" value="<%= productData.size %>" disabled>
                         </div>
                         <div class="form-group col-md-6">
-                          <label for="machineCategory">Machine Category</label>
+                          <label for="machineCategory">Loại máy</label>
                           <select class="form-control" id="machineCategory" disabled>
                             <% Object.values(machineCategories).forEach(function(category) { %>
-                              <% if (category === productData.machineCategory) { %>
-                                <option value="<%= category %>" selected><%= category %></option>
-                              <% } else { %>
-                                <option value="<%= category %>"><%= category %></option>
-                              <% } %>
-                            <% }); %>
+                              <option value="<%= category %>" <% if (category===productData.machineCategory) { %>
+                                selected
+                                <% } %>>
+                                  <% if (category==='AUTOMATIC_MECHANICAL' ) { %>
+                                    Cơ tự động
+                                    <% } else if (category==='BATTERY' ) { %>
+                                      Pin
+                                      <% } else if (category==='LIGHT_ENERGY' ) { %>
+                                        Năng lượng mặt trời
+                                        <% } else { %>
+                                          <%= category %>
+                                            <% } %>
+                              </option>
+                              <% }); %>
                           </select>
+
                         </div>
                         <div class="form-group col-md-6">
-                          <label for="wireCategory">Wire Category</label>
+                          <label for="wireCategory">Loại dây</label>
                           <select class="form-control" id="wireCategory" disabled>
                             <% Object.values(WireCategories).forEach(function(category) { %>
-                              <% if (category === productData.wireCategory) { %>
-                                <option value="<%= category %>" selected><%= category %></option>
-                              <% } else { %>
-                                <option value="<%= category %>"><%= category %></option>
-                              <% } %>
-                            <% }); %>
+                              <% if (category===productData.wireCategory) { %>
+                                <option value="<%= category %>" selected>
+                                  <%= category %>
+                                </option>
+                                <% } else { %>
+                                  <option value="<%= category %>">
+                                    <%= category %>
+                                  </option>
+                                  <% } %>
+                                    <% }); %>
                           </select>
                         </div>
                       </div>
@@ -106,42 +129,41 @@
                     <!-- /.card-body -->
 
                     <div class="card-footer text-right">
-                      <button type="button" class="btn btn-success delete-icon" id="deleteButton">Delete</button>
-                      <button type="button" class="btn btn-warning" id="editButton">Edit</button>
-                      <a href="#">
-                        <button type="submit" class="btn btn-success" id="saveButton" style="display: none;">Save</button>
-                      </a>
+                      <button type="button" class="btn btn-danger delete-icon" id="deleteButton">Xoá</button>
+                      <button type="button" class="btn btn-warning" id="editButton">Sửa</button>
                       <button type="button" class="btn btn-secondary" id="cancelButton"
-                        style="display: none;">Cancel</button>
+                        style="display: none;">Huỷ</button>
+                      <a href="#">
+                        <button type="submit" class="btn btn-success" id="saveButton"
+                          style="display: none;">Lưu</button>
+                      </a>
                     </div>
                   </form>
-                  
+
                   <div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog"
-                  aria-labelledby="deleteProductModalLabel" aria-hidden="true">
-                  <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                      <form action="/product/lock-product/<%= productData._id %>" method="POST">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="deleteProductModalLabel">
-                          Khóa sản phẩm
-                        </h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
+                    aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <form action="/product/lock-product/<%= productData._id %>" method="POST">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="deleteProductModalLabel">
+                              Xoá sản phẩm
+                            </h5>
+                          </div>
+                          <div class="modal-body">Bạn có chắc chắn muốn xoá sản phẩm này?</div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                              id="cancelPromotionConfirm">
+                              Hủy
+                            </button>
+                            <button type="submit" class="btn btn-danger" id="deletePromotionConfirm">
+                              Đồng ý
+                            </button>
+                          </div>
+                        </form>
                       </div>
-                      <div class="modal-body">Bạn có chắc chắn muốn khóa sản phẩm này?</div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                          Hủy
-                        </button>
-                        <button type="submit" class="btn btn-danger" id="deletePromotionConfirm">
-                          Đồng ý!
-                        </button>
-                      </div>
-                    </form>
                     </div>
                   </div>
-                </div>
                 </div>
               </div>
             </div>
@@ -192,6 +214,10 @@
     $(".delete-icon").on("click", function () {
       $("#deleteProductModal").modal("show");
     });
+
+    $("#cancelPromotionConfirm").on("click", function () {
+      $("#deleteProductModal").modal("hide");
+    });
   });
 </script>
 
@@ -200,91 +226,91 @@
   var isSuccess = false;
   const form = document.getElementById('uploadForm');
   form.addEventListener('submit', function (event) {
-       event.preventDefault();
-      const formData = new FormData();
-      const productID = document.getElementById('productID').textContent;
-      console.log(`[web] updateProduct: productID -> ${productID}`);
-      const brandID = document.getElementById('brandId').value;
-      console.log(`[web] updateProduct: brandID -> ${brandID}`);
-      formData.append('brandId', brandID);
+    event.preventDefault();
+    const formData = new FormData();
+    const productID = document.getElementById('productID').textContent.trim();
+    console.log(`[web] updateProduct: productID -> ${productID}`);
+    const brandID = document.getElementById('brandId').value;
+    console.log(`[web] updateProduct: brandID -> ${brandID}`);
+    formData.append('brandId', brandID);
 
-      const productName = document.getElementById("name").value;
-      formData.append('name', productName)
+    const productName = document.getElementById("name").value;
+    formData.append('name', productName)
 
-      const productDescription = document.getElementById("description").value;
-      formData.append('description', productDescription)
+    const productDescription = document.getElementById("description").value;
+    formData.append('description', productDescription)
 
-      const fileProductImage = document.getElementById('photoUrls');
-      const fileMedias = fileProductImage.files;
-      for (let i = 0; i < fileMedias.length; i++) {
-          console.log(`[web] updateProduct: fileMedias -> ${fileMedias[i]}`);
-          formData.append('photoUrls', fileMedias[i]);
-      }
+    const fileProductImage = document.getElementById('photoUrls');
+    const fileMedias = fileProductImage.files;
+    for (let i = 0; i < fileMedias.length; i++) {
+      console.log(`[web] updateProduct: fileMedias -> ${fileMedias[i]}`);
+      formData.append('photoUrls', fileMedias[i]);
+    }
 
-      const productPrice = document.getElementById("price").value;
-      formData.append('price', productPrice);
+    const productPrice = document.getElementById("price").value;
+    formData.append('price', productPrice);
 
-      const productQuantity = document.getElementById("quantity").value;
-      formData.append('quantity', productQuantity);
+    const productQuantity = document.getElementById("quantity").value;
+    formData.append('quantity', productQuantity);
 
-      const productSize = document.getElementById("size").value;
-      formData.append('size', productSize);
+    const productSize = document.getElementById("size").value;
+    formData.append('size', productSize);
 
-      const productMachineCategory = document.getElementById('machineCategory').value;
-      console.log(`[web] updateProduct: machineCategory -> ${productMachineCategory}`);
-      formData.append('machineCategory', productMachineCategory);
+    const productMachineCategory = document.getElementById('machineCategory').value;
+    console.log(`[web] updateProduct: machineCategory -> ${productMachineCategory}`);
+    formData.append('machineCategory', productMachineCategory);
 
-      const productWireCategory = document.getElementById('wireCategory').value;
-      console.log(`[web] updateProduct: wireCategory -> ${productWireCategory}`);
-      formData.append('wireCategory', productWireCategory);
+    const productWireCategory = document.getElementById('wireCategory').value;
+    console.log(`[web] updateProduct: wireCategory -> ${productWireCategory}`);
+    formData.append('wireCategory', productWireCategory);
 
-      console.log(`[web] updateProduct: formData -> ${JSON.stringify(formData)}`);
-      showLoading();
-      fetch(`${baseURL}/product/update-product/${productID}`, {
-          method: "PUT",
-          body: formData,
+    console.log(`[web] updateProduct: formData -> ${JSON.stringify(formData)}`);
+    showLoading();
+    fetch(`${baseURL}/product/update-product/${productID}`, {
+      method: "PUT",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
       })
-          .then((response) => {
-              if (!response.ok) {
-                  throw new Error(`HTTP error! Status: ${response.status}`);
-              }
-              return response.json();
-          })
-          .then((body) => {
-              isSuccess = true;
-              hideLoading();
-              showDialog(body.message);
-              setTimeout(() => {
-              window.location.href = baseURL + '/product/list-products';
-              }, 1300);
-          })
-          .catch((error) => {
-              isSuccess = false;
-              hideLoading();
-              showDialog("Lỗi: " + error.message);
-              console.error("Error:", error);
-          });
+      .then((body) => {
+        isSuccess = true;
+        hideLoading();
+        showDialog(body.message);
+        setTimeout(() => {
+          location.reload();
+        }, 1300);
+      })
+      .catch((error) => {
+        isSuccess = false;
+        hideLoading();
+        showDialog("Lỗi: " + error.message);
+        console.error("Error:", error);
+      });
   });
 
   function showLoading() {
-      document.getElementById("loading").style.display = "block";
+    document.getElementById("loading").style.display = "block";
   }
 
   function hideLoading() {
-      document.getElementById("loading").style.display = "none";
+    document.getElementById("loading").style.display = "none";
   }
 
   function showDialog(message) {
-      document.getElementById("dialog-message").textContent = message;
-      document.getElementById("dialog").style.display = "block";
+    document.getElementById("dialog-message").textContent = message;
+    document.getElementById("dialog").style.display = "block";
   }
 
   function hideDialog() {
-      document.getElementById("dialog").style.display = "none";
-      if (isSuccess) {
-          form.reset();
-          isSuccess = false;
-      }
+    document.getElementById("dialog").style.display = "none";
+    if (isSuccess) {
+      form.reset();
+      isSuccess = false;
+    }
   }
 
 </script>

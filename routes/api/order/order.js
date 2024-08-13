@@ -49,8 +49,6 @@ router.get(
 
 router.put(
   "/:orderId/cancel",
-  checkLogin,
-  checkPermission([AccountRoleEnum.CLIENT]),
   validateSchema(OrderValidation.cancelOrder),
   orderController.cancelOrder
 );

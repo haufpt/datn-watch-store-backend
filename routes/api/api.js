@@ -11,6 +11,7 @@ const accountRouter = require("./account/account");
 const notifyRouter = require("./notify/notify");
 const searchHistoriesRouter = require("./search_histories/search_histories");
 const transactionHistoriesRouter = require("./transaction_histories/transaction_histories");
+const statisticalRouter = require("./statistical/statistical");
 
 router.use("/auth", authRouter);
 
@@ -33,5 +34,7 @@ router.use("/notify", notifyRouter);
 router.use("/search-histories", searchHistoriesRouter);
 
 router.use("/transaction-histories", transactionHistoriesRouter);
+
+router.use("/statistical", statisticalRouter);
 
 module.exports = router;

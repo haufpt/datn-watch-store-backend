@@ -3,54 +3,100 @@
         <!-- Start Content-->
         <div class="wrapper">
             <div class="content-wrapper">
+                <div id="loading" class="loading-container">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i>
+                    </div>
+                </div>
+
+                <div id="dialog" class="dialog-container">
+                    <div class="dialog-content">
+                        <span id="dialog-message"></span>
+                        <button onclick="hideDialog()">Ok</button>
+                    </div>
+                </div>
                 <!-- Content Header (Page header) -->
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="card">
-                            <section class="content-header">
-                                <div class="container-fluid">
-                                    <div class="row p-3">
-                                        <div class="col-sm-6">
-                                            <h3>Quản lí thông báo</h3>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <button class="btn btn-primary float-right" id="create-notify-btn">
-                                                Tạo thông báo
-                                            </button>
-                                        </div>
-                                    </div>
+                        <div class="col-md-12">
+                            <div class="card card-primary card-outline">
+                                <div class="card-header" style="
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                  ">
+                                    <h5 class="card-title">Thông báo</h5>
+                                    <button class="btn btn-primary float-right" id="create-notify-btn">
+                                        Tạo thông báo
+                                    </button>
                                 </div>
-                            </section>
-                            <!-- Main content -->
-                            <section class="content">
-                                <div class="container-fluid">
-                                    <div class="card-body">
-                                        <table class="table table-tripped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Tiêu đề</th>
-                                                    <th>Nội dung</th>
-                                                    <th>Ngày tạo</th>
-                                                    <th>Loại</th>
-                                                    <th></th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Sale sap san 50$</td>
-                                                    <td>Khong mua hoi phi</td>
-                                                    <td>2023-01-15 11:45:00</td>
-                                                    <td>Su kien</td>
-                                                    <td>
-                                                        <i class="edit-icon mr-3 fa fa-pen"></i>
-                                                        <i class="delete-icon fa fa-trash"></i>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                <!-- Main content -->
+                                <div class="card-body">
+                                    <table class="table table-tripped">
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Tiêu đề</th>
+                                                <th>Nội dung</th>
+                                                <th>Ngày tạo</th>
+                                                <th>Loại</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% let index=1; %>
+                                                <% listNotify.forEach((row)=> { %>
+                                                    <tr data-id="<%= row._id %>" data-title="<%= row.title %>"
+                                                        data-message="<%= row.message %>"
+                                                        data-createdAt="<%= row.createdAt %>"
+                                                        data-type="<%= row.type %>">
+                                                        <% const formatDate=(dateString)=> { const date = new
+                                                            Date(dateString); const day = date.getDate(); const
+                                                            month = date.getMonth() + 1; const year =
+                                                            date.getFullYear(); return `${day}/${month}/${year}`; };
+                                                            %>
+
+                                                            <td>
+                                                                <%= index %>
+                                                            </td>
+                                                            <td>
+                                                                <%= row.title %>
+                                                            </td>
+                                                            <td>
+                                                                <%= row.message %>
+                                                            </td>
+                                                            <td class="date">
+                                                                <%= formatDate(row.createdAt) %>
+                                                            </td>
+                                                            <td>
+                                                                <% if (row.type=='PROMOTION' ) { %> Khuyến mãi <% } else
+                                                                        if (row.type=='EVENT' ){ %> Sự kiện <% } else if
+                                                                            (row.type=='UPDATE' ){ %> Cập nhật <% } %>
+                                                            </td>
+                                                            <td>
+                                                                <i class="edit-icon mr-3 fa fa-pen"></i>
+                                                                <i class="delete-icon fa fa-trash"></i>
+                                                            </td>
+                                                    </tr>
+                                                    <% index++; %>
+                                                        <% }) %>
+                                        </tbody>
+                                        <!-- <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Sale sap san 50$</td>
+                                                <td>Khong mua hoi phi</td>
+                                                <td>2023-01-15 11:45:00</td>
+                                                <td>Su kien</td>
+                                                <td>
+                                                    <i class="edit-icon mr-3 fa fa-pen"></i>
+                                                    <i class="delete-icon fa fa-trash"></i>
+                                                </td>
+                                            </tr>
+                                        </tbody> -->
+                                    </table>
                                 </div>
-                            </section>
+                            </div>
                         </div>
                         <!-- Create Notify Modal -->
                         <div class="modal fade" id="createNotifyModal" tabindex="-1" role="dialog"
@@ -61,38 +107,33 @@
                                         <h5 class="modal-title" id="createNotifyModalLabel">
                                             Tạo thông báo
                                         </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form>
+                                        <form id="newForm">
                                             <div class="form-group">
-                                                <label for="notifyType">Tiêu đề</label>
-                                                <input type="text" class="form-control" id="notifyName"
-                                                    placeholder="Tiêu đề thông báo" />
+                                                <label for="notifyName">Tiêu đề</label>
+                                                <input type="text" class="form-control" id="notifyName" />
                                             </div>
                                             <div class="form-group">
-                                                <label for="notifyType">Nội dung</label>
-                                                <input type="text" class="form-control" id="notifyName"
-                                                    placeholder="Noi dung thong bao" />
+                                                <label for="notifyContent">Nội dung</label>
+                                                <input type="text" class="form-control" id="notifyContent" />
                                             </div>
                                             <div class="form-group">
-                                                <label for="typeEnum">Loại</label>
+                                                <label for="notifyType">Loại</label>
                                                 <select class="form-control" id="notifyType">
-                                                    <option value="type" hidden>Loại</option>
-                                                    <option value="event">Sự kiện</option>
-                                                    <option value="promotion">Khuyến mãi</option>
-                                                    <option value="update">Cập nhật</option>
+                                                    <option value="EVENT">Sự kiện</option>
+                                                    <option value="PROMOTION">Khuyến mãi</option>
+                                                    <option value="UPDATE">Cập nhật</option>
                                                 </select>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            id="btn-cancel-add">
                                             Hủy
                                         </button>
-                                        <button type="button" class="btn btn-primary" id="saveNotify">
+                                        <button type="submit" class="btn btn-primary" id="saveNotify">
                                             Lưu
                                         </button>
                                     </div>
@@ -108,35 +149,31 @@
                                         <h5 class="modal-title" id="editNotifyModalLabel">
                                             Chỉnh sửa thông báo
                                         </h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
                                     </div>
+                                    <input type="text" class="form-control d-none" id="notifyId" />
                                     <div class="modal-body">
                                         <form>
                                             <div class="form-group">
-                                                <label for="notifyType">Tiêu đề</label>
-                                                <input type="text" class="form-control" id="notifyName"
-                                                    placeholder="Tiêu đề thông báo" />
+                                                <label for="updateNotifyTitle">Tiêu đề</label>
+                                                <input type="text" class="form-control" id="updateNotifyTitle" />
                                             </div>
                                             <div class="form-group">
-                                                <label for="notifyType">Nội dung</label>
-                                                <input type="text" class="form-control" id="notifyName"
-                                                    placeholder="Noi dung thong bao" />
+                                                <label for="updateNotifyContent">Nội dung</label>
+                                                <input type="text" class="form-control" id="updateNotifyContent" />
                                             </div>
                                             <div class="form-group">
-                                                <label for="typeEnum">Loại</label>
-                                                <select class="form-control" id="notifyType">
-                                                    <option value="type" hidden>Loại</option>
-                                                    <option value="event">Sự kiện</option>
-                                                    <option value="promotion">Khuyến mãi</option>
-                                                    <option value="update">Cập nhật</option>
+                                                <label for="updateNotifyType">Loại</label>
+                                                <select class="form-control" id="updateNotifyType">
+                                                    <option value="EVENT">Sự kiện</option>
+                                                    <option value="PROMOTION">Khuyến mãi</option>
+                                                    <option value="UPDATE">Cập nhật</option>
                                                 </select>
                                             </div>
                                         </form>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                                            id="cancel-update-btn">
                                             Hủy
                                         </button>
                                         <button type="button" class="btn btn-primary" id="updateNotify">
@@ -157,16 +194,12 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteNotifyModalLabel">
-                        Xóa thông báo
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="deleteNotifyModalLabel">Xóa thông báo</h5>
                 </div>
+                <input type="text" class="form-control d-none" id="deleteNotifyId" />
                 <div class="modal-body">Bạn có chắc chắn muốn xóa thông báo này?</div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="deleteNotifyCancel">
                         Hủy
                     </button>
                     <button type="button" class="btn btn-danger" id="deleteNotifyConfirm">
@@ -183,14 +216,181 @@
             $("#createNotifyModal").modal("show");
         });
 
+        $("#btn-cancel-add").on("click", function () {
+            $("#createNotifyModal").modal("hide");
+        });
+
+        $("#saveNotify").on("click", function () {
+            const baseURL = window.location.protocol + "//" + window.location.host;
+            let isSuccess = false;
+
+            var objectJson = {};
+            const notifyTitle = document.getElementById("notifyName").value;
+            objectJson.title = notifyTitle;
+            const notifyContent = document.getElementById("notifyContent").value;
+            objectJson.message = notifyContent;
+            const notifyType = document.getElementById("notifyType").value;
+            objectJson.type = notifyType;
+            console.log(`[webNotify] new: objectJson -> ${objectJson}`);
+            showLoading();
+
+            fetch(`${baseURL}/api/notify`, {
+                method: "POST",
+                body: JSON.stringify(objectJson),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((body) => {
+                    isSuccess = true;
+                    hideLoading();
+                    showDialog(body.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                })
+                .catch((error) => {
+                    isSuccess = false;
+                    hideLoading();
+                    showDialog("Lỗi: " + error.message);
+                    console.error("Error:", error);
+                });
+        });
+
         // Edit Promotion modal
         $(".edit-icon").on("click", function () {
+            const row = $(this).closest("tr");
+            const id = row.data("id");
+            const title = row.data("title");
+            const content = row.data("message");
+            const notifyType = row.data("type");
+
+            $("#editNotifyModal #notifyId").val(id);
+            $("#editNotifyModal #updateNotifyTitle").val(title);
+            $("#editNotifyModal #updateNotifyContent").val(content);
+            $("#editNotifyModal #updateNotifyType").val(notifyType);
+
             $("#editNotifyModal").modal("show");
+        });
+
+        $("#updateNotify").on("click", function () {
+            const baseURL = window.location.protocol + "//" + window.location.host;
+            let isSuccess = false;
+
+            var objectJson = {};
+            const notifyId = document.getElementById("notifyId").value.trim();
+            const notifyTitle = document.getElementById("updateNotifyTitle").value;
+            objectJson.title = notifyTitle;
+            const notifyContent = document.getElementById("updateNotifyContent").value;
+            objectJson.message = notifyContent;
+            const notifyType = document.getElementById("updateNotifyType").value;
+            objectJson.type = notifyType;
+            console.log(`[webNotify] update: objectJson -> ${objectJson}`);
+            showLoading();
+
+            fetch(`${baseURL}/api/notify/${notifyId}/update`, {
+                method: "PUT",
+                body: JSON.stringify(objectJson),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((body) => {
+                    isSuccess = true;
+                    hideLoading();
+                    showDialog(body.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                })
+                .catch((error) => {
+                    isSuccess = false;
+                    hideLoading();
+                    showDialog("Lỗi: " + error.message);
+                    console.error("Error:", error);
+                });
+        });
+
+        $("#cancel-update-btn").on("click", function () {
+            $("#editNotifyModal").modal("hide");
         });
 
         // Delete Promotion confirmation modal
         $(".delete-icon").on("click", function () {
+            const row = $(this).closest('tr');
+            const id = row.data('id');
+            $('#deleteNotifyModal #deleteNotifyId').val(id);
             $("#deleteNotifyModal").modal("show");
         });
+
+        $("#deleteNotifyCancel").on("click", function () {
+            $("#deleteNotifyModal").modal("hide");
+        });
+
+        $("#deleteNotifyConfirm").on("click", function () {
+            const baseURL = window.location.protocol + "//" + window.location.host;
+            let isSuccess = false;
+
+            const notifyId = document.getElementById("deleteNotifyId").value.trim();
+            showLoading();
+
+            fetch(`${baseURL}/api/notify/${notifyId}`, {
+                method: "DELETE",
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then((body) => {
+                    isSuccess = true;
+                    hideLoading();
+                    showDialog(body.message);
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                })
+                .catch((error) => {
+                    isSuccess = false;
+                    hideLoading();
+                    showDialog("Lỗi: " + error.message);
+                    console.error("Error:", error);
+                });
+        });
+    </script>
+
+    <script>
+        function showLoading() {
+            document.getElementById("loading").style.display = "block";
+        }
+
+        function hideLoading() {
+            document.getElementById("loading").style.display = "none";
+        }
+
+        function showDialog(message) {
+            document.getElementById("dialog-message").textContent = message;
+            document.getElementById("dialog").style.display = "block";
+        }
+
+        function hideDialog() {
+            document.getElementById("dialog").style.display = "none";
+            if (isSuccess) {
+                isSuccess = false;
+            }
+        }
     </script>
 </div>

@@ -12,20 +12,21 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <div class="card-body-action-course">
-                                            <h5 class="card-title">Danh Sách Đơn Hàng</h5>
+                                            <h5 class="card-title">Danh sách đơn hàng</h5>
                                             <div class="dropdown float-end">
                                                 <div class="dropdown">
                                                     <button class="btn btn-info dropdown-toggle" type="button"
                                                         id="dropdownCategoryButton" data-bs-toggle="dropdown"
                                                         aria-haspopup="true" aria-expanded="true">
-                                                        Trạng thái
+                                                        Tất cả
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownCategoryButton"
                                                         data-popper-placement="bottom-start"
                                                         style=" position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 40px, 0px);">
                                                         <a class="dropdown-item" data-status>Tất cả</a>
                                                         <a class="dropdown-item" data-status="PENDING">Chờ xác nhận</a>
-                                                        <a class="dropdown-item" data-status="SHIPPING">Chờ giao hàng</a>
+                                                        <a class="dropdown-item" data-status="SHIPPING">Chờ giao
+                                                            hàng</a>
                                                         <a class="dropdown-item" data-status="DELIVERED">Đã giao</a>
                                                         <a class="dropdown-item" data-status="CANCELLED">Đã hủy</a>
                                                     </div>
@@ -47,13 +48,14 @@
                                             <tbody>
                                                 <% let index=1; %>
                                                     <% listOrderData.forEach((row)=> { %>
-                                                        <tr>
+                                                        <tr onclick="window.location.href='/order/detail-order/<%= row._id %>';"
+                                                            style="cursor: pointer;">
                                                             <td>
                                                                 <%= index %>
                                                             </td>
-                                                            <td><a href="/order/detail-order/<%= row._id %>" class="order-link">
-                                                                    <%= row.code %>
-                                                                </a></td>
+                                                            <td>
+                                                                <%= row.code %>
+                                                            </td>
                                                             <td>
                                                                 <% const formatDate=(dateString)=> {
                                                                     const date = new Date(dateString);
@@ -63,26 +65,26 @@
                                                                     return `${day}/${month}/${year}`;
                                                                     };
                                                                     %>
-                                                                <%= formatDate(row.orderDate) %>
+                                                                    <%= formatDate(row.orderDate) %>
                                                             </td>
                                                             <td>
-                                                                <% if (row.paymentMethod == 'VNPAY') { %>
+                                                                <% if (row.paymentMethod=='VNPAY' ) { %>
                                                                     Thanh toán qua VNPAY
                                                                     <% } else { %>
                                                                         Thanh toán khi nhận hàng
                                                                         <% } %>
                                                             </td>
                                                             <td>
-                                                                <% if (row.status == 'DELIVERED') { %>
+                                                                <% if (row.status=='DELIVERED' ) { %>
                                                                     Đã giao hàng
-                                                                <% } else if (row.status == 'SHIPPING'){ %>
-                                                                    Chờ giao hàng
-                                                                <% } else if (row.status == 'CANCELLED'){ %>   
-                                                                    Đã Hủy
-                                                                <% }else { %>
-                                                                    Chờ xác nhận
-                                                                 <% } %>
-                                                                
+                                                                    <% } else if (row.status=='SHIPPING' ){ %>
+                                                                        Chờ giao hàng
+                                                                        <% } else if (row.status=='CANCELLED' ){ %>
+                                                                            Đã Hủy
+                                                                            <% }else { %>
+                                                                                Chờ xác nhận
+                                                                                <% } %>
+
                                                             </td>
                                                         </tr>
                                                         <% index++; %>
@@ -115,4 +117,34 @@
             window.location.href = `${baseURL}/order/list-order?status=${status}`;
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const dropdownStatusButton = document.querySelector('#dropdownCategoryButton');
+        const dropdownStatusMenu = document.querySelector('#dropdownCategoryButton + .dropdown-menu');
+        const selectedStatus = urlParams.get('status');
+        console.log('selectedStatus: ', selectedStatus);
+        if (selectedStatus) {
+            const statusItems = dropdownStatusMenu.querySelectorAll('a.dropdown-item');
+            statusItems.forEach((item) => {
+                if (item.getAttribute('data-status') === selectedStatus) {
+                    if (selectedStatus === "PENDING") {
+                        dropdownStatusButton.textContent = "Chờ xác nhận";
+                    } else if (selectedStatus === "SHIPPING") {
+                        dropdownStatusButton.textContent = "Chờ giao hàng";
+                    }
+                    else if (selectedStatus === "DELIVERED") {
+                        dropdownStatusButton.textContent = "Đã giao";
+                    }
+                    else if (selectedStatus === "CANCELLED") {
+                        dropdownStatusButton.textContent = "Đã huỷ";
+                    }
+                    item.classList.add('active');
+                }
+            });
+        } else {
+            dropdownStatusButton.textContent = "Tất cả";
+        }
+    });
+
 </script>

@@ -431,15 +431,6 @@ const getListOrderByClient = async (accountId, status) => {
 };
 
 const cancelOrder = async (accountId, orderId, reason) => {
-  const existingOrder = await orderModel.findOne({
-    _id: new mongoose.Types.ObjectId(orderId),
-    accountId: accountId,
-  });
-
-  if (!existingOrder) {
-    throw new Error("Đơn hàng không tồn tại.");
-  }
-
   return await orderModel.findByIdAndUpdate(
     new mongoose.Types.ObjectId(orderId),
     {
@@ -450,6 +441,83 @@ const cancelOrder = async (accountId, orderId, reason) => {
   );
 };
 
+const findOne = async (filter) => {
+  return await orderModel.findOne(filter);
+};
+
+const calculateRevenue = async (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  const matchConditions = {
+    status: OrderStatusEnum.DELIVERED,
+    orderDate: {
+      $gte: start,
+      $lte: end,
+    },
+  };
+
+  const pipeline = [
+    {
+      $match: matchConditions,
+    },
+    {
+      $group: {
+        _id: null,
+        totalRevenue: {
+          $sum: {
+            $cond: [
+              { $ifNull: ["$discountAmount", false] },
+              { $subtract: ["$totalAmount", "$discountAmount"] },
+              "$totalAmount",
+            ],
+          },
+        },
+      },
+    },
+  ];
+
+  const result = await orderModel.aggregate(pipeline);
+  return result.length > 0 ? result[0].totalRevenue : 0;
+};
+
+const calculateTotalSoldProducts = async (startDate, endDate) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  const pipeline = [
+    {
+      $match: {
+        status: "DELIVERED",
+        orderDate: {
+          $gte: start,
+          $lte: end,
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: "order_items",
+        localField: "_id",
+        foreignField: "orderId",
+        as: "orderItems",
+      },
+    },
+    {
+      $unwind: "$orderItems",
+    },
+    {
+      $group: {
+        _id: null,
+        totalSoldProducts: { $sum: "$orderItems.quantity" },
+      },
+    },
+  ];
+
+  const result = await orderModel.aggregate(pipeline);
+  return result.length > 0 ? result[0].totalSoldProducts : 0;
+};
+
 module.exports = {
   processOrder,
   confirmOrder,
@@ -458,4 +526,7 @@ module.exports = {
   getDetailOrder,
   getListOrderByClient,
   cancelOrder,
+  findOne,
+  calculateRevenue,
+  calculateTotalSoldProducts,
 };
