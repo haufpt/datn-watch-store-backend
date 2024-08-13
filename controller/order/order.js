@@ -1,4 +1,6 @@
 const orderService = require("../../service/order/order");
+const notifyService = require("../../service/notify/notify");
+const notifyRecipientService = require("../../service/notify_recipient/notify-recipient");
 const ShippingAddressService = require("../../service/shipping_address/shipping_address");
 const DiscountService = require("../../service/discount/discount");
 const mongoose = require("mongoose");
@@ -6,11 +8,14 @@ const {
   DiscountTypeEnum,
   OrderStatusEnum,
   PaymentStatusEnum,
+  NotificationTypeEnum,
 } = require("../../common/enum");
 const moment = require("moment");
 let config = require("../../config/default.json");
 const querystring = require("qs");
 const crypto = require("crypto");
+const firsebase = require("../../modules/firsebase");
+const accountService = require("../../service/account/account");
 
 const proccessOrder = async (req, res) => {
   try {
@@ -291,11 +296,56 @@ const cancelOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
     const body = req.body;
-    const accountId = req.session.account.id;
+    let accountId ;
+    let account;
     console.log("[OrderController] cancelOrder body: ", body);
     console.log("[OrderController] cancelOrder orderId: ", orderId);
 
+    const existingOrder = await orderService.findOne({
+      _id: new mongoose.Types.ObjectId(orderId),
+    });
+
+    if (!existingOrder) {
+      throw new Error("Đơn hàng không tồn tại.");
+    }
+
+    if (!accountId) {
+      accountId = existingOrder.accountId;
+    }
+    account = await accountService.findAccountById(accountId);
+    console.log("[OrderController] cancelOrder account -> ", account);
+
+    if (!account) {
+      return res.status(301).json({
+        success: false,
+        message: `Tài khoản không tồn tại.`,
+      });
+    }
+
     await orderService.cancelOrder(accountId, orderId, req.body.reason);
+
+    const newNotify = await notifyService.createNotify({
+      title: "Thông báo",
+      message: `Đơn hàng #${existingOrder.code} đã bị huỷ!`,
+      type: NotificationTypeEnum.PERSONAL,
+      createdAt: new Date(),
+    });
+
+    await notifyRecipientService.createNotifyRecipient({
+      accountId: existingOrder.accountId,
+      notificationId: newNotify._id,
+      isRead: false,
+    });
+
+    var tokens = [];
+    for (var i = 0; i < account.firebaseNotifications.length; i++) {
+      tokens.push(account.firebaseNotifications[i].token);
+    }console.log("[OrderController] cancelOrder tokens -> ", tokens);
+    firsebase.sendMessage(
+      "Thông báo",
+      `Đơn hàng #${existingOrder.code} đã bị huỷ!`,
+      tokens[0]
+    );
 
     res.status(201).json({
       success: true,

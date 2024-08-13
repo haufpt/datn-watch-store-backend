@@ -2,14 +2,18 @@ const productService = require("../../../service/product/product");
 const brandService = require("../../../service/brand/brand");
 const brandsModel = require("../../../model/brand.js");
 const ProductValidation = require("../../../validation/product");
-const { MachineCategoryEnum, WireCategoryEnum} = require("../../../common/enum");
-
+const {
+  MachineCategoryEnum,
+  WireCategoryEnum,
+} = require("../../../common/enum");
 
 const postProduct = async (req, res) => {
   try {
     const baseUrl = req.protocol + "://" + req.get("host") + "/";
     const formData = req.body;
-    console.log(`[productController][postProduct] formData _> ${JSON.stringify(formData)}`);
+    console.log(
+      `[productController][postProduct] formData _> ${JSON.stringify(formData)}`
+    );
 
     const { error } = ProductValidation.addProduct.validate(formData, {
       abortEarly: false,
@@ -56,7 +60,9 @@ const updateProduct = async (req, res) => {
     const baseUrl = req.protocol + "://" + req.get("host") + "/";
     let idProduct = req.params.idProduct;
     const formData = req.body;
-    console.log(`[productController] editProduct formData _> ${JSON.stringify(formData)}`);
+    console.log(
+      `[productController] editProduct formData _> ${JSON.stringify(formData)}`
+    );
 
     const { error } = ProductValidation.addProduct.validate(formData, {
       abortEarly: false,
@@ -68,27 +74,23 @@ const updateProduct = async (req, res) => {
       });
     }
 
-    if (!req.files || req.files.length === 0) {
-      return res
-        .status(400)
-        .json({ message: "Vui lòng tải lên ít nhất một ảnh." });
+    if (req.files && req.files.length >= 0) {
+      const photoUrls = req.files.map((file) => {
+        if (!file.mimetype.startsWith("image/")) {
+          throw new Error("File không phải là hình ảnh.");
+        }
+        return baseUrl + file.destination + file.filename;
+      });
+      formData.photoUrls = photoUrls;
     }
 
-    const photoUrls = req.files.map((file) => {
-      if (!file.mimetype.startsWith("image/")) {
-        throw new Error("File không phải là hình ảnh.");
-      }
-      return baseUrl + file.destination + file.filename;
-    });
-
-    formData.photoUrls = photoUrls;
     formData.createdDate = new Date();
 
-    await productService.updateProduct(idProduct,formData);
+    await productService.updateProduct(idProduct, formData);
 
     res.status(201).json({
       success: true,
-      message: `Sửa sản phầm thành công.`,
+      message: `Cập nhật sản phầm thành công.`,
     });
   } catch (error) {
     res.status(500).json({
@@ -105,7 +107,7 @@ const lockProduct = async (req, res) => {
     console.log("[productController] lockProduct: idProduct -> ", idProduct);
     const lockProduct = await productService.postLockProduct(idProduct);
     console.log(`[productController] lockProduct -> ${lockProduct}`);
-    res.redirect(`${baseUrl}product/list-products`)
+    res.redirect(`${baseUrl}product/list-products?type=NEW`);
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -116,7 +118,7 @@ const lockProduct = async (req, res) => {
 
 const listProduct = async (req, res) => {
   try {
-    const { type, page, limit, brandId, sortBy, brandName} = req.query;
+    const { type, page, limit, brandId, sortBy, brandName } = req.query;
     const listBrand = await brandsModel.find();
     console.log("[productController] listProduct: getlistBrand -> ", listBrand);
     let listProduct = await productService.getListProduct({
@@ -127,16 +129,19 @@ const listProduct = async (req, res) => {
     });
     console.log("[productController] listProduct -> ", listProduct);
 
-
     if (brandId) {
-      listProduct = listProduct.filter(product => product.brand.id === brandId);
+      listProduct = listProduct.filter(
+        (product) => product.brand.id === brandId
+      );
     } else if (brandName) {
-      listProduct = listProduct.filter(product => product.brand.name === brandName);
+      listProduct = listProduct.filter(
+        (product) => product.brand.name === brandName
+      );
     }
 
-    if (sortBy === 'asc') {
+    if (sortBy === "asc") {
       listProduct.sort((a, b) => a.price - b.price);
-    } else if (sortBy === 'desc') {
+    } else if (sortBy === "desc") {
       listProduct.sort((a, b) => b.price - a.price);
     }
 
@@ -193,7 +198,7 @@ const detailProduct = async (req, res) => {
       productData: product,
       machineCategories: MachineCategoryEnum,
       WireCategories: WireCategoryEnum,
-      listBrandData: listBrand
+      listBrandData: listBrand,
     });
   } catch (error) {
     res.status(500).json({
@@ -209,5 +214,5 @@ module.exports = {
   detailProduct,
   postProduct,
   updateProduct,
-  lockProduct
+  lockProduct,
 };

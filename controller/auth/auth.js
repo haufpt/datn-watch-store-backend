@@ -8,37 +8,43 @@ const login = async (req, res) => {
     const { userName, password, firebase } = req.body;
     console.log("[AuthController] login req: ", req.body);
 
-    var isExistUserName = await accountService.findAccount({
+    var existAccount = await accountService.findAccount({
       userName: userName,
     });
 
-    if (!isExistUserName) {
+    if (!existAccount) {
       return res.status(301).json({
         success: false,
         message: "Sai tài khoản hoặc mật khẩu.",
       });
     }
 
-    if (password != isExistUserName.password) {
+    if (password != existAccount.password) {
       return res.status(301).json({
         success: false,
         message: "Sai tài khoản hoặc mật khẩu.",
       });
     }
 
-    await accountService.findByIdAndUpdate(isExistUserName._id, {
+    if (existAccount.isDeleted === true) {
+      return res.status(301).json({
+        success: false,
+        message: "Tài khoản đã bị khoá.",
+      });
+    }
+    await accountService.findByIdAndUpdate(existAccount._id, {
       firebaseNotifications: [firebase],
     });
 
     const token = jwtService.generateToken({
-      id: isExistUserName._id,
-      role: isExistUserName.role,
+      id: existAccount._id,
+      role: existAccount.role,
     });
 
     res.status(200).json({
       success: true,
       data: {
-        information: isExistUserName,
+        information: existAccount,
         token: token,
       },
     });
@@ -126,13 +132,16 @@ const loginWeb = async (req, res) => {
     });
 
     if (!isExistUserName) {
-      return res.render("./login/login.ejs", { error: "Email hoặc mật khẩu không chính xác!" });
+      return res.render("./login/login.ejs", {
+        error: "Email hoặc mật khẩu không chính xác!",
+      });
     }
 
     if (password != isExistUserName.password) {
-      return res.render("./login/login.ejs", { error: "Email hoặc mật khẩu không chính xác!" });
+      return res.render("./login/login.ejs", {
+        error: "Email hoặc mật khẩu không chính xác!",
+      });
     }
-    
 
     if (isExistUserName.role != "ADMIN") {
       return res.render("./login/login.ejs", { error: "Không thể đăng nhập!" });
@@ -142,8 +151,8 @@ const loginWeb = async (req, res) => {
       firebaseNotifications: [firebase],
     });
 
-    req.session.account = isExistUserName;    
-    return res.redirect("/product/list-products");
+    req.session.account = isExistUserName;
+    return res.redirect("/product/list-products?type=NEW");
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -168,5 +177,5 @@ module.exports = {
   singup,
   logout,
   loginWeb,
-  redirectLogin
+  redirectLogin,
 };

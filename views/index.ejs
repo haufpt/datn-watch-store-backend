@@ -13,6 +13,7 @@
 
   <!-- App favicon -->
   <link rel="shortcut icon" href="/public/assets/images/favicon.ico" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
 
   <!-- App css -->
   <link href="/public/assets/css/app.min.css" rel="stylesheet" type="text/css" id="app-style" />
@@ -392,81 +393,83 @@
     .product-details p {
       margin: 0;
     }
-    .table .order-link{
+
+    .table .order-link {
       text-align: center;
       text-decoration: none;
       color: #212529;
     }
 
-    .order-link:hover{
+    .order-link:hover {
       color: #77c0f0;
     }
 
     .order-detail-card {
-            margin: 20px;
-        }
+      margin: 20px;
+    }
 
-        .product-image {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-        }
+    .product-image {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+    }
 
-        .info-label {
-            font-weight: bold;
-        }
+    .info-label {
+      font-weight: bold;
+    }
 
-        .info-value {
-            margin-bottom: 10px;
-        }
+    .info-value {
+      margin-bottom: 10px;
+    }
 
-        .product-item {
-            border-bottom: 1px solid #dee2e6;
-            padding: 10px 0;
-        }
+    .product-item {
+      border-bottom: 1px solid #dee2e6;
+      padding: 10px 0;
+    }
 
-        .product-details {
-            display: flex;
-            align-items: center;
-        }
+    .product-details {
+      display: flex;
+      align-items: center;
+    }
 
-        .product-info {
-            margin-left: 20px;
-        }
+    .product-info {
+      margin-left: 20px;
+    }
 
-        .product-price {
-          text-decoration: line-through;
-          font-style: italic;
-          color: #e34c2e;
-        }
+    .product-price {
+      text-decoration: line-through;
+      font-style: italic;
+      color: #e34c2e;
+    }
 
-        .product-discount {
-          font-style: italic;
-        }
+    .product-discount {
+      font-style: italic;
+    }
 
-        .product-info h5 {
-            margin-bottom: 5px;
-        }
+    .product-info h5 {
+      margin-bottom: 5px;
+    }
 
-        .product-info p {
-            margin-bottom: 0;
-        }
+    .product-info p {
+      margin-bottom: 0;
+    }
 
-        .product-total{
-          font-style: italic;
-          color: #060201;
-        }
+    .product-total {
+      font-style: italic;
+      color: #060201;
+    }
 
-        .product-nameprd{
-          font-family: Arial, Helvetica, sans-serif;
-          font-style: bold;
-          color: #060201;
-        }
+    .product-nameprd {
+      font-family: Arial, Helvetica, sans-serif;
+      font-style: bold;
+      color: #060201;
+    }
 
-        .promotion-list {
+    .promotion-list {
       list-style-type: none;
       padding: 0;
     }
+
     .promotion-list li {
       display: flex;
       justify-content: space-between;
@@ -474,10 +477,12 @@
       padding: 10px;
       border-bottom: 1px solid #ccc;
     }
+
     .promotion-list li .actions {
       display: flex;
       gap: 10px;
     }
+
     .promotion-list li .actions button {
       background-color: #f44336;
       color: white;
@@ -485,30 +490,35 @@
       padding: 5px 10px;
       cursor: pointer;
     }
+
     .promotion-list li .actions button.edit {
       background-color: #4CAF50;
     }
+
     .table-responsive {
-            max-height: 350px; 
-            overflow-y: auto;
-        }
-        .table-valign-middle td {
-            vertical-align: middle;
-        }
-        .product-name {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 300px; 
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .table thead th {
-            position: sticky;
-            top: 0;
-            background: #fff; 
-            z-index: 1;
-        }
+      max-height: 350px;
+      overflow-y: auto;
+    }
+
+    .table-valign-middle td {
+      vertical-align: middle;
+    }
+
+    .product-name {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 300px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .table thead th {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      z-index: 1;
+    }
   </style>
 </head>
 
@@ -523,7 +533,7 @@
     <div class="navbar-custom">
       <!-- LOGO -->
       <div class="logo-box">
-        <a href="/product/list-products" class="logo logo-dark text-center">
+        <a href="/product/list-products?type=NEW" class="logo logo-dark text-center">
           <span class="logo-lg">
             <img src="/public/assets/images/logo_watch_shop.png" alt="" height="150" />
           </span>
@@ -542,7 +552,7 @@
         <div id="sidebar-menu" class="ml-4">
           <ul id="side-menu">
             <li>
-              <a href="/product/list-products">
+              <a href="/product/list-products?type=NEW">
                 <span> Trang chủ </span>
               </a>
             </li>
@@ -555,7 +565,7 @@
               <div class="collapse" id="course">
                 <ul class="nav-second-level">
                   <li>
-                    <a href="/product/list-products">Quản lý</a>
+                    <a href="/product/list-products?type=NEW">Quản lý</a>
                   </li>
                   <li>
                     <a href="/product/add-products">Thêm sản phẩm</a>
@@ -583,6 +593,12 @@
             </li>
 
             <li>
+              <a href="/notify/managerNotify">
+                <span> Thông báo </span>
+              </a>
+            </li>
+
+            <li>
               <a href="/promotion/promotion">
                 <span> Khuyến mãi</span>
               </a>
@@ -591,12 +607,6 @@
             <li>
               <a href="/statistical/statisticalStore">
                 <span> Thống kê </span>
-              </a>
-            </li>
-            
-            <li>
-              <a href="/notify/managerNotify">
-                <span> Thông báo </span>
               </a>
             </li>
 
@@ -616,44 +626,44 @@
 
     <% if (routerName==='product'){ %>
       <%-include('products/listProducts.ejs')%>
-    <% } else if (routerName==='detailProduct') { %>
-      <%-include('products/detailProducts.ejs')%>
-    <% } else if (routerName==='addProduct') { %>
-      <%-include('products/addProducts.ejs')%>
-    <% } else if (routerName==='list-brand') { %>
-      <%-include('brands/listBrands.ejs')%>
-    <% } else if (routerName==='detail-brand') { %>
-        <%-include('brands/listBrands.ejs')%>
-    <% } else if (routerName==='list-order') { %>
-      <%-include('order/orderStatus.ejs')%>
-    <% } else if (routerName==='detail-order') { %>
-      <%-include('order/detailOrder.ejs')%>
-    <% } else if (routerName==='list-user') { %>
-      <%-include('user/account.ejs')%>
-    <% } else if (routerName==='detail-user') { %>
-      <%-include('user/detailUser.ejs')%>
-    <% } else if (routerName==='promotion') { %>
-      <%-include('promotion/managePromotion.ejs')%>
-    <% } else if (routerName==='statistical') { %>
-      <%-include('statistical/statisticalStore.ejs')%>
-    <% } else if (routerName==='notify') { %>
-      <%-include('notify/managerNotify.ejs')%>
-    <% } else { %>
-      <%-include('products/listProducts.ejs')%>
-    <% } %>
+        <% } else if (routerName==='detailProduct') { %>
+          <%-include('products/detailProducts.ejs')%>
+            <% } else if (routerName==='addProduct') { %>
+              <%-include('products/addProducts.ejs')%>
+                <% } else if (routerName==='list-brand') { %>
+                  <%-include('brands/listBrands.ejs')%>
+                    <% } else if (routerName==='detail-brand') { %>
+                      <%-include('brands/listBrands.ejs')%>
+                        <% } else if (routerName==='list-order') { %>
+                          <%-include('order/orderStatus.ejs')%>
+                            <% } else if (routerName==='detail-order') { %>
+                              <%-include('order/detailOrder.ejs')%>
+                                <% } else if (routerName==='list-user') { %>
+                                  <%-include('user/account.ejs')%>
+                                    <% } else if (routerName==='detail-user') { %>
+                                      <%-include('user/detailUser.ejs')%>
+                                        <% } else if (routerName==='promotion') { %>
+                                          <%-include('promotion/managePromotion.ejs')%>
+                                            <% } else if (routerName==='statistical') { %>
+                                              <%-include('statistical/statisticalStore.ejs')%>
+                                                <% } else if (routerName==='notify') { %>
+                                                  <%-include('notify/managerNotify.ejs')%>
+                                                    <% } else { %>
+                                                      <%-include('products/listProducts.ejs')%>
+                                                        <% } %>
 
-    <!-- ============================================================== -->
-    <!-- End Page content -->
-    <!-- ============================================================== -->
+                                                          <!-- ============================================================== -->
+                                                          <!-- End Page content -->
+                                                          <!-- ============================================================== -->
 
-    <!-- Footer Start -->
+                                                          <!-- Footer Start -->
 
-    <footer class="footer">
-      <div class="container-fluid">
-        <div class="row"></div>
-      </div>
-    </footer>
-    <!-- end Footer -->
+                                                          <footer class="footer">
+                                                            <div class="container-fluid">
+                                                              <div class="row"></div>
+                                                            </div>
+                                                          </footer>
+                                                          <!-- end Footer -->
   </div>
   <!-- END wrapper -->
 
@@ -856,6 +866,32 @@
 
   <!-- App js-->
   <script src="/public/assets/js/app.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+
+
+<script>
+  $(document).ready(function() {
+    $('#date-range').daterangepicker({
+      opens: 'left',
+      drops: 'down',
+      autoApply: true,
+      locale: {
+        format: 'YYYY-MM-DD',
+        separator: ' - ',
+        applyLabel: 'Apply',
+        cancelLabel: 'Cancel',
+        fromLabel: 'From',
+        toLabel: 'To',
+        customRangeLabel: 'Custom',
+        daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+        monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        firstDay: 0
+      }
+    });
+  });
+  </script>
+
 </body>
 
 </html>

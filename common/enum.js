@@ -5,6 +5,7 @@ const OsPlatformEnum = {
 
 const AccountRoleEnum = {
   ADMIN: "ADMIN",
+  STAFF: "STAFF",
   CLIENT: "CLIENT",
 };
 
@@ -59,9 +60,21 @@ const PaymentStatusEnum = {
   CASH: "CASH",
 };
 
+const GetListTypeEnum = {
+  ACTIVE: "ACTIVE",
+  INACTIVE: "INACTIVE",
+};
+
 const DiscountTypeEnum = {
   PERCENT: "PERCENT",
   PERMANENT: "PERMANENT",
+};
+
+const NotificationTypeEnum = {
+  PROMOTION: "PROMOTION",
+  EVENT: "EVENT",
+  UPDATE: "UPDATE",
+  PERSONAL: "PERSONAL",
 };
 
 module.exports = {
@@ -76,4 +89,6 @@ module.exports = {
   OrderStatusEnum,
   PaymentStatusEnum,
   DiscountTypeEnum,
+  GetListTypeEnum,
+  NotificationTypeEnum,
 };

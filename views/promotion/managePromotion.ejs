@@ -18,183 +18,191 @@
         <!-- Content Header (Page header) -->
         <div class="container-fluid">
           <div class="row">
-            <div class="card">
-              <section class="content-header">
-                <div class="container-fluid">
-                  <div class="row p-3">
-                    <div class="col-sm-6">
-                      <h3>Quản lí khuyến mãi</h3>
-                    </div>
-                    <div class="col-sm-6">
-                      <button class="btn btn-primary float-right" id="create-promotion-btn">
-                        Tạo khuyến mãi
-                      </button>
-                    </div>
-                  </div>
+            <div class="col-md-12">
+              <div class="card card-primary card-outline">
+                <div class="card-header" style="display: flex;flex-direction: row;justify-content: space-between;">
+                  <h5 class="card-title">Khuyến mãi</h5>
+                  <button class="btn btn-primary float-right" id="create-promotion-btn">
+                    Tạo khuyến mãi
+                  </button>
                 </div>
-              </section>
-              <!-- Main content -->
-              <section class="content">
-                <div class="container-fluid">
-                  <div class="card-body">
-                    <table class="table table-tripped">
-                      <thead>
-                        <tr>
-                          <th>Tiêu đề</th>
-                          <th>Mã khuyến mãi</th>
-                          <th>Khuyến mãi</th>
-                          <th>Ngày bắt đầu</th>
-                          <th>Ngày kết thúc</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <% promotionData.forEach((row)=> { %>
-                          <tr>
+                <!-- Main content -->
 
+                <div class="card-body">
+                  <table class="table table-tripped">
+                    <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th>Tiêu đề</th>
+                        <th>Mã khuyến mãi</th>
+                        <th>Khuyến mãi</th>
+                        <th>Ngày bắt đầu</th>
+                        <th>Ngày kết thúc</th>
+                        <th>Trạng thái</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% let index=1; %>
+                        <% promotionData.forEach((row)=> { %>
+                          <tr data-id="<%= row._id %>" data-content="<%= row.content %>"
+                            data-created-date="<%= row.createdDate %>" data-expiration-date="<%= row.expirationDate %>"
+                            data-discount-value="<%= row.discountValue %>" data-discount-type="<%= row.discountType %>">
                             <% const formatDate=(dateString)=> {
                               const date = new Date(dateString);
                               const day = date.getDate();
                               const month = date.getMonth() + 1;
                               const year = date.getFullYear();
                               return `${day}/${month}/${year}`;
-                              };
-                              %>
-                              <td>
-                                <%= row.content %>
-                              </td>
-                              <td>
-                                <%= row.code %>
-                              </td>
-                              <td class="promotion-type">
-                                <% if(row.discountType=="PERCENT" ){ %>
-                                  <%= row.discountValue %>%
-                                    <% }else{ %>
-                                      <%= row.discountValue %>$
-                                        <% } %>
-                              </td>
-                              <td class="date">
-                                <%= formatDate(row.createdDate) %>
-                              </td>
-                              <td class="date">
-                                <%= formatDate(row.expirationDate) %>
-                              </td>
-                              <td>
-                                <i class="edit-icon mr-3 fa fa-pen"></i>
-                                <i class="delete-icon fa fa-trash"></i>
-                              </td>
+                              }; %>
+                              <% const currentDate=new Date(); %>
+                                <% let status="" ; %>
 
+                                  <% if (currentDate < new Date(row.createdDate)) { %>
+                                    <% status="Chưa bắt đầu" ; %>
+                                      <% } else if (currentDate>= new Date(row.createdDate) && currentDate <= new
+                                          Date(row.expirationDate)) { %>
+                                          <% status="Đang hoạt động" ; %>
+                                            <% } else { %>
+                                              <% status="Ngừng hoạt động" ; %>
+                                                <% } %>
+
+                                                  <td>
+                                                    <%= index %>
+                                                  </td>
+                                                  <td>
+                                                    <%= row.content %>
+                                                  </td>
+                                                  <td>
+                                                    <%= row.code %>
+                                                  </td>
+                                                  <td class="promotion-type" style="color: green;">
+                                                    Giảm <% if (row.discountType=="PERCENT" ) { %>
+                                                      <%= row.discountValue %>%
+                                                        <% } else { %>
+                                                          <%= row.discountValue %>$
+                                                            <% } %>
+                                                  </td>
+                                                  <td class="date">
+                                                    <%= formatDate(row.createdDate) %>
+                                                  </td>
+                                                  <td class="date">
+                                                    <%= formatDate(row.expirationDate) %>
+                                                  </td>
+                                                  <td>
+                                                    <%= status %>
+                                                  </td>
+                                                  <td>
+                                                    <i class="edit-icon mr-3 fa fa-pen"></i>
+                                                    <i class="delete-icon fa fa-trash"></i>
+                                                  </td>
                           </tr>
-                          <% }); %>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </section>
-            </div>
-            <!-- Create Promotion Modal -->
-            <div class="modal fade" id="createPromotionModal" tabindex="-1" role="dialog"
-              aria-labelledby="createPromotionModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="createPromotionModalLabel">
-                      Tạo khuyến mãi
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form id="uploadForm">
-                      <div class="form-group">
-                        <label for="content">Tiêu đề khuyến mãi</label>
-                        <input type="text" class="form-control" id="content" name="content" />
-                      </div>
-                      <div class="form-group">
-                        <label for="createdDate">Ngày bắt đầu</label>
-                        <input type="date" class="form-control" id="createdDate" name="createdDate" />
-                      </div>
-                      <div class="form-group">
-                        <label for="expirationDate">Ngày kết thúc</label>
-                        <input type="date" class="form-control" id="expirationDate" name="expirationDate" />
-                      </div>
-                      <div class="row">
-                        <label for="discountValue">Giảm giá</label>
-                        <div class="form-group col-md-9">
-                          <input type="number" class="form-control" id="discountValue" min="0" max="100"
-                            name="discountValue" placeholder="0" />
-                        </div>
-                        <div class="form-group col-md-3">
-                          <select class="form-control" id="discountType" name="discountType">
-                            <option value="PERMANENT">$</option>
-                            <option value="PERCENT">%</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
-                          Hủy
-                        </button>
-                        <button type="submit" class="btn btn-primary" id="savePromotion">
-                          Lưu
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-
+                          <% index++; %>
+                            <% }) %>
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            </div>
-            <!-- Edit Promotion Modal -->
-            <div class="modal fade" id="editPromotionModal" tabindex="-1" role="dialog"
-              aria-labelledby="editPromotionModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="editPromotionModalLabel">
-                      Chỉnh sửa khuyến mãi
-                    </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <form>
-                      <div class="form-group">
-                        <label for="promotionName">Tiêu đề</label>
-                        <input type="text" class="form-control" id="promotionName" placeholder="Tiêu đề khuyến mãi" />
-                      </div>
-                      <div class="form-group">
-                        <label for="createDate">Ngày bắt đầu</label>
-                        <input type="date" class="form-control" id="createDate" />
-                      </div>
-                      <div class="form-group">
-                        <label for="endDate">Ngày kết thúc</label>
-                        <input type="date" class="form-control" id="endDate" />
-                      </div>
-                      <div class="row">
-                        <label for="discountType">Giảm giá</label>
-                        <div class="form-group col-md-9">
-                          <input type="number" class="form-control" id="discountValue" min="0" max="100"
-                            placeholder="0" />
+              <!-- Create Promotion Modal -->
+              <div class="modal fade" id="createPromotionModal" tabindex="-1" role="dialog"
+                aria-labelledby="createPromotionModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="createPromotionModalLabel">
+                        Tạo khuyến mãi
+                      </h5>
+                    </div>
+                    <div class="modal-body">
+                      <form id="uploadForm">
+                        <div class="form-group">
+                          <label for="content">Tiêu đề khuyến mãi</label>
+                          <input type="text" class="form-control" id="content" name="content" />
                         </div>
-                        <div class="form-group col-md-3">
-                          <select class="form-control" id="discountType">
-                            <option value="percentage">$</option>
-                            <option value="fixed">%</option>
-                          </select>
+                        <div class="form-group">
+                          <label for="createdDate">Ngày bắt đầu</label>
+                          <input type="date" class="form-control" id="createdDate" name="createdDate" />
                         </div>
-                      </div>
-                    </form>
+                        <div class="form-group">
+                          <label for="expirationDate">Ngày kết thúc</label>
+                          <input type="date" class="form-control" id="expirationDate" name="expirationDate" />
+                        </div>
+                        <div class="row">
+                          <label for="discountValue">Giảm giá</label>
+                          <div class="form-group col-md-9">
+                            <input type="number" class="form-control" id="discountValue" min="0" max="100"
+                              name="discountValue" placeholder="0" />
+                          </div>
+                          <div class="form-group col-md-3">
+                            <select class="form-control" id="discountType" name="discountType">
+                              <option value="PERMANENT">$</option>
+                              <option value="PERCENT">%</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeDialogAdd">
+                            Hủy
+                          </button>
+                          <button type="submit" class="btn btn-primary" id="savePromotion">
+                            Lưu
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeDialog">
-                      Hủy
-                    </button>
-                    <button type="button" class="btn btn-primary" id="updatePromotion" onclick="addDiscount()">
-                      Cập nhật
-                    </button>
+                </div>
+              </div>
+              <!-- Edit Promotion Modal -->
+              <div class="modal fade" id="editPromotionModal" tabindex="-1" role="dialog"
+                aria-labelledby="editPromotionModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="editPromotionModalLabel">
+                        Chỉnh sửa khuyến mãi
+                      </h5>
+                    </div>
+                    <div class="modal-body">
+                      <form id="updateForm">
+                        <input type="text" class="form-control d-none" id="promotionId" placeholder="ID khuyến mãi" />
+                        <div class="form-group">
+                          <label for="updatePromotionName">Tiêu đề</label>
+                          <input type="text" class="form-control" id="updatePromotionName"
+                            placeholder="Tiêu đề khuyến mãi" />
+                        </div>
+                        <div class="form-group">
+                          <label for="updateCreateDate">Ngày bắt đầu</label>
+                          <input type="date" class="form-control" id="updateCreateDate" />
+                        </div>
+                        <div class="form-group">
+                          <label for="updateEndDate">Ngày kết thúc</label>
+                          <input type="date" class="form-control" id="updateEndDate" />
+                        </div>
+                        <div class="row">
+                          <label for="updateDiscountValue">Giảm giá</label>
+                          <div class="form-group col-md-9">
+                            <input type="number" class="form-control" id="updateDiscountValue" min="0" max="100"
+                              placeholder="0" />
+                          </div>
+                          <div class="form-group col-md-3">
+                            <select class="form-control" id="updateDiscountType">
+                              <option value="percentage">$</option>
+                              <option value="fixed">%</option>
+                            </select>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeDialog">
+                        Hủy
+                      </button>
+                      <button type="submit" class="btn btn-primary" id="updatePromotion">
+                        Cập nhật
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -213,13 +221,11 @@
           <h5 class="modal-title" id="deletePromotionModalLabel">
             Xóa khuyến mãi
           </h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
         </div>
+        <input type="text" class="form-control d-none" id="deletePromotionId" placeholder="ID khuyến mãi" />
         <div class="modal-body">Bạn có chắc chắn muốn xóa khuyến mãi này?</div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="cancelPromotionConfirm">
             Hủy
           </button>
           <button type="button" class="btn btn-danger" id="deletePromotionConfirm">
@@ -239,11 +245,134 @@
     // Edit Promotion modal
     $(".edit-icon").on("click", function () {
       $("#editPromotionModal").modal("show");
+
+      const row = $(this).closest('tr');
+      const id = row.data('id');
+      const content = row.data('content');
+      let createdDate = row.data('created-date');
+      let expirationDate = row.data('expiration-date');
+      const discountValue = row.data('discount-value');
+      const discountType = row.data('discount-type');
+      const discountId = row.data('id');
+
+      createdDate = new Date(createdDate);
+      expirationDate = new Date(expirationDate);
+
+      const formatDateForInput = (date) => {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      };
+
+      $('#editPromotionModal #promotionId').val(discountId);
+      $('#editPromotionModal #updatePromotionName').val(content);
+      $('#editPromotionModal #updateCreateDate').val(formatDateForInput(createdDate));
+      $('#editPromotionModal #updateEndDate').val(formatDateForInput(expirationDate));
+      $('#editPromotionModal #updateDiscountValue').val(discountValue);
+      $('#editPromotionModal #updateDiscountType').val(discountType === "PERCENT" ? "percentage" : "fixed");
+
+      $('#editPromotionModal').data('id', id);
+
+      $("#editPromotionModal").modal("show");
+    });
+
+
+    $("#deletePromotionConfirm").on("click", function () {
+      const promotionId = document.getElementById("deletePromotionId").value.trim();
+
+      fetch(`${baseURL}/api/discount/${promotionId}`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((body) => {
+          isSuccess = true;
+          hideLoading();
+          showDialog(body.message);
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+
+        })
+        .catch((error) => {
+          isSuccess = false;
+          hideLoading();
+          showDialog("Lỗi: " + error.message);
+          console.error("Error:", error);
+        });
+    });
+
+
+
+
+    $("#closeDialog").on("click", function () {
+      $("#editPromotionModal").modal("hide");
+    });
+
+    $("#closeDialogAdd").on("click", function () {
+      $("#createPromotionModal").modal("hide");
+    });
+
+    $("#updatePromotion").on("click", function () {
+      var objectJson = {}
+      const promotionId = document.getElementById("promotionId").value.trim();
+      const promotionContent = document.getElementById("updatePromotionName").value;
+      objectJson.content = promotionContent
+      const createDate = document.getElementById("updateCreateDate").value;
+      objectJson.createdDate = createDate
+      const expirationDate = document.getElementById("updateEndDate").value;
+      objectJson.expirationDate = expirationDate
+      const discountValue = document.getElementById("updateDiscountValue").value;
+      objectJson.discountValue = discountValue
+      const discountType = document.getElementById("updateDiscountType").value;
+      objectJson.discountType = discountType
+      showLoading();
+
+      fetch(`${baseURL}/api/discount/${promotionId}`, {
+        method: "PUT",
+        body: JSON.stringify(objectJson),
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((body) => {
+          isSuccess = true;
+          hideLoading();
+          showDialog(body.message);
+          setTimeout(() => {
+            location.reload();
+          }, 1000);
+
+        })
+        .catch((error) => {
+          isSuccess = false;
+          hideLoading();
+          showDialog("Lỗi: " + error.message);
+          console.error("Error:", error);
+        });
     });
 
     // Delete Promotion confirmation modal
     $(".delete-icon").on("click", function () {
+      const row = $(this).closest('tr');
+      const id = row.data('id');
+      $('#deletePromotionModal #deletePromotionId').val(id);
       $("#deletePromotionModal").modal("show");
+    });
+
+    $("#cancelPromotionConfirm").on("click", function () {
+      $("#deletePromotionModal").modal("hide");
     });
   </script>
 </div>

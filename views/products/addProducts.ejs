@@ -24,15 +24,16 @@
                             <div class="col-md-12">
                                 <div class="card card-primary">
                                     <div class="card-header">
-                                        <h5 class="card-title">Thêm Sản Phẩm</h5>
+                                        <h5 class="card-title">Thêm sản phẩm</h5>
                                     </div>
                                     <!-- /.card-header -->
                                     <!-- form start -->
                                     <form id="uploadForm">
                                         <div class="card-body">
                                             <div class="form-group">
-                                                <label for="brandId">Tên Thương Hiệu</label>
+                                                <label for="brandId">Thương hiệu</label>
                                                 <select class="form-control" id="brandId" name="brandId">
+                                                    <option value="">-- Chọn --</option>
                                                     <% listBrandData.forEach((row)=> { %>
                                                         <option value="<%= row._id %>">
                                                             <%= row.name %>
@@ -42,56 +43,53 @@
 
                                             </div>
                                             <div class="form-group">
-                                                <label for="name">Tên Sản Phẩm</label>
-                                                <input type="text" class="form-control" id="name" name="name"
-                                                    placeholder="Enter Product Name">
+                                                <label for="name">Tên sản phẩm</label>
+                                                <input type="text" class="form-control" id="name" name="name">
                                             </div>
                                             <div class="form-group">
-                                                <label for="photoUrls">Hình Ảnh</label>
+                                                <label for="photoUrls">Hình ảnh</label>
                                                 <input type="file" class="form-control" id="photoUrls" multiple
                                                     name="files" accept="image/*">
                                                 <div class="image-preview" id="imagePreview"></div>
                                             </div>
                                             <div class="form-group">
-                                                <label for="description">Mô Tả</label>
+                                                <label for="description">Mô tả</label>
                                                 <textarea class="form-control" id="description" rows="3"
-                                                    name="description" placeholder="Enter Description"></textarea>
+                                                    name="description"></textarea>
                                             </div>
                                             <div class="row">
                                                 <div class="form-group col-md-4">
                                                     <label for="price">Giá</label>
-                                                    <input type="number" class="form-control" id="price" name="price"
-                                                        placeholder="Enter Price">
+                                                    <input type="number" class="form-control" id="price" name="price">
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label for="quantity">Số Lượng</label>
+                                                    <label for="quantity">Số lượng</label>
                                                     <input type="number" class="form-control" id="quantity"
-                                                        name="quantity" placeholder="Enter Quantity">
+                                                        name="quantity">
                                                 </div>
                                                 <div class="form-group col-md-4">
-                                                    <label for="size">Kích Thước</label>
-                                                    <input type="number" class="form-control" id="size" name="size"
-                                                        placeholder="Enter Size">
+                                                    <label for="size">Kích thước</label>
+                                                    <input type="number" class="form-control" id="size" name="size">
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label for="machineCategory">Machine Category</label>
+                                                    <label for="machineCategory">Loại máy</label>
                                                     <select class="form-control" id="machineCategory"
                                                         name="machineCategory">
-                                                        <option value="">-- Select Option --</option>
-                                                        <option value="AUTOMATIC_MECHANICAL">AUTOMATIC_MECHANICAL
+                                                        <option value="">-- Chọn --</option>
+                                                        <option value="AUTOMATIC_MECHANICAL">Cơ tự động
                                                         </option>
-                                                        <option value="BATTERY">BATTERY</option>
-                                                        <option value="LIGHT_ENERGY">LIGHT_ENERGY</option>
+                                                        <option value="BATTERY">Pin</option>
+                                                        <option value="LIGHT_ENERGY">Năng lượng mặt trời</option>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-6">
-                                                    <label for="wireCategory">Wire Category</label>
+                                                    <label for="wireCategory">Loại dây</label>
                                                     <select class="form-control" id="wireCategory" name="">
-                                                        <option value="">-- Select Option --</option>
-                                                        <option value="METAL">Metal</option>
-                                                        <option value="SKIN">Skin</option>
-                                                        <option value="PLASTIC">Plastic</option>
-                                                        <option value="FABRIC">Fabric</option>
+                                                        <option value="">-- Chọn --</option>
+                                                        <option value="METAL">Kim loại</option>
+                                                        <option value="SKIN">Da</option>
+                                                        <option value="PLASTIC">Nhựa </option>
+                                                        <option value="FABRIC">Vải</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -134,7 +132,7 @@
     var isSuccess = false;
     const form = document.getElementById('uploadForm');
     form.addEventListener('submit', function (event) {
-         event.preventDefault();
+        event.preventDefault();
         const formData = new FormData();
 
         const brandID = document.getElementById('brandId').value;
@@ -188,7 +186,7 @@
                 hideLoading();
                 showDialog(body.message);
                 setTimeout(() => {
-                window.location.href = baseURL + '/product/list-products';
+                    window.location.href = baseURL + '/product/list-products?type=NEW';
                 }, 2000);
             })
             .catch((error) => {

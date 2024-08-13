@@ -27,10 +27,10 @@ const discountsModelSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    isDelete:{
+    isDeleted: {
       type: Boolean,
-      required: false
-    }
+      required: false,
+    },
   },
   { collection: "discounts" }
 );

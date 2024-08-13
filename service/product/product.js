@@ -40,13 +40,15 @@ const updateProduct = async (idProduct, updatedData) => {
 
     const existingProduct = await productModel.findOne({
       name: updatedData.name,
-      _id: { $ne: idProduct },
+      _id: { $ne: new mongoose.Types.ObjectId(idProduct) },
     });
     if (existingProduct) throw new Error("Product name already exists");
 
-    Object.assign(product, updatedData);
+    if (!updatedData.photoUrls || updatedData.photoUrls.length === 0) {
+      updatedData.photoUrls = product.photoUrls;
+    }
 
-    return product.save();
+    return await productModel.findByIdAndUpdate(idProduct, updatedData);
   } catch (error) {
     throw error;
   }
@@ -55,7 +57,7 @@ const updateProduct = async (idProduct, updatedData) => {
 const getListProduct = async ({
   type,
   page = 1,
-  limit = 10,
+  limit = 100,
   brandId,
   textSearch,
   accountId,
@@ -336,7 +338,7 @@ const postLockProduct = async (idProduct) => {
   try {
     const lockProduct = await productModel.findByIdAndUpdate(
       idProduct,
-      { isDeleted: false },
+      { isDeleted: true },
       { new: true }
     );
     console.log(`[productService] postLockProduct: newData -> ${lockProduct}`);

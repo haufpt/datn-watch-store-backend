@@ -19,12 +19,12 @@
                     <div class="card">
                         <div class="card-body">
                             <div class="card-body-action-course">
-                                <h1 class="header-title mt-0">Danh Sách Thương Hiệu</h1>
+                                <h1 class="header-title mt-0">Thương hiệu</h1>
                                 <div class="card-body-action-right">
                                     <div class="float-end">
                                         <button type="button" class="btn btn-success" data-toggle="modal"
                                             data-target="#myModal">
-                                            Thêm Mới
+                                            Thêm mới
                                         </button>
 
                                         <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
@@ -42,19 +42,17 @@
                                                     <div class="modal-body">
                                                         <form id="uploadForm">
                                                             <div class="form-group">
-                                                                <label for="name">Tên Thương Hiệu</label>
+                                                                <label for="name">Tên</label>
                                                                 <input type="text" class="form-control" id="name"
-                                                                    placeholder="Nhập tên thương hiệu" name="name"
-                                                                    required />
+                                                                    name="name" required />
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="description">Mô Tả Thương Hiệu</label>
+                                                                <label for="description">Mô tả</label>
                                                                 <textarea class="form-control" id="description" rows="3"
-                                                                    placeholder="Nhập mô tả thương hiệu"
                                                                     name="description" required></textarea>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label for="logo">Hình Ảnh</label>
+                                                                <label for="logo">Logo</label>
                                                                 <input type="file" class="form-control" id="logo"
                                                                     name="logo" accept="image/*">
                                                                 <div class="image-preview" id="imagePreview"></div>
@@ -62,7 +60,7 @@
                                                             <div class="modal-footer">
                                                                 <button type="button" id="closeDialog"
                                                                     class="btn btn-secondary" data-dismiss="modal">
-                                                                    Đóng
+                                                                    Huỷ
                                                                 </button>
                                                                 <button type="submit" class="btn btn-success"
                                                                     onclick="addBrand()">
@@ -93,8 +91,9 @@
                         <a class="pe-auto text-decoration-none text-center" data-toggle="modal"
                             data-target="#brandModal" onclick="fetchBrandData('<%= row._id %>')">
                             <div class="border border-5 p-2 rounded-4 bg-white">
-                                <div class="text-center">
-                                    <img src="<%= row.logo %>" alt="Product Brands" height="80" />
+                                <div class="text-center" style="height: 80px;">
+                                    <img src="<%= row.logo %>" alt="Product Brands" height="80"
+                                        style="height: 80px; object-fit: contain;" />
                                 </div>
                                 <div class="p-2">
                                     <span class="fs-4">
@@ -109,7 +108,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="brandModalLabel">Chi Tiết Thương Hiệu</h5>
+                                    <h5 class="modal-title" id="brandModalLabel">Thông tin</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -117,7 +116,17 @@
                                 <div class="modal-body">
                                     <form>
                                         <div class="form-group">
-                                            <label for="brandLogo">Logo Thương Hiệu</label>
+                                            <label for="brandName">Tên</label>
+                                            <input type="text" class="form-control" id="brandNameDetail" value=""
+                                                disabled>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="brandDescription">Mô tả</label>
+                                            <textarea class="form-control" id="brandDescriptionDetail" rows="3"
+                                                disabled></textarea>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="brandLogo">Logo</label>
                                             <div class="image-container" id="imageContainer">
                                                 <!-- Hiển thị logo thương hiệu -->
                                                 <img src="" alt="Brand Logo" id="imgBrandDetail">
@@ -125,26 +134,16 @@
                                             <input type="file" class="form-control" id="brandLogoDetail"
                                                 accept="image/*" style="display: none;">
                                         </div>
-                                        <div class="form-group">
-                                            <label for="brandName">Tên Thương Hiệu</label>
-                                            <input type="text" class="form-control" id="brandNameDetail" value=""
-                                                disabled>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="brandDescription">Mô Tả Thương Hiệu</label>
-                                            <textarea class="form-control" id="brandDescriptionDetail" rows="3"
-                                                disabled></textarea>
-                                        </div>
                                     </form>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal"
-                                        id="closeButton">Close</button>
-                                    <button type="button" class="btn btn-primary" id="editButton">Edit</button>
-                                    <button type="submit" class="btn btn-success" id="saveButton" style="display: none;"
-                                        onclick="updateBrand('<%= row._id %>')">Save</button>
+                                        id="closeButton">Huỷ</button>
+                                    <button type="button" class="btn btn-primary" id="editButton">Sửa</button>
                                     <button type="button" class="btn btn-secondary" id="cancelButton"
-                                        style="display: none;">Cancel</button>
+                                        style="display: none;">Huỷ</button>
+                                    <button type="submit" class="btn btn-success" id="saveButton" style="display: none;"
+                                        onclick="updateBrand('<%= row._id %>')">Lưu</button>
                                 </div>
                             </div>
                         </div>
@@ -316,8 +315,10 @@
 
         formData.append("name", brandName);
         formData.append("description", brandDescription);
-        formData.append("file", brandImage);
-
+        if(brandImage){
+            formData.append("file", brandImage);
+        }
+       
         showLoading();
         fetch(`${baseURL}/brand/update-brand/${currentBrandId}`, {
             method: "PUT",

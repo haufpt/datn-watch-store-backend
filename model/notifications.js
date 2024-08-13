@@ -18,6 +18,10 @@ const notificationsModelSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    isDeleted: {
+      type: Boolean,
+      required: false,
+    },
   },
   { collection: "notifications" }
 );

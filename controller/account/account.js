@@ -124,7 +124,43 @@ const changePassword = async (req, res) => {
   }
 };
 
+const changeStatus = async (req, res) => {
+  try {
+    let idAccount = req.params.idAccount;
+    let status = req.body.status;
+    const account = await accountService.findAccountById(idAccount);
+    console.log("[acountController] changeStatus -> ", account);
+
+    if (!account) {
+      return res.status(301).json({
+        success: false,
+        message: `Tài khoản không tồn tại.`,
+      });
+    }
+
+    if (status === null || status === undefined) {
+      return res.status(301).json({
+        success: false,
+        message: "`status` field is required",
+      });
+    }
+
+    await accountService.findByIdAndUpdate(idAccount, { isDeleted: status });
+
+    res.status(201).json({
+      success: true,
+      message: status ? "Khoá tài khoản thành công" : `Mở tài khoản thành công`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
 module.exports = {
   updateProfile,
   changePassword,
+  changeStatus,
 };

@@ -1,3 +1,4 @@
+const { GetListTypeEnum } = require("../../common/enum");
 const accountModel = require("../../model/account");
 
 const findAccount = async (filter) => {
@@ -17,11 +18,21 @@ const findAccountById = async (idAccount) => {
   return await accountModel.findById(idAccount);
 };
 
-const getAllAcountUser = async ({ page = 1, limit = 10 } = {}) => {
+const getAllAcountUser = async ({ page = 1, limit = 100, type, role } = {}) => {
   try {
     const skip = (page - 1) * limit;
-    const accounts = await accountModel.find({ role: 'CLIENT' }).skip(skip).limit(limit);
-    const totalAccount = await accountModel.countDocuments({ role: 'CLIENT' });
+    let query = { role: role ?? "CLIENT" };
+
+    if (type) {
+      if (type === GetListTypeEnum.ACTIVE) {
+        query.$or = [{ isDeleted: { $exists: false } }, { isDeleted: false }];
+      } else {
+        query.isDeleted = true;
+      }
+    }
+
+    const accounts = await accountModel.find(query);
+    const totalAccount = await accountModel.countDocuments(query);
 
     return {
       accounts: accounts,
@@ -39,5 +50,5 @@ module.exports = {
   addAccount,
   findByIdAndUpdate,
   getAllAcountUser,
-  findAccountById
+  findAccountById,
 };

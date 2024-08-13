@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const accountController = require("../../../controller/account/account");
-const { checkLogin, checkPermission } = require("../../../middleware/auth");
+const { checkLogin, checkPermission, checkRole } = require("../../../middleware/auth");
 const { AccountRoleEnum, FileTypeEnum } = require("../../../common/enum");
 const multerService = require("../../../shared/multer");
 const { validateSchema } = require("../../../middleware/validate");
@@ -21,6 +21,11 @@ router.put(
   checkPermission([AccountRoleEnum.CLIENT]),
   validateSchema(AccountValidation.changePassword),
   accountController.changePassword
+);
+
+router.put(
+  "/:idAccount/change-status",
+  accountController.changeStatus
 );
 
 module.exports = router;
