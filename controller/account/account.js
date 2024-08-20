@@ -50,6 +50,7 @@ const updateProfile = async (req, res) => {
       }
     }
 
+    console.log("[AccountController] updateProfile req.files: ", req.files);
     console.log("[AccountController] updateProfile req.file: ", req.file);
     if (req.file) {
       console.log("[AccountController] updateProfile req.file");
