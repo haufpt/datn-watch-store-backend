@@ -50,7 +50,9 @@ const updateProfile = async (req, res) => {
       }
     }
 
+    console.log("[AccountController] updateProfile req.file: ", req.file);
     if (req.file) {
+      console.log("[AccountController] updateProfile req.file");
       if (!req.file.mimetype.startsWith("image/")) {
         return res.status(301).json({
           success: false,
@@ -60,6 +62,8 @@ const updateProfile = async (req, res) => {
 
       const photoUrl = baseUrl + req.file.destination + req.file.filename;
       formData.avatarUrl = photoUrl;
+      console.log("[AccountController] updateProfile photoUrl: ", photoUrl);
+      console.log("[AccountController] updateProfile formData: ", formData);
     }
 
     await accountService.findByIdAndUpdate(
