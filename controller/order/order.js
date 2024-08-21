@@ -165,7 +165,7 @@ const createPayment = async (req, res) => {
     vnp_Params["vnp_TxnRef"] = tradeCode;
     vnp_Params["vnp_OrderInfo"] = "Thanh toan cho ma GD:" + tradeCode;
     vnp_Params["vnp_OrderType"] = "other";
-    vnp_Params["vnp_Amount"] = Math.round(price * 23000);
+    vnp_Params["vnp_Amount"] = Math.round(price * 23000 * 100);
     vnp_Params["vnp_ReturnUrl"] = returnUrl;
     vnp_Params["vnp_IpAddr"] = ipAddr;
     vnp_Params["vnp_CreateDate"] = createDate;
