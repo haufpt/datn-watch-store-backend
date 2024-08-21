@@ -18,7 +18,7 @@
                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                           Thương hiệu
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownCategoryButton"
+                        <div class="dropdown-menu dropdown-brand" aria-labelledby="dropdownCategoryButton"
                           data-popper-placement="bottom-start"
                           style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 40px, 0px);">
                           <a class="dropdown-item" data-brand="">Tất cả</a>
@@ -36,7 +36,7 @@
                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                           Sắp xếp
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
+                        <div class="dropdown-menu dropdown-sort" aria-labelledby="dropdownMenuButton"
                           data-popper-placement="bottom-start" style="
                             position: absolute;
                             inset: 0px auto auto 0px;
@@ -112,3 +112,56 @@
 </div>
 <!-- content -->
 </div>
+
+<script>
+  const baseURL = window.location.protocol + '//' + window.location.host;
+  const dropdownMenu = document.querySelector("#dropdownMenuButton + .dropdown-menu");
+  dropdownMenu.querySelectorAll("a").forEach((item) => {
+    item.addEventListener("click", (event) => {
+      event.preventDefault();
+      const sortBy = item.getAttribute("data-status");
+      let url = new URL(window.location.href);
+      url.searchParams.set('sortBy', sortBy);
+      window.location.href = url.toString();
+    });
+  });
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedBrand = urlParams.get('brandName');
+  if (selectedBrand) {
+    const dropdownButton = document.getElementById('dropdownCategoryButton');
+    const dropdownItems = document.querySelectorAll('.dropdown-brand a.dropdown-item');
+
+    dropdownItems.forEach(item => {
+      if (item.getAttribute('data-brand') === selectedBrand) {
+        dropdownButton.textContent = item.textContent;
+      }
+    });
+  }
+
+  const selectedSort = urlParams.get('sortBy');
+  if (selectedSort) {
+    const dropdownMenuButton = document.getElementById('dropdownMenuButton');
+    const dropdownMenuItems = document.querySelectorAll('.dropdown-sort a.dropdown-item');
+
+    dropdownMenuItems.forEach(item => {
+      if (item.getAttribute('data-status') === selectedSort) {
+        dropdownMenuButton.textContent = item.textContent;
+      }
+    });
+  }
+</script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const dropdownBrandMenu = document.querySelector('.dropdown-menu');
+    dropdownBrandMenu.addEventListener('click', function (e) {
+      if (e.target && e.target.matches('a.dropdown-item')) {
+        const selectedBrand = e.target.getAttribute('data-brand');
+        let url = new URL(window.location.href);
+        url.searchParams.set('brandName', selectedBrand);
+        window.location.href = url.toString();
+      }
+    });
+  });
+</script>
