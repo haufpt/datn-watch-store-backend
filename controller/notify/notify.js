@@ -62,9 +62,9 @@ const createNotify = async (req, res) => {
       type: GetListTypeEnum.ACTIVE,
     });
 
-    for (let i = 0; i < listUser.length; i++) {
+    for (let i = 0; i < listUser.accounts.length; i++) {
       await notifyRecipientService.createNotifyRecipient({
-        accountId: listUser[i]._id,
+        accountId: listUser.accounts[i]._id,
         notificationId: newNotify._id,
         isRead: false,
       });

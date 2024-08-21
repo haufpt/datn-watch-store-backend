@@ -22,6 +22,9 @@ const getListNotify = async (accountId) => {
       $unwind: "$notify",
     },
     {
+      $sort: { "notify.createdAt": -1 },
+    },
+    {
       $project: {
         notificationId: "$notify._id",
         title: "$notify.title",
@@ -30,9 +33,6 @@ const getListNotify = async (accountId) => {
         type: "$notify.type",
         isRead: 1,
       },
-    },
-    {
-      $sort: { "notify.createdAt": -1 },
     },
   ]);
 
