@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 const getListDiscountByUser = async (accountId) => {
   console.log("[DiscountService] processOrder: ", accountId);
-  const currentDate = new Date().toISOString();
+  const currentDate = new Date();
 
   const discounts = await discountModel.aggregate([
     {
