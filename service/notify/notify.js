@@ -39,14 +39,21 @@ const getListNotify = async (accountId) => {
   return notifications;
 };
 
-const getAllNotify = async () => {
+const getAllNotify = async (page, limit, searchQuery) => {
+  const query = {
+    isDeleted: { $ne: true },
+    type: { $ne: NotificationTypeEnum.PERSONAL },
+  };
+
+  if (searchQuery) {
+    query.$or = [
+      { title: { $regex: searchQuery, $options: "i" } }, 
+      { message: { $regex: searchQuery, $options: "i" } },
+    ];
+  }
+
   const notifications = await notificationsModel.aggregate([
-    {
-      $match: {
-        isDeleted: { $ne: true },
-        type: { $ne: NotificationTypeEnum.PERSONAL },
-      },
-    },
+    { $match: query },
     {
       $project: {
         title: 1,
@@ -55,12 +62,27 @@ const getAllNotify = async () => {
         type: 1,
       },
     },
-    {
-      $sort: { createdAt: -1 },
-    },
+    { $sort: { createdAt: -1 } },
+    { $skip: (page - 1) * limit },
+    { $limit: limit },
   ]);
 
   return notifications;
+};
+
+const getTotalRecords = async () => {
+  try {
+    // Thực hiện truy vấn để lấy tổng số bản ghi từ cơ sở dữ liệu
+    const totalRecords = await notificationsModel.countDocuments({
+      isDeleted: { $ne: true },
+      type: { $ne: NotificationTypeEnum.PERSONAL },
+    }); // Đây là một ví dụ, có thể cần điều chỉnh tùy theo cấu trúc của cơ sở dữ liệu của bạn
+    console.log(`[notyfiService] total -> ${totalRecords}`);
+
+    return totalRecords;
+  } catch (error) {
+    throw new Error(`Error while getting total records: ${error.message}`);
+  }
 };
 
 const markAllNotificationsAsRead = async (accountId) => {
@@ -105,4 +127,5 @@ module.exports = {
   createNotify,
   getAllNotify,
   findByIdAndUpdate,
+  getTotalRecords,
 };
