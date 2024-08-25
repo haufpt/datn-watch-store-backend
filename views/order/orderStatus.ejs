@@ -10,9 +10,9 @@
                         <div class="row justify-content-center">
                             <div class="col-md-12">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-body-action-course">
-                                            <h5 class="card-title">Danh sách đơn hàng</h5>
+                                    <div class="card-header" style="display: flex;flex-direction: row;justify-content: space-between;">
+                                        <h5 class="card-title">Danh sách đơn hàng</h5>
+                                        <div class="card-body-action-right">
                                             <div class="dropdown float-end">
                                                 <div class="dropdown">
                                                     <button class="btn btn-info dropdown-toggle" type="button"
@@ -25,12 +25,23 @@
                                                         style=" position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 40px, 0px);">
                                                         <a class="dropdown-item" data-status>Tất cả</a>
                                                         <a class="dropdown-item" data-status="PENDING">Chờ xác nhận</a>
-                                                        <a class="dropdown-item" data-status="SHIPPING">Chờ giao
-                                                            hàng</a>
+                                                        <a class="dropdown-item" data-status="SHIPPING">Chờ giao hàng</a>
                                                         <a class="dropdown-item" data-status="DELIVERED">Đã giao</a>
                                                         <a class="dropdown-item" data-status="CANCELLED">Đã hủy</a>
                                                     </div>
                                                 </div>
+                                            </div>
+                                            <div class="float-end">
+                                                <form class="form-inline ml-0 ml-md-3" id="searchForm" action="/order/list-order" method="GET">
+                                                    <div class="input-group input-group-sm">
+                                                        <input class="form-control form-control-navbar" name="code" type="search" id="searchInput" placeholder="Search" aria-label="Search">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-navbar" type="submit" id="searchButton">
+                                                                <i class="fas fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -41,7 +52,10 @@
                                                     <th>STT</th>
                                                     <th>Mã Đơn Hàng</th>
                                                     <th>Ngày Mua</th>
-                                                    <th>Phương Thức Thanh Toán</th>
+                                                    <th>Tên khách hàng</th>
+                                                    <th>Số điện thoại</th>
+                                                    <th>Tổng tiền</th>
+                                                    <th>Địa chỉ giao hàng</th>
                                                     <th>Trạng Thái</th>
                                                 </tr>
                                             </thead>
@@ -68,11 +82,29 @@
                                                                     <%= formatDate(row.orderDate) %>
                                                             </td>
                                                             <td>
-                                                                <% if (row.paymentMethod=='VNPAY' ) { %>
-                                                                    Thanh toán qua VNPAY
-                                                                    <% } else { %>
-                                                                        Thanh toán khi nhận hàng
-                                                                        <% } %>
+                                                                <%= row.account.name %>
+                                                            </td>
+                                                            <td>
+                                                                0<%= row.account.phoneNumber %>
+                                                            </td>
+                                                            <td>
+                                                                <% let sum=0; %>
+                                                                    <% row.orderItems.forEach((row)=> { %>
+                                                                        <% sum +=(row.quantity * row.product.price); %>
+                                                                            <% }); %>
+                                                                                <% if(row.discount===null){ %>
+                                                                                    <%= sum %>$
+                                                                                        <% }else{ %>
+                                                                                            <% if(row.discount.discountType=="PERCENT"){ %>
+                                                                                                <%= sum - (sum * row.discount.discountValue / 100) %>$
+                                                                                                    <% }else{ %>
+                                                                                                        <%= sum - row.discount.discountValue %>$
+                                                                                                    <% } %>
+                                                                                            <% } %>
+
+                                                            </td>
+                                                            <td>
+                                                                <%= row.shippingAddress.address %>
                                                             </td>
                                                             <td>
                                                                 <% if (row.status=='DELIVERED' ) { %>
@@ -101,6 +133,23 @@
             <!-- /.content -->
         </div>
         <!-- /.content-wrapper -->
+        <ul class="pagination justify-content-end" id="pagination">
+            <li class="page-item" id="previousPage">
+                <a class="page-link" href="/order/list-order?page=<%= currentPage - 1 %>&limit=<%= limit %>" tabindex="-1" tabindex="-1">Previous</a>
+            </li>
+            <% for (let i=1; i <=totalPages; i++) { %>
+                <li class="page-item <%= currentPage  === i ? 'active' : '' %>">
+                    <a class="page-link <%= currentPage === i ? 'active' : '' %>"
+                        href="/order/list-order?page=<%= i %>&limit=<%= limit %>" id="page<%= i %>">
+                        <%= i %>
+                    </a>
+                </li>
+            <% } %>
+            <li class="page-item" id="nextPage">
+                <a class="page-link" href="/order/list-order?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+            </li>
+        </ul>
+
     </div>
     <!-- ./wrapper -->
 </div>
@@ -148,3 +197,7 @@
     });
 
 </script>
+
+
+
+

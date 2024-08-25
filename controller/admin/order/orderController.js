@@ -2,32 +2,48 @@ const orderService = require("../../../service/order/orderService");
 const service = require("../../../service/order/order");
 const {OrderStatusEnum} = require("../../../common/enum");
 
+
 const listOrder = async (req, res, status) => {
   try {
     status = req.query.status
     console.log("[orderController] req.query -> ", req.query);
+    var page = parseInt(req.query.page) || 1;
+    var limit = parseInt(req.query.limit) || 15;
+    let totalPages;
+    var searchCode = req.query.code;
     if (!status) {
-      const listOrder = await orderService.getListOrder();
+      const listOrder = await orderService.getListOrder(page, limit, searchCode);
       console.log(
         `[orderController] listOrder 1 -> ${JSON.stringify(listOrder)}`
       );
+
+      const totalRecords = await orderService.getTotalRecords();
+      totalPages = Math.ceil(totalRecords / limit);
      return res.render("./index.ejs", {
         title: "Danh sách đơn hàng",
         routerName: "list-order",
         info: req.session.account,
         listOrderData: listOrder,
+        totalPages: totalPages,
+        currentPage : page,
+        limit: limit
       });
     }
-    const listOrder2 = await orderService.getListOrderByStatus(status);
+    const listOrder2 = await orderService.getListOrderByStatus(status, page, limit, searchCode);
     console.log(
       `[orderController] listOrder 2 -> ${JSON.stringify(listOrder2)}`
     );
+    const totalRecords = await orderService.getTotalRecordsByStatus(status);
+    totalPages = Math.ceil(totalRecords / limit);
 
     return res.render("./index.ejs", {
       title: "Danh sách đơn hàng",
       routerName: "list-order",
       info: req.session.account,
       listOrderData: listOrder2,
+      totalPages: totalPages,
+      currentPage : page,
+      limit: limit
     });
   } catch (error) {
     res.status(500).json({
@@ -62,7 +78,7 @@ const getDetailOrder = async (req, res) => {
   }
 };
 
-const putOrder = async (req, res) => {
+const putOrder = async (req,   res) => {
   try {
     let orderId = req.params.orderId;
     console.log("[orderController] putOrder: id -> ", orderId);
