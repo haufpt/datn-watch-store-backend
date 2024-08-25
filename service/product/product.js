@@ -57,7 +57,7 @@ const updateProduct = async (idProduct, updatedData) => {
 const getListProduct = async ({
   type,
   page = 1,
-  limit = 100,
+  limit = 15,
   brandId,
   textSearch,
   accountId,
@@ -364,6 +364,18 @@ const evaluateProduct = async (body) => {
   }
 };
 
+const getTotalRecords = async () => {
+  try {
+    var limit = 15;
+    const totalRecords = await productModel.countDocuments({ isDeleted: { $ne: true }});
+    console.log(`[produtService] total -> ${totalRecords}`);
+    const total =  Math.ceil(totalRecords / limit);
+    return total;
+  } catch (error) {
+    throw new Error(`Error while getting total records: ${error.message}`);
+  }
+};
+
 module.exports = {
   createNewProduct,
   getListProduct,
@@ -372,4 +384,5 @@ module.exports = {
   addProductToCart,
   postLockProduct,
   evaluateProduct,
+  getTotalRecords
 };

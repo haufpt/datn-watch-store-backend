@@ -118,39 +118,69 @@ const lockProduct = async (req, res) => {
 
 const listProduct = async (req, res) => {
   try {
-    const { type, page, limit, brandId, sortBy, brandName } = req.query;
+    const { type, brandId, sortBy, brandName } = req.query;
+    var searchQerry = req.query.search;
+    var page = parseInt(req.query.page) || 1;
+    var limit = parseInt(req.query.limit) || 15;
     const listBrand = await brandsModel.find();
     console.log("[productController] listProduct: getlistBrand -> ", listBrand);
+
     let listProduct = await productService.getListProduct({
       type,
       page,
       limit,
       brandId,
+      textSearch: searchQerry,
     });
+
+    console.log("[productController] page -> ", page);
+    
     console.log("[productController] listProduct -> ", listProduct);
+
+    let listProduct2 = await productService.getListProduct({
+      type,
+      page,
+      limit: 10000000000,
+      brandId,
+      textSearch: searchQerry,
+    });
 
     if (brandId) {
       listProduct = listProduct.filter(
+        (product) => product.brand.id === brandId
+      );
+      listProduct2 = listProduct2.filter(
         (product) => product.brand.id === brandId
       );
     } else if (brandName) {
       listProduct = listProduct.filter(
         (product) => product.brand.name === brandName
       );
+      listProduct2 = listProduct2.filter(
+        (product) => product.brand.name === brandName
+      );
     }
 
     if (sortBy === "asc") {
       listProduct.sort((a, b) => a.price - b.price);
+      listProduct2.sort((a, b) => a.price - b.price);
     } else if (sortBy === "desc") {
       listProduct.sort((a, b) => b.price - a.price);
+      listProduct2.sort((a, b) => b.price - a.price);
     }
 
+    let totalPages = Math.ceil(listProduct2.length / limit);;
+    console.log("[productController] totalPages -> ", totalPages);
+  
     res.render("./index.ejs", {
       title: "Danh sách sản phẩm",
       routerName: "product",
       info: req.session.account,
       listProductData: listProduct,
       listBrandData: listBrand,
+      totalPages: totalPages,
+      currentPage : page,
+      limit: limit
     });
   } catch (error) {
     res.status(500).json({

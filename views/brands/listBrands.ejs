@@ -18,63 +18,76 @@
                 <div class="col-xl-12 mb-0">
                     <div class="card">
                         <div class="card-body">
-                            <div class="card-body-action-course">
+                            <div class="card-header" style="display: flex;flex-direction: row;justify-content: space-between;">
                                 <h1 class="header-title mt-0">Thương hiệu</h1>
+                                <div class="card-body-action-right">
+                                  <div class="">
+                                    <form class="form-inline ml-0 ml-md-3" id="searchForm" action="/brand/list-brands" method="GET">
+                                        <div class="input-group input-group-sm">
+                                            <input class="form-control form-control-navbar" name="search" type="search" id="searchInput" placeholder="Search" aria-label="Search">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-navbar" type="submit" id="searchButton">
+                                                    <i class="fas fa-search"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
                                 <div class="card-body-action-right">
                                     <div class="float-end">
                                         <button type="button" class="btn btn-success" data-toggle="modal"
                                             data-target="#myModal">
                                             Thêm mới
                                         </button>
-
-                                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <label class="modal-title" id="exampleModalLabel">Thương
-                                                            Hiệu</label>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form id="uploadForm">
-                                                            <div class="form-group">
-                                                                <label for="name">Tên</label>
-                                                                <input type="text" class="form-control" id="name"
-                                                                    name="name" required />
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="description">Mô tả</label>
-                                                                <textarea class="form-control" id="description" rows="3"
-                                                                    name="description" required></textarea>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label for="logo">Logo</label>
-                                                                <input type="file" class="form-control" id="logo"
-                                                                    name="logo" accept="image/*">
-                                                                <div class="image-preview" id="imagePreview"></div>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" id="closeDialog"
-                                                                    class="btn btn-secondary" data-dismiss="modal">
-                                                                    Huỷ
-                                                                </button>
-                                                                <button type="submit" class="btn btn-success"
-                                                                    onclick="addBrand()">
-                                                                    Thêm mới
-                                                                </button></a>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
+                                    </div>
+                                </div>
+                                </div>
+                              </div>
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <label class="modal-title" id="exampleModalLabel">Thương
+                                            Hiệu</label>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                            aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="uploadForm">
+                                            <div class="form-group">
+                                                <label for="name">Tên</label>
+                                                <input type="text" class="form-control" id="name"
+                                                    name="name" required />
                                             </div>
-                                        </div>
+                                            <div class="form-group">
+                                                <label for="description">Mô tả</label>
+                                                <textarea class="form-control" id="description" rows="3"
+                                                    name="description" required></textarea>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="logo">Logo</label>
+                                                <input type="file" class="form-control" id="logo"
+                                                    name="logo" accept="image/*">
+                                                <div class="image-preview" id="imagePreview"></div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" id="closeDialog"
+                                                    class="btn btn-secondary" data-dismiss="modal">
+                                                    Huỷ
+                                                </button>
+                                                <button type="submit" class="btn btn-success"
+                                                    onclick="addBrand()">
+                                                    Thêm mới
+                                                </button></a>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -151,6 +164,26 @@
                     <% }) %>
             </div>
             <!-- container-fluid -->
+            <ul class="pagination justify-content-end" id="pagination">
+                <li class="page-item" id="previousPage">
+                    <a class="page-link" href="/brand/list-brands?page=<%= currentPage - 1 %>&limit=<%= limit %>" tabindex="-1" tabindex="-1">Previous</a>
+                </li>
+                <% for (let i=1; i <=totalPages; i++) { %>
+                    <li class="page-item <%= currentPage  === i ? 'active' : '' %>">
+                        <a class="page-link <%= currentPage === i ? 'active' : '' %>"
+                            href="/brand/list-brands?page=<%= i %>&limit=<%= limit %>" id="page<%= i %>">
+                            <%= i %>
+                        </a>
+                    </li>
+                <% } %>
+                <li class="page-item" id="nextPage">
+                  <% if (totalPages <= 1) { %>
+                    <a class="page-link" href="#">Next</a>
+                  <% } else {%>
+                    <a class="page-link" href="/brand/list-brands?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+                    <% } %>
+                </li>
+            </ul>
         </div>
         <!-- content -->
     </div>
@@ -367,7 +400,4 @@
             isSuccess = false;
         }
     }
-</script>
-<script>
-
 </script>
