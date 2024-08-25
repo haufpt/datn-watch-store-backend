@@ -1,4 +1,4 @@
-const { GetListTypeEnum } = require("../../common/enum");
+const { GetListTypeEnum, AccountRoleEnum } = require("../../common/enum");
 const accountModel = require("../../model/account");
 
 const findAccount = async (filter) => {
@@ -21,7 +21,7 @@ const findAccountById = async (idAccount) => {
 const getAllAcountUser = async ({ page = 1, limit = 100, type, role } = {}) => {
   try {
     const skip = (page - 1) * limit;
-    let query = { role: role ?? "CLIENT" };
+    let query = { role: role ?? AccountRoleEnum.CLIENT };
 
     if (type) {
       if (type === GetListTypeEnum.ACTIVE) {

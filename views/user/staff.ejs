@@ -1,0 +1,485 @@
+<div class="content-page">
+  <div class="content">
+    <div class="content-wrapper">
+      <div id="loading" class="loading-container">
+        <div class="loading-spinner">
+          <i class="fas fa-spinner fa-spin"></i>
+        </div>
+      </div>
+
+      <div id="dialog" class="dialog-container">
+        <div class="dialog-content">
+          <span id="dialog-message"></span>
+          <button onclick="hideDialog()">Ok</button>
+        </div>
+      </div>
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <!-- Customer List -->
+              <div class="card card-primary card-outline">
+                <div class="card-header" style="display: flex;flex-direction: row;justify-content: space-between;">
+                  <h5 class="card-title">Nhân viên</h5>
+                  <div class="card-body-action-right">
+                    <div class="dropdown float-end">
+                      <div class="dropdown">
+                        <!-- <button class="btn btn-info dropdown-toggle" type="button" id="dropdownCategoryButton"
+                          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          Lọc
+                        </button> -->
+                        <!-- <div class="dropdown-menu" aria-labelledby="dropdownCategoryButton"
+                          data-popper-placement="bottom-start"
+                          style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 40px, 0px);">
+                          <a class="dropdown-item" data-type="">Tất cả</a>
+                          <a class="dropdown-item" data-type="ACTIVE">Đang hoạt động</a>
+                          <a class="dropdown-item" data-type="INACTIVE">Ngừng hoạt động</a>
+                        </div> -->
+                      </div>
+                    </div>
+                    <button class="btn btn-primary float-right" id="create-staff-btn">
+                      Tạo nhân viên
+                    </button>
+                  </div>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table class="table table-hover">
+                    <thead>
+                      <tr>
+                        <th>STT</th>
+                        <th>Tên</th>
+                        <th>Email</th>
+                        <th>Số điện thoại</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% let index=1; %>
+                        <% listAccountUserData.accounts.forEach((row)=> { %>
+                          <!-- <tr onclick="window.location.href='/account/detail-staff/<%= row._id %>';"> -->
+                          <tr data-id="<%= row._id %>" data-user-name="<%= row.userName %>"
+                            data-avatar="<%= row.avatarUrl %>" data-email="<%= row.email %>" data-name="<%= row.name %>"
+                            data-phone-number="<%= row.phoneNumber %>">
+                            <td>
+                              <%= index %>
+                            </td>
+                            <td style="height: 100px;">
+                              <img src="<%= row.avatarUrl %>" alt="Account Image" height="100" width="100"
+                                style="margin-right: 10px; object-fit: contain;">
+                              <%= row.name %>
+                            </td>
+                            <td>
+                              <%= row.email %>
+                            </td>
+                            <td>
+                              <%= row.phoneNumber %>
+                            </td>
+                            <td>
+                              <i class="edit-icon mr-3 fa fa-pen"></i>
+                              <i class="delete-icon fa fa-trash"></i>
+                            </td>
+                          </tr>
+                          <% index++; %>
+                            <% }) %>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+              <!-- /.card -->
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <!-- Create Staff Modal -->
+    <div class="modal fade" id="createStaffModal" tabindex="-1" role="dialog" aria-labelledby="createStaffModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="createStaffModalLabel">
+              Tạo nhân viên
+            </h5>
+          </div>
+          <div class="modal-body">
+            <form id="uploadForm">
+              <div class="form-group">
+                <label for="photoUrls">Avatar</label>
+                <input type="file" class="form-control" id="photoUrls" name="files" accept="image/*">
+                <div class="image-preview" id="imagePreview"></div>
+              </div>
+              <div class="form-group">
+                <label for="newName">Tên</label>
+                <input type="text" class="form-control" id="newName" name="name" />
+              </div>
+              <div class="form-group">
+                <label for="newEmail">Email</label>
+                <input type="email" class="form-control" id="newEmail" name="email" />
+              </div>
+              <div class="form-group">
+                <label for="newUserName">Username</label>
+                <input type="text" class="form-control" id="newUserName" name="userName" />
+              </div>
+              <div class="form-group">
+                <label for="newPhoneNumber">Số điện thoại</label>
+                <input type="text" class="form-control" id="newPhoneNumber" name="phoneNumber" />
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeDialogAdd">
+                  Hủy
+                </button>
+                <button type="submit" class="btn btn-primary" id="savePromotion">
+                  Lưu
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Staff Modal -->
+    <div class="modal fade" id="editStaffModal" tabindex="-1" role="dialog" aria-labelledby="editStaffModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <input type="text" class="form-control d-none" id="editStaffId" placeholder="ID nhân viên" />
+            <h5 class="modal-title" id="editStaffModalLabel">
+              Thông tin nhân viên
+            </h5>
+          </div>
+          <div class="modal-body">
+            <form id="uploadForm">
+              <div class="form-group">
+                <label for="editPhotoUrls">Avatar</label>
+                <input type="file" class="form-control" id="editPhotoUrls" name="files" accept="image/*">
+                <div class="image-preview" id="imageEditPreview"></div>
+              </div>
+              <div class="form-group">
+                <label for="editName">Tên</label>
+                <input type="text" class="form-control" id="editName" name="name" />
+              </div>
+              <div class="form-group">
+                <label for="editEmail">Email</label>
+                <input type="email" class="form-control" id="editEmail" name="email" />
+              </div>
+              <div class="form-group">
+                <label for="editUserName">Username</label>
+                <input type="text" class="form-control" id="editUserName" name="userName" />
+              </div>
+              <div class="form-group">
+                <label for="editPhoneNumber">Số điện thoại</label>
+                <input type="text" class="form-control" id="editPhoneNumber" name="phoneNumber" />
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="closeDialogEdit">
+                  Hủy
+                </button>
+                <button type="submit" class="btn btn-primary" id="saveStaff">
+                  Lưu
+                </button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Confirm Delete Staff -->
+    <div class="modal fade" id="restoreModal" tabindex="-1" role="dialog" aria-labelledby="restoreModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <input type="text" class="form-control d-none" id="deleteStaffId" placeholder="ID nhân viên" />
+            <h5 class="modal-title" id="deleteModalLabel">Xác nhận xoá nhân viên</h5>
+          </div>
+          <div class="modal-body">
+            Bạn có chắc chắn muốn xoá nhân viên này không?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="cancelRestoreBtn" data-dismiss="modal">
+              Hủy
+            </button>
+            <button type="button" class="btn btn-danger" id="confirmRestoreBtn">
+              Xoá
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ./wrapper -->
+</div>
+
+<script>
+  const baseURL = window.location.protocol + "//" + window.location.host;
+  $(".edit-icon").on("click", function () {
+    const row = $(this).closest('tr');
+    const id = row.data('id');
+    const name = row.data('name');
+    const email = row.data('email');
+    const userName = row.data('user-name');
+    const phoneNumber = row.data('phone-number');
+    const avatarUrl = row.data('avatar');
+    $('#editStaffModal #editStaffId').val(id);
+    $('#editStaffModal #editName').val(name);
+    $('#editStaffModal #editEmail').val(email);
+    $('#editStaffModal #editUserName').val(userName);
+    $('#editStaffModal #editPhoneNumber').val(phoneNumber);
+    $("#editStaffModal").modal("show");
+    const imagePreview = document.getElementById('imageEditPreview');
+    while (imagePreview.firstChild) {
+      imagePreview.removeChild(imagePreview.firstChild);
+    }
+    const img = document.createElement('img');
+    img.src = avatarUrl;
+    imagePreview.appendChild(img);
+  });
+
+  $("#closeDialogEdit").on("click", function () {
+    $("#editStaffModal").modal("hide");
+  });
+
+  document.getElementById('editPhotoUrls').addEventListener('change', function () {
+    const imagePreview = document.getElementById('imageEditPreview');
+    imagePreview.innerHTML = '';
+    Array.from(this.files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        imagePreview.appendChild(img);
+      }
+      reader.readAsDataURL(file);
+    });
+  });
+
+  const editStaffModalForm = document.getElementById('editStaffModal');
+  editStaffModalForm.addEventListener('submit', function (event) {
+    const staffId = document.getElementById("editStaffId").value.trim();
+    event.preventDefault();
+    const formData = new FormData();
+
+    const newName = document.getElementById('editName').value;
+    formData.append('name', newName);
+
+    const newEmail = document.getElementById("editEmail").value;
+    formData.append('email', newEmail)
+
+    const newUserName = document.getElementById("editUserName").value;
+    formData.append('userName', newUserName)
+
+    const newPhoneNumber = document.getElementById("editPhoneNumber").value;
+    formData.append('phoneNumber', newPhoneNumber)
+
+    const fileProductImage = document.getElementById('editPhotoUrls');
+    const fileMedias = fileProductImage.files;
+    for (let i = 0; i < fileMedias.length; i++) {
+      formData.append('file', fileMedias[i]);
+    }
+    showLoading();
+    fetch(`${baseURL}/api/account/${staffId}`, {
+      method: "PUT",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((body) => {
+        isSuccess = true;
+        hideLoading();
+        showDialog(body.message);
+        setTimeout(() => {
+          window.location.href = baseURL + '/account/list-staff';
+        }, 2000);
+      })
+      .catch((error) => {
+        isSuccess = false;
+        hideLoading();
+        showDialog("Lỗi: " + error.message);
+        console.error("Error:", error);
+      });
+  });
+
+  $(".delete-icon").on("click", function () {
+    const row = $(this).closest('tr');
+    const id = row.data('id');
+    $('#restoreModal #deleteStaffId').val(id);
+    $("#restoreModal").modal("show");
+  });
+
+  $("#cancelRestoreBtn").on("click", function () {
+    $("#restoreModal").modal("hide");
+  });
+
+  $("#confirmRestoreBtn").on("click", function () {
+    const staffId = document.getElementById("deleteStaffId").value.trim();
+    showLoading();
+    fetch(`${baseURL}/api/account/${staffId}/change-status`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ status: true }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((body) => {
+        isSuccess = true;
+        hideLoading();
+        showDialog(body.message);
+        setTimeout(() => {
+          location.reload();
+        }, 1300);
+      })
+      .catch((error) => {
+        isSuccess = false;
+        hideLoading();
+        showDialog("Lỗi: " + error.message);
+        console.error("Error:", error);
+      });
+  });
+
+  $("#create-staff-btn").on("click", function () {
+    $("#createStaffModal").modal("show");
+  });
+
+  $("#closeDialogAdd").on("click", function () {
+    $("#createStaffModal").modal("hide");
+  });
+
+  document.getElementById('photoUrls').addEventListener('change', function () {
+    const imagePreview = document.getElementById('imagePreview');
+    imagePreview.innerHTML = '';
+    Array.from(this.files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        imagePreview.appendChild(img);
+      }
+      reader.readAsDataURL(file);
+    });
+  });
+
+  const form = document.getElementById('uploadForm');
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    const formData = new FormData();
+
+    const newName = document.getElementById('newName').value;
+    formData.append('name', newName);
+
+    const newEmail = document.getElementById("newEmail").value;
+    formData.append('email', newEmail)
+
+    const newUserName = document.getElementById("newUserName").value;
+    formData.append('userName', newUserName)
+
+    const newPhoneNumber = document.getElementById("newPhoneNumber").value;
+    formData.append('phoneNumber', newPhoneNumber)
+
+    const fileProductImage = document.getElementById('photoUrls');
+    const fileMedias = fileProductImage.files;
+    for (let i = 0; i < fileMedias.length; i++) {
+      formData.append('file', fileMedias[i]);
+    }
+    console.log(`[web] addProducts: formData -> ${JSON.stringify(formData)}`);
+    showLoading();
+    fetch(`${baseURL}/api/account/new`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((body) => {
+        isSuccess = true;
+        hideLoading();
+        showDialog(body.message);
+        setTimeout(() => {
+          window.location.href = baseURL + '/account/list-staff';
+        }, 2000);
+      })
+      .catch((error) => {
+        isSuccess = false;
+        hideLoading();
+        showDialog("Lỗi: " + error.message);
+        console.error("Error:", error);
+      });
+  });
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedType = urlParams.get('type');
+
+    const dropdownTypeButton = document.querySelector('#dropdownCategoryButton');
+    const dropdownTypeMenu = document.querySelector('#dropdownCategoryButton + .dropdown-menu');
+
+    if (selectedType) {
+      const typeItems = dropdownTypeMenu.querySelectorAll('a.dropdown-item');
+      typeItems.forEach((item) => {
+        if (item.getAttribute('data-type') === selectedType) {
+          if (selectedType == "ACTIVE") {
+            dropdownTypeButton.textContent = "Đang hoạt động";
+          } else if (selectedType == "INACTIVE") {
+            dropdownTypeButton.textContent = "Ngừng hoạt động";
+          }
+          item.classList.add('active');
+        }
+      });
+    } else {
+      dropdownTypeButton.textContent = "Tất cả";
+    }
+
+    dropdownTypeMenu.addEventListener('click', function (e) {
+      if (e.target && e.target.matches('a.dropdown-item')) {
+        const selectedType = e.target.getAttribute('data-type');
+        let url = new URL(window.location.href);
+        url.searchParams.set('type', selectedType);
+        window.location.href = url.toString();
+      }
+    });
+  });
+
+
+  function showLoading() {
+    document.getElementById("loading").style.display = "block";
+  }
+
+  function hideLoading() {
+    document.getElementById("loading").style.display = "none";
+  }
+
+  function showDialog(message) {
+    document.getElementById("dialog-message").textContent = message;
+    document.getElementById("dialog").style.display = "block";
+  }
+
+  function hideDialog() {
+    document.getElementById("dialog").style.display = "none";
+    if (isSuccess) {
+      isSuccess = false;
+    }
+  }
+</script>

@@ -1,25 +1,25 @@
 const orderModel = require("../../model/order");
 const accountModel = require("../../model/account");
-const producttemModel = require("../../model/product");
+const productModel = require("../../model/product");
 const cartItemsModel = require("../../model/cart_item");
 const mongoose = require("mongoose");
-const order_item = require("../../model/order_item");
+const orderItemModel = require("../../model/order_item");
 
 const getListOrder = async (page, limit, searchKeyword) => {
   try {
-    
     const matchStage = {
       status: { $ne: "PROCESSING" },
     };
 
     if (searchKeyword) {
-      matchStage.code = { $regex: searchKeyword, $options: 'i' };
+      matchStage.code = { $regex: searchKeyword, $options: "i" };
     }
-
 
     const pipeline = [
       {
-        $match: matchStage,
+        $match: {
+          status: { $ne: "PROCESSING" },
+        },
       },
       {
         $sort: {
@@ -143,7 +143,7 @@ const getListOrderByStatus = async (status, page, limit, searchCode) => {
   if (searchCode) {
     matchStage.code = searchCode;
   }
-  
+
   const pipeline = [
     {
       $match: matchStage,
@@ -362,6 +362,20 @@ const isUpdateOrder = async (orderId, status) => {
       { new: true }
     );
     console.log(`[orderService] isUpdateOrder: updateOrder -> ${updateOrder}`);
+
+    const listOrderItem = await orderItemModel.find({
+      orderId: new mongoose.Types.ObjectId(orderId),
+    });
+    console.log(`[orderService] listOrderItem -> ${listOrderItem}`);
+
+    for (let i = 0; i < listOrderItem.length; i++) {
+      const product = await productModel.findById(listOrderItem[i].productId);
+      console.log(`[orderService] product -> ${product}`);
+      if (product) {
+        product.quantity -= 1;
+        await product.save();
+      }
+    }
     return updateOrder;
   } catch (error) {
     throw error;
@@ -370,7 +384,9 @@ const isUpdateOrder = async (orderId, status) => {
 
 const getTotalRecords = async (searchCode) => {
   try {
-    const totalRecords = await orderModel.countDocuments({ status: { $ne: "PROCESSING" }});
+    const totalRecords = await orderModel.countDocuments({
+      status: { $ne: "PROCESSING" },
+    });
     return totalRecords;
   } catch (error) {
     throw new Error(`Error while getting total records: ${error.message}`);
@@ -378,7 +394,7 @@ const getTotalRecords = async (searchCode) => {
 };
 const getTotalRecordsByStatus = async (status) => {
   try {
-    const totalRecords = await orderModel.countDocuments({ status: status});
+    const totalRecords = await orderModel.countDocuments({ status: status });
     return totalRecords;
   } catch (error) {
     throw new Error(`Error while getting total records: ${error.message}`);
@@ -391,5 +407,5 @@ module.exports = {
   getListOrderById,
   isUpdateOrder,
   getTotalRecords,
-  getTotalRecordsByStatus
+  getTotalRecordsByStatus,
 };

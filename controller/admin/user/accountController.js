@@ -1,3 +1,4 @@
+const { AccountRoleEnum, GetListTypeEnum } = require("../../../common/enum");
 const accountService = require("../../../service/account/account");
 const accountValidation = require("../../../validation/auth");
 
@@ -12,6 +13,29 @@ const listUser = async (req, res) => {
     res.render("./index.ejs", {
       title: "Danh sách khách hàng",
       routerName: "list-user",
+      info: req.session.account,
+      listAccountUserData: listAccountUser,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
+const listStaff = async (req, res) => {
+  try {
+    const type = req.query.type;
+
+    const listAccountUser = await accountService.getAllAcountUser({
+      type: type ?? GetListTypeEnum.ACTIVE,
+      role: AccountRoleEnum.STAFF,
+    });
+    console.log("[acountController] listStaff -> ", listAccountUser);
+    res.render("./index.ejs", {
+      title: "Danh sách nhân viên",
+      routerName: "list-staff",
       info: req.session.account,
       listAccountUserData: listAccountUser,
     });
@@ -38,6 +62,32 @@ const detailUser = async (req, res) => {
     res.render("./index.ejs", {
       title: "Chi tiết khách hàng",
       routerName: "detail-user",
+      info: req.session.account,
+      detailUserData: account,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: `${error.message}`,
+    });
+  }
+};
+
+const detailStaff = async (req, res) => {
+  let idAccount = req.params.idAccount;
+  const account = await accountService.findAccountById(idAccount);
+  console.log("[acountController] detailStaff -> ", account);
+
+  if (!account) {
+    return res.status(301).json({
+      success: false,
+      message: `Account not found`,
+    });
+  }
+  try {
+    res.render("./index.ejs", {
+      title: "Chi tiết nhân viên",
+      routerName: "detail-staff",
       info: req.session.account,
       detailUserData: account,
     });
@@ -86,6 +136,8 @@ const changeStatus = async (req, res) => {
 
 module.exports = {
   listUser,
+  listStaff,
   detailUser,
+  detailStaff,
   changeStatus,
 };

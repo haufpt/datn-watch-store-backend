@@ -21,7 +21,7 @@ const listRevenueDashboard = async (req, res) => {
     res.render("./index.ejs", {
       title: "Dashboard",
       routerName: "dashboard",
-      info: req.session.userLogin,
+      info: req.session.account,
     });
   } catch (error) {
     res.status(500).json({
