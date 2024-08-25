@@ -26,6 +26,7 @@ const detailBrand = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(idBrand)) {
       return res.render("./index.ejs", {
         title: "Danh sách thương hiệu",
+        info: req.session.account,
         routerName: "detail-brand",
         message: `Không phải là id`,
       });
@@ -34,6 +35,7 @@ const detailBrand = async (req, res) => {
     if (!brand) {
       return res.render("./index.ejs", {
         title: "Danh sách thương hiệu",
+        info: req.session.account,
         routerName: "detail-brand",
         message: `Không tìm thấy thương hiệu`,
       });

@@ -7,12 +7,24 @@ const multerService = require("../../../shared/multer");
 const { validateSchema } = require("../../../middleware/validate");
 const AccountValidation = require("../../../validation/account");
 
+router.post(
+  "/new",
+  multerService.uploadFile(FileTypeEnum.IMAGE).single("file"),
+  accountController.createStaff
+);
+
 router.put(
   "/",
   checkLogin,
   checkPermission([AccountRoleEnum.CLIENT]),
   multerService.uploadFile(FileTypeEnum.IMAGE).single("file"),
   accountController.updateProfile
+);
+
+router.put(
+  "/:idAccount",
+  multerService.uploadFile(FileTypeEnum.IMAGE).single("file"),
+  accountController.updateAccount
 );
 
 router.put(

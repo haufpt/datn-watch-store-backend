@@ -122,6 +122,17 @@ const logout = async (req, res) => {
   }
 };
 
+const logoutWeb = async (req, res) => {
+  try {
+    req.session.account = null;
+
+    res.redirect("/auth/login");
+  } catch (error) {
+    console.error("Lỗi khi đăng xuất:", error);
+    res.status(500).json({ message: error });
+  }
+};
+
 const loginWeb = async (req, res) => {
   try {
     const { userName, password, firebase } = req.body;
@@ -143,8 +154,14 @@ const loginWeb = async (req, res) => {
       });
     }
 
-    if (isExistUserName.role != "ADMIN") {
+    if (isExistUserName.role === "CLIENT") {
       return res.render("./login/login.ejs", { error: "Không thể đăng nhập!" });
+    }
+
+    if (isExistUserName.isDeleted) {
+      return res.render("./login/login.ejs", {
+        error: "Tài khoản đã bị khoá!",
+      });
     }
 
     await accountService.findByIdAndUpdate(isExistUserName._id, {
@@ -178,4 +195,5 @@ module.exports = {
   logout,
   loginWeb,
   redirectLogin,
+  logoutWeb
 };

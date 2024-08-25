@@ -6,17 +6,17 @@ const { AccountRoleEnum, FileTypeEnum } = require("../../../common/enum");
 
 router.get(
   "/list-order",
-  checkRole([AccountRoleEnum.ADMIN]),
+  checkRole([AccountRoleEnum.ADMIN, AccountRoleEnum.STAFF]),
   orderController.listOrder
 );
 router.get(
   "/detail-order/:orderId",
-  checkRole([AccountRoleEnum.ADMIN]),
+  checkRole([AccountRoleEnum.ADMIN, AccountRoleEnum.STAFF]),
   orderController.getDetailOrder
 );
 router.post(
   "/update-order/:orderId",
-  checkRole([AccountRoleEnum.ADMIN]),
+  checkRole([AccountRoleEnum.ADMIN, AccountRoleEnum.STAFF]),
   orderController.putOrder
 );
 

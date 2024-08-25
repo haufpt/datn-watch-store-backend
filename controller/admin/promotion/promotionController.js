@@ -11,7 +11,7 @@ const getListPromotion = async (req, res) => {
     res.render("./index.ejs", {
       title: "Danh sách khách hàng",
       routerName: "promotion",
-      info: req.session.promotion,
+      info: req.session.account,
       promotionData: listPromotion,
     });
   } catch (error) {

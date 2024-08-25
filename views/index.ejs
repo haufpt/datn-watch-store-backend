@@ -85,7 +85,7 @@
     .card-body-action-right {
       display: flex;
       flex-direction: row;
-      align-items: baseline;
+      align-items: center;
     }
 
     .card-body-action-right .dropdown {
@@ -586,6 +586,14 @@
               </a>
             </li>
 
+            <% if (info.role ==='ADMIN'){ %>
+              <li>
+                <a href="/account/list-staff">
+                  <span> Nhân viên </span>
+                </a>
+              </li>
+            <% } %>
+
             <li>
               <a href="/order/list-order">
                 <span> Đơn hàng </span>
@@ -604,16 +612,20 @@
               </a>
             </li>
 
-            <li>
-              <a href="/statistical/statisticalStore">
-                <span> Thống kê </span>
-              </a>
-            </li>
-
+            <% if (info.role ==='ADMIN'){ %>
+              <li>
+                <a href="/statistical/statisticalStore">
+                  <span> Thống kê </span>
+                </a>
+              </li>
+            <% } %>
           </ul>
         </div>
         <!-- End Sidebar -->
         <div class="clearfix"></div>
+        <form action="auth/logout" method="post">
+        <button type="submit" style="position: absolute; bottom: 25px; left: 44px;" class="btn btn-danger">Đăng xuất</button>
+      </form>
       </div>
       <!-- Sidebar -left -->
     </div>
@@ -640,8 +652,12 @@
                               <%-include('order/detailOrder.ejs')%>
                                 <% } else if (routerName==='list-user') { %>
                                   <%-include('user/account.ejs')%>
+                                  <% } else if (routerName==='list-staff') { %>
+                                    <%-include('user/staff.ejs')%>
                                     <% } else if (routerName==='detail-user') { %>
                                       <%-include('user/detailUser.ejs')%>
+                                      <% } else if (routerName==='detail-staff') { %>
+                                        <%-include('user/detailStaff.ejs')%>
                                         <% } else if (routerName==='promotion') { %>
                                           <%-include('promotion/managePromotion.ejs')%>
                                             <% } else if (routerName==='statistical') { %>

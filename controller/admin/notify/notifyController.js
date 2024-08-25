@@ -15,7 +15,7 @@ const managerNotify = async (req, res) => {
     res.render("./index.ejs", {
       title: "Thông báo",
       routerName: "notify",
-      info: req.session.notify,
+      info: req.session.account,
       listNotify: listNotify,
       totalPages: totalPages,
       currentPage : page,

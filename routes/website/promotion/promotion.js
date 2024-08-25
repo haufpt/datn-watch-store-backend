@@ -6,7 +6,7 @@ const { AccountRoleEnum, FileTypeEnum } = require("../../../common/enum");
 
 router.get(
   "/promotion",
-  checkRole([AccountRoleEnum.ADMIN]),
+  checkRole([AccountRoleEnum.ADMIN, AccountRoleEnum.STAFF]),
   promotionController.getListPromotion
 );
 

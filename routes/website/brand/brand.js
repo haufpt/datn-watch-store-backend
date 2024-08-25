@@ -9,18 +9,18 @@ const checkFile = require("../../../middleware/file");
 
 router.get(
   "/list-brands",
-  checkRole([AccountRoleEnum.ADMIN]),
+  checkRole([AccountRoleEnum.ADMIN, AccountRoleEnum.STAFF]),
   brandController.listBrand
 );
 router.get(
   "/detail-brands/:idBrand",
-  checkRole([AccountRoleEnum.ADMIN]),
+  checkRole([AccountRoleEnum.ADMIN, AccountRoleEnum.STAFF]),
   brandController.detailBrand
 );
 
 router.post(
   "/post-brands",
-  checkRole([AccountRoleEnum.ADMIN]),
+  checkRole([AccountRoleEnum.ADMIN, AccountRoleEnum.STAFF]),
   multerService.uploadFile(FileTypeEnum.IMAGE).single("file"),
   checkFile("SINGLE"),
   brandController.postBrand
@@ -28,7 +28,7 @@ router.post(
 
 router.put(
   "/update-brand/:idBrand",
-  checkRole([AccountRoleEnum.ADMIN]),
+  checkRole([AccountRoleEnum.ADMIN, AccountRoleEnum.STAFF]),
   multerService.uploadFile(FileTypeEnum.IMAGE).single("file"),
   brandController.updateBrand
 );

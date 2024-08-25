@@ -33,7 +33,7 @@ const statisticalStore = async (req, res) => {
     res.render("./index.ejs", {
       title: "Thống kê",
       routerName: "statistical",
-      info: req.session.statistical,
+      info: req.session.account,
       listTopProduct: filteredProducts,
       activity: {
         quantityStaff: staffs.accounts.length,
