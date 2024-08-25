@@ -25,6 +25,7 @@ class AuthValidation {
       email: Joi.string().email().max(255).required(),
       phoneNumber: Joi.string().required(),
       password: Joi.string().max(255).trim().required(),
+      address: Joi.string().trim().optional(),
     }),
   };
 

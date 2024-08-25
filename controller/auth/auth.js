@@ -1,6 +1,7 @@
 const { avatarDefault } = require("../../common/constants");
 const { AccountRoleEnum } = require("../../common/enum");
 const accountService = require("../../service/account/account");
+const shippingAddressService = require("../../service/shipping_address/shipping_address");
 const jwtService = require("../../shared/jwt");
 
 const login = async (req, res) => {
@@ -59,9 +60,24 @@ const login = async (req, res) => {
 const singup = async (req, res) => {
   try {
     const newAccount = req.body;
+    const { address } = req.body;
+    let newAddress;
+
+    if (address) {
+      delete newAccount.address;
+
+      newAddress = {
+        receiver: newAccount.name,
+        address: address,
+        phoneNumber: newAccount.phoneNumber,
+        isDefault: true,
+      };
+    }
+
     if (!newAccount.role) {
       newAccount.role = AccountRoleEnum.CLIENT;
     }
+
     console.log("[AuthController] singup req: ", newAccount);
 
     var isExistUserName = await accountService.findAccount({
@@ -86,12 +102,17 @@ const singup = async (req, res) => {
 
     newAccount.avatarUrl = avatarDefault;
 
-    var isSuccess = await accountService.addAccount(newAccount);
-    if (!isSuccess) {
+    var newSuccessAccount = await accountService.addAccount(newAccount);
+    if (!newSuccessAccount) {
       return res.status(301).json({
         success: false,
         message: `Tạo tài khoản thất bại.`,
       });
+    }
+
+    if (newAddress) {
+      newAddress.accountId = newSuccessAccount._id;
+      await shippingAddressService.createNewShippingAddress(newAddress);
     }
 
     res.status(200).json({
@@ -195,5 +216,5 @@ module.exports = {
   logout,
   loginWeb,
   redirectLogin,
-  logoutWeb
+  logoutWeb,
 };
