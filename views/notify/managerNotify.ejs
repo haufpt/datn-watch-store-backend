@@ -20,18 +20,17 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="card card-primary card-outline">
-                                <div class="card-header" style="display: flex;flex-direction: row;justify-content: space-between;">
+                                <div class="card-header"
+                                    style="display: flex;flex-direction: row;justify-content: space-between;">
                                     <h5 class="card-title">Thông báo</h5>
                                     <div class="card-body-action-right">
-                                        <div class="float-end">
-                                            <button class="btn btn-primary float-right" id="create-notify-btn">
-                                                Tạo thông báo
-                                            </button>
-                                        </div>
-                                        <div class="float-end">
-                                            <form class="form-inline ml-0 ml-md-3" id="searchForm" action="/notify/managerNotify" method="GET">
+                                        <div class="">
+                                            <form class="form-inline ml-0 ml-md-3" id="searchForm"
+                                                action="/notify/managerNotify" method="GET">
                                                 <div class="input-group input-group-sm">
-                                                    <input class="form-control form-control-navbar" name="search" type="search" id="searchInput" placeholder="Search" aria-label="Search">
+                                                    <input class="form-control form-control-navbar" name="search"
+                                                        type="search" id="searchInput" placeholder="Search"
+                                                        aria-label="Search">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-navbar" type="submit" id="searchButton">
                                                             <i class="fas fa-search"></i>
@@ -39,6 +38,11 @@
                                                     </div>
                                                 </div>
                                             </form>
+                                        </div>
+                                        <div class="">
+                                            <button class="btn btn-primary" id="create-notify-btn">
+                                                Tạo thông báo
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -110,18 +114,27 @@
                                 </div>
                                 <ul class="pagination justify-content-end" id="pagination">
                                     <li class="page-item" id="previousPage">
-                                        <a class="page-link" href="/notify/managerNotify?page=<%= currentPage - 1 %>&limit=<%= limit %>" tabindex="-1">Previous</a>
+                                        <a class="page-link"
+                                            href="/notify/managerNotify?page=<%= currentPage - 1 %>&limit=<%= limit %>"
+                                            tabindex="-1">Previous</a>
                                     </li>
                                     <% for (let i=1; i <=totalPages; i++) { %>
                                         <li class="page-item <%= currentPage  === i ? 'active' : '' %>">
                                             <a class="page-link <%= currentPage === i ? 'active' : '' %>"
-                                                href="/notify/managerNotify?page=<%= i %>&limit=<%= limit %>" id="page<%= i %>">
+                                                href="/notify/managerNotify?page=<%= i %>&limit=<%= limit %>"
+                                                id="page<%= i %>">
                                                 <%= i %>
                                             </a>
                                         </li>
                                         <% } %>
+
                                             <li class="page-item" id="nextPage">
-                                                <a class="page-link" href="/notify/managerNotify?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+                                                <% if (totalPages <=1) { %>
+                                                    <a class="page-link" href="#">Next</a>
+                                                    <% } else {%>
+                                                        <a class="page-link"
+                                                            href="/notify/managerNotify?page=<%= currentPage + 1 %>&limit=<%= limit %>">Next</a>
+                                                        <% } %>
                                             </li>
                                 </ul>
                             </div>

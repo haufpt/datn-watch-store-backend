@@ -13,12 +13,12 @@ const listOrder = async (req, res, status) => {
     var searchCode = req.query.code;
     if (!status) {
       const listOrder = await orderService.getListOrder(page, limit, searchCode);
+      const listOrder2 = await orderService.getListOrder(page, 10000000000, searchCode);
       console.log(
         `[orderController] listOrder 1 -> ${JSON.stringify(listOrder)}`
       );
 
-      const totalRecords = await orderService.getTotalRecords();
-      totalPages = Math.ceil(totalRecords / limit);
+      totalPages = Math.ceil(listOrder2.length / limit);
      return res.render("./index.ejs", {
         title: "Danh sách đơn hàng",
         routerName: "list-order",
@@ -29,18 +29,20 @@ const listOrder = async (req, res, status) => {
         limit: limit
       });
     }
-    const listOrder2 = await orderService.getListOrderByStatus(status, page, limit, searchCode);
+    const listOrder3 = await orderService.getListOrderByStatus(status, page, limit, searchCode);
+    const listOrder4 = await orderService.getListOrderByStatus(status, page, 10000000000, searchCode);
+
     console.log(
-      `[orderController] listOrder 2 -> ${JSON.stringify(listOrder2)}`
+      `[orderController] listOrder 2 -> ${JSON.stringify(listOrder3)}`
     );
-    const totalRecords = await orderService.getTotalRecordsByStatus(status);
-    totalPages = Math.ceil(totalRecords / limit);
+
+    totalPages = Math.ceil(listOrder4.length / limit);
 
     return res.render("./index.ejs", {
       title: "Danh sách đơn hàng",
       routerName: "list-order",
       info: req.session.account,
-      listOrderData: listOrder2,
+      listOrderData: listOrder3,
       totalPages: totalPages,
       currentPage : page,
       limit: limit
