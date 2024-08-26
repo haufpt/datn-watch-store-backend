@@ -5,21 +5,19 @@ const cartItemsModel = require("../../model/cart_item");
 const mongoose = require("mongoose");
 const orderItemModel = require("../../model/order_item");
 
-const getListOrder = async (page, limit, searchKeyword) => {
+const getListOrder = async (page, limit, searchCode) => {
   try {
     const matchStage = {
       status: { $ne: "PROCESSING" },
     };
 
-    if (searchKeyword) {
-      matchStage.code = { $regex: searchKeyword, $options: "i" };
+    if (searchCode) {
+      matchStage.code = { $regex: searchCode, $options: "i" };
     }
     
     const pipeline = [
       {
-        $match: {
-          status: { $ne: "PROCESSING" },
-        },
+        $match: matchStage
       },
       {
         $sort: {
@@ -382,19 +380,32 @@ const isUpdateOrder = async (orderId, status) => {
   }
 };
 
-const getTotalRecords = async (searchCode) => {
+const getTotalRecords = async (page, searchCode) => {
   try {
-    const totalRecords = await orderModel.countDocuments({
-      status: { $ne: "PROCESSING" },
-    });
+    let  totalRecords = 0;
+    if (searchCode) {
+      const sum = await getListOrder(page, 100000000, searchCode);
+      totalRecords = Math.ceil(sum.length / 15);
+    } else {
+      totalRecords = await orderModel.countDocuments({status:{ $ne: "PROCESSING" } });
+    }
+
+     
     return totalRecords;
   } catch (error) {
     throw new Error(`Error while getting total records: ${error.message}`);
   }
 };
-const getTotalRecordsByStatus = async (status) => {
+const getTotalRecordsByStatus = async (status, page, searchCode) => {
   try {
-    const totalRecords = await orderModel.countDocuments({ status: status });
+    let  totalRecords = 0;
+    if (searchCode) {
+      const sum = await getListOrder(page, 100000000, searchCode);
+      totalRecords = Math.ceil(sum.length / 15);
+    } else {
+      totalRecords = await orderModel.countDocuments({ status: status });
+    }
+     
     return totalRecords;
   } catch (error) {
     throw new Error(`Error while getting total records: ${error.message}`);

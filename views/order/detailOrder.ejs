@@ -65,29 +65,29 @@
                                                             <% orderData.orderItems.forEach((row)=> { %>
                                                                 <% sum +=(row.quantity * row.product.price); %>
                                                                     <% }); %>
-                                                                        <%= sum %>$
+                                                                        <%= sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %>$
                                                     </h4>
                                                     <% if (orderData.discount && orderData.discount.discountValue> 0) {
                                                         %>
                                                         <h4>Giảm giá:
                                                             <% if(orderData.discount.discountType==="PERCENT" ){ %>
-                                                                <%= orderData.discount.discountValue %> %
+                                                                <%= orderData.discount.discountValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %> %
                                                                     <% } else { %>
-                                                                        <%= orderData.discount.discountValue %> $
+                                                                        <%= orderData.discount.discountValue.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %> $
                                                                             <% } %>
                                                         </h4>
                                                         <% } %>
 
                                                             <h4>Thành tiền:
                                                                 <% if(orderData.discount===null){ %>
-                                                                    <%= sum %>$
+                                                                    <%= sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %>$
                                                             </h4>
                                                             <% }else{ %>
                                                                 <% if(orderData.discount.discountType=="PERCENT" ){ %>
-                                                                    <%= sum - (sum * orderData.discount.discountValue /
-                                                                        100) %>$
+                                                                    <%= (sum - (sum * orderData.discount.discountValue /
+                                                                        100)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %>$
                                                                         <% }else{ %>
-                                                                            <%= sum - orderData.discount.discountValue
+                                                                            <%= (sum - orderData.discount.discountValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
                                                                                 %>$
                                                                                 <% } %>
                                                                                     <% } %>

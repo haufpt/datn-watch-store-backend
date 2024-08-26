@@ -4,13 +4,18 @@ const brandValidation = require("../../../validation/brand");
 
 const listBrand = async (req, res) => {
   try {
-    const listBrand = await brandService.listBrand();
+    var searchCode = req.query.search;
+    const listBrand = await brandService.listBrand({ searchQuery: searchCode});
+    
     console.log("[brandController] listBrand -> ", listBrand);
     res.render("./index.ejs", {
       title: "Danh sách thương hiệu",
       routerName: "list-brand",
       info: req.session.account,
       listBrandData: listBrand,
+      totalPages: listBrand.totalPages,
+      currentPage : listBrand.currentPage,
+      limit: listBrand.limit
     });
   } catch (error) {
     res.status(500).json({

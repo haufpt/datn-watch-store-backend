@@ -3,16 +3,25 @@ const DiscountValidation = require("../../../validation/discount");
 
 const getListPromotion = async (req, res) => {
   try {
-    const listPromotion = await discountService.getListDiscount();
+    var page = parseInt(req.query.page) || 1;
+    var limit = parseInt(req.query.limit) || 15;
+    let totalPages;
+    var searchQerry = req.query.search;
+    const listPromotion = await discountService.getListDiscount(page, limit, searchQerry);
+    const listPromotion2 = await discountService.getListDiscount(page, 10000000000, searchQerry);
     console.log(
       `[promotionController] getListPromotion: ListPromotion -> ${JSON.stringify(listPromotion)}`
     );
+    totalPages = Math.ceil(listPromotion2.length / limit);
 
     res.render("./index.ejs", {
       title: "Danh sách khách hàng",
       routerName: "promotion",
       info: req.session.account,
       promotionData: listPromotion,
+      totalPages: totalPages,
+      currentPage : page,
+      limit: limit
     });
   } catch (error) {
     res.status(500).json({

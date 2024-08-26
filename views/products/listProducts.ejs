@@ -93,7 +93,7 @@
                               <%= row.brand.name %>
                             </td>
                             <td>
-                              <%= row.price %>$
+                              <%= row.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %>$
                             </td>
                             <td>
                               <%= row.quantity %>

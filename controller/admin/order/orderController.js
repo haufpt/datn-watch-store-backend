@@ -2,49 +2,35 @@ const orderService = require("../../../service/order/orderService");
 const service = require("../../../service/order/order");
 const {OrderStatusEnum} = require("../../../common/enum");
 
-
 const listOrder = async (req, res, status) => {
   try {
-    status = req.query.status
+    
+    status = req.query.status;
     console.log("[orderController] req.query -> ", req.query);
     var page = parseInt(req.query.page) || 1;
     var limit = parseInt(req.query.limit) || 15;
     let totalPages;
-    var searchCode = req.query.code;
+    var searchCode = req.query.search;
+
+    let listOrderData;
+
     if (!status) {
-      const listOrder = await orderService.getListOrder(page, limit, searchCode);
-      const listOrder2 = await orderService.getListOrder(page, 10000000000, searchCode);
-      console.log(
-        `[orderController] listOrder 1 -> ${JSON.stringify(listOrder)}`
-      );
-
-      totalPages = Math.ceil(listOrder2.length / limit);
-     return res.render("./index.ejs", {
-        title: "Danh sách đơn hàng",
-        routerName: "list-order",
-        info: req.session.account,
-        listOrderData: listOrder,
-        totalPages: totalPages,
-        currentPage : page,
-        limit: limit
-      });
+      listOrderData = await orderService.getListOrder(page, limit, searchCode);
+      const totalOrdersCount = await orderService.getTotalRecords(page,searchCode);
+      totalPages = Math.ceil(totalOrdersCount / limit);
+    } else {
+      listOrderData = await orderService.getListOrderByStatus(status, page, limit, searchCode);
+      const totalOrdersCount = await orderService.getTotalRecordsByStatus(status,page,searchCode);
+      totalPages = Math.ceil(totalOrdersCount / limit);
     }
-    const listOrder3 = await orderService.getListOrderByStatus(status, page, limit, searchCode);
-    const listOrder4 = await orderService.getListOrderByStatus(status, page, 10000000000, searchCode);
-
-    console.log(
-      `[orderController] listOrder 2 -> ${JSON.stringify(listOrder3)}`
-    );
-
-    totalPages = Math.ceil(listOrder4.length / limit);
 
     return res.render("./index.ejs", {
       title: "Danh sách đơn hàng",
       routerName: "list-order",
       info: req.session.account,
-      listOrderData: listOrder3,
+      listOrderData: listOrderData,
       totalPages: totalPages,
-      currentPage : page,
+      currentPage: page,
       limit: limit
     });
   } catch (error) {

@@ -5,9 +5,13 @@ const accountValidation = require("../../../validation/auth");
 const listUser = async (req, res) => {
   try {
     const type = req.query.type;
+    var searchQuery = req.query.search;
 
     const listAccountUser = await accountService.getAllAcountUser({
+      page: parseInt(req.query.page) || 1,
+      limit: parseInt(req.query.limit) || 15,
       type: type,
+      searchQuery: searchQuery,
     });
     console.log("[acountController] listAccountUser -> ", listAccountUser);
     res.render("./index.ejs", {
@@ -15,6 +19,9 @@ const listUser = async (req, res) => {
       routerName: "list-user",
       info: req.session.account,
       listAccountUserData: listAccountUser,
+      totalPages: listAccountUser.totalPages,
+      currentPage : listAccountUser.currentPage,
+      limit: listAccountUser.limit
     });
   } catch (error) {
     res.status(500).json({
@@ -27,10 +34,15 @@ const listUser = async (req, res) => {
 const listStaff = async (req, res) => {
   try {
     const type = req.query.type;
-
+    var searchQuery = req.query.search;
+    console.log(`[acountController] query -> ${searchQuery}`);
+    
     const listAccountUser = await accountService.getAllAcountUser({
-      type: type ?? GetListTypeEnum.ACTIVE,
+      page: parseInt(req.query.page) || 1,
+      limit: parseInt(req.query.limit) || 15,
+      type: type ,
       role: AccountRoleEnum.STAFF,
+      searchQuery: searchQuery,
     });
     console.log("[acountController] listStaff -> ", listAccountUser);
     res.render("./index.ejs", {
@@ -38,6 +50,9 @@ const listStaff = async (req, res) => {
       routerName: "list-staff",
       info: req.session.account,
       listAccountUserData: listAccountUser,
+      totalPages: listAccountUser.totalPages,
+      currentPage : listAccountUser.currentPage,
+      limit: listAccountUser.limit
     });
   } catch (error) {
     res.status(500).json({

@@ -13,6 +13,18 @@
                                     <div class="card-header" style="display: flex;flex-direction: row;justify-content: space-between;">
                                         <h5 class="card-title">Danh sách đơn hàng</h5>
                                         <div class="card-body-action-right">
+                                            <div class="float-end">
+                                                <form class="form-inline ml-0 ml-md-3" id="searchForm" action="/order/list-order" method="GET">
+                                                    <div class="input-group input-group-sm">
+                                                        <input class="form-control form-control-navbar" name="search" type="search" id="searchInput" placeholder="Tìm kiếm" aria-label="Search">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-navbar" type="submit" id="searchButton">
+                                                                <i class="fas fa-search"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
                                             <div class="dropdown float-end">
                                                 <div class="dropdown">
                                                     <button class="btn btn-info dropdown-toggle" type="button"
@@ -30,18 +42,6 @@
                                                         <a class="dropdown-item" data-status="CANCELLED">Đã hủy</a>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <div class="float-end">
-                                                <form class="form-inline ml-0 ml-md-3" id="searchForm" action="/order/list-order" method="GET">
-                                                    <div class="input-group input-group-sm">
-                                                        <input class="form-control form-control-navbar" name="code" type="search" id="searchInput" placeholder="Search" aria-label="Search">
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-navbar" type="submit" id="searchButton">
-                                                                <i class="fas fa-search"></i>
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -93,12 +93,12 @@
                                                                         <% sum +=(row.quantity * row.product.price); %>
                                                                             <% }); %>
                                                                                 <% if(row.discount===null){ %>
-                                                                                    <%= sum %>$
+                                                                                    <%= sum.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %>$
                                                                                         <% }else{ %>
                                                                                             <% if(row.discount.discountType=="PERCENT"){ %>
-                                                                                                <%= sum - (sum * row.discount.discountValue / 100) %>$
+                                                                                                <%= (sum - (sum * row.discount.discountValue / 100)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %>$
                                                                                                     <% }else{ %>
-                                                                                                        <%= sum - row.discount.discountValue %>$
+                                                                                                        <%= (sum - row.discount.discountValue).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %>$
                                                                                                     <% } %>
                                                                                             <% } %>
 
@@ -196,6 +196,11 @@
         }
     });
 
+</script>
+<script>
+    function formatNumber(num) {
+    return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
 </script>
 
 
