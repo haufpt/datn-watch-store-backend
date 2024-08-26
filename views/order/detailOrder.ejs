@@ -43,7 +43,7 @@
                                                                 <p class="product-discount">x<%= row.quantity %>
                                                                 </p>
                                                                 <p class="product-discount">
-                                                                    <%= row.product.price %>$
+                                                                    <%= row.product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %>$
                                                                 </p>
                                                             </div>
                                                             <div class="col-md-2">
