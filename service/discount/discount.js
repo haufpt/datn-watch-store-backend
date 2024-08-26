@@ -81,7 +81,7 @@ const getListDiscount = async (page, limit, searchQuery) => {
           code: 1,
         },
       },
-      { $sort: { createdAt: -1 } },
+      { $sort: { createdDate: -1 } },
       { $skip: (page - 1) * limit },
       { $limit: limit },
     ];
