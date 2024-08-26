@@ -4,6 +4,7 @@ const productModel = require("../../model/product");
 const cartItemsModel = require("../../model/cart_item");
 const mongoose = require("mongoose");
 const orderItemModel = require("../../model/order_item");
+const { OrderStatusEnum } = require("../../common/enum");
 
 const getListOrder = async (page, limit, searchCode) => {
   try {
@@ -361,20 +362,23 @@ const isUpdateOrder = async (orderId, status) => {
     );
     console.log(`[orderService] isUpdateOrder: updateOrder -> ${updateOrder}`);
 
-    const listOrderItem = await orderItemModel.find({
-      orderId: new mongoose.Types.ObjectId(orderId),
-    });
-    console.log(`[orderService] listOrderItem -> ${listOrderItem}`);
+    if (status === OrderStatusEnum.SHIPPING) {
+      const listOrderItem = await orderItemModel.find({
+        orderId: new mongoose.Types.ObjectId(orderId),
+      });
+      console.log(`[orderService] listOrderItem -> ${listOrderItem}`);
 
-    for (let i = 0; i < listOrderItem.length; i++) {
-      const product = await productModel.findById(listOrderItem[i].productId);
-      console.log(`[orderService] product -> ${product}`);
-      if (product) {
-        const newQuantity = product.quantity - listOrderItem[i].quantity;
-        product.quantity = newQuantity > 0 ? newQuantity : 0;
-        await product.save();
+      for (let i = 0; i < listOrderItem.length; i++) {
+        const product = await productModel.findById(listOrderItem[i].productId);
+        console.log(`[orderService] product -> ${product}`);
+        if (product) {
+          const newQuantity = product.quantity - listOrderItem[i].quantity;
+          product.quantity = newQuantity > 0 ? newQuantity : 0;
+          await product.save();
+        }
       }
     }
+
     return updateOrder;
   } catch (error) {
     throw error;
