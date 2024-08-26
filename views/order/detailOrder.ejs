@@ -48,7 +48,7 @@
                                                             </div>
                                                             <div class="col-md-2">
                                                                 <h5 class="product-total">
-                                                                    <%= row.quantity * row.product.price %>$
+                                                                    <%= (row.quantity * row.product.price).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") %>$
                                                                 </h5>
                                                             </div>
                                                         </div>
