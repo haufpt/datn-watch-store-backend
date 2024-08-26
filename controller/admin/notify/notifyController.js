@@ -6,12 +6,10 @@ const managerNotify = async (req, res) => {
     var page = parseInt(req.query.page) || 1;
     var limit = parseInt(req.query.limit) || 15;
     let totalPages;
-    var searchQerry = req.query.search;
-
-    const totalRecords = await notifyService.getTotalRecords();
-      totalPages = Math.ceil(totalRecords / limit);
+    var searchQerry = req.query.search;     
     const listNotify = await notifyService.getAllNotify(page, limit, searchQerry);
-
+    const listNotify2 = await notifyService.getAllNotify(page, 1000000000, searchQerry);
+    totalPages = Math.ceil(listNotify2.length / limit);
     res.render("./index.ejs", {
       title: "Thông báo",
       routerName: "notify",

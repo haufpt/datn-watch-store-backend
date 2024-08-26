@@ -56,14 +56,20 @@ const findDiscount = async (filter) => {
   return await discountModel.findOne(filter);
 };
 
-const getListDiscount = async () => {
+const getListDiscount = async (page, limit, searchQuery) => {
   try {
+    const query = {
+      isDeleted: { $ne: true }
+    };
+    if (searchQuery) {
+      query.$or = [
+        { content: { $regex: searchQuery, $options: "i" } }, 
+        { code: { $regex: searchQuery, $options: "i" } },
+      ];
+    }
+  
     const pipeline = [
-      {
-        $match: {
-          isDeleted: { $ne: true },
-        },
-      },
+      { $match: query },
       {
         $project: {
           _id: 1,
@@ -75,6 +81,9 @@ const getListDiscount = async () => {
           code: 1,
         },
       },
+      { $sort: { createdAt: -1 } },
+      { $skip: (page - 1) * limit },
+      { $limit: limit },
     ];
 
     return await discountModel.aggregate(pipeline);

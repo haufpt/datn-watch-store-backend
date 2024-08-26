@@ -11,17 +11,26 @@ const createNewBrand = async (brandData) => {
   }
 };
 
-const listBrand = async ({ page = 1, limit = 10 } = {}) => {
+const listBrand = async ({ page = 1, limit = 15, searchQuery } = {}) => {
   try {
+    let query = {};
+    if (searchQuery) {
+      query = { name: { $regex: searchQuery, $options: 'i' } };
+    }
+
     const skip = (page - 1) * limit;
-    const brands = await brandsModel.find().skip(skip).limit(limit);
-    const totalBrands = await brandsModel.countDocuments();
+    
+    const brands = await brandsModel.find(query).skip(skip).limit(limit);
+    
+    // Để tính tổng số trang, thì cũng cần áp dụng query tương tự
+    const brand2 = await brandsModel.find(query).skip(skip).limit(1000000000);
+    const totalPage = Math.ceil(brand2.length / limit);
 
     return {
       brands: brands,
       currentPage: page,
-      totalPages: Math.ceil(totalBrands / limit),
-      totalBrands,
+      limit: limit,
+      totalPages: totalPage
     };
   } catch (error) {
     throw error;

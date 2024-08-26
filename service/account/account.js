@@ -18,27 +18,36 @@ const findAccountById = async (idAccount) => {
   return await accountModel.findById(idAccount);
 };
 
-const getAllAcountUser = async ({ page = 1, limit = 100, type, role } = {}) => {
+const getAllAcountUser = async ({ page, limit, type, role, searchQuery } = {}) => {
   try {
     const skip = (page - 1) * limit;
     let query = { role: role ?? AccountRoleEnum.CLIENT };
 
+    if (searchQuery) {
+      query.$or = [
+        { username: { $regex: searchQuery, $options: 'i' } }, 
+        { email: { $regex: searchQuery, $options: 'i' } }
+      ];
+    }
+
     if (type) {
       if (type === GetListTypeEnum.ACTIVE) {
-        query.$or = [{ isDeleted: { $exists: false } }, { isDeleted: false }];
+        query.$or = query.$or || [];
+        query.$or.push({ isDeleted: { $exists: false } }, { isDeleted: false });
       } else {
         query.isDeleted = true;
       }
     }
 
-    const accounts = await accountModel.find(query);
-    const totalAccount = await accountModel.countDocuments(query);
+    const accounts = await accountModel.find(query).skip(skip).limit(limit);
+    const account2 = await accountModel.find(query).skip(skip).limit(10000000000);
+    const totalPages = Math.ceil(account2.length / limit);
 
     return {
       accounts: accounts,
       currentPage: page,
-      totalPages: Math.ceil(totalAccount / limit),
-      totalAccount,
+      limit: limit,
+      totalPages: totalPages
     };
   } catch (error) {
     throw error;
