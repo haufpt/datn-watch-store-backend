@@ -14,10 +14,10 @@ const getListOrder = async (page, limit, searchCode) => {
     if (searchCode) {
       matchStage.code = { $regex: searchCode, $options: "i" };
     }
-    
+
     const pipeline = [
       {
-        $match: matchStage
+        $match: matchStage,
       },
       {
         $sort: {
@@ -370,7 +370,8 @@ const isUpdateOrder = async (orderId, status) => {
       const product = await productModel.findById(listOrderItem[i].productId);
       console.log(`[orderService] product -> ${product}`);
       if (product) {
-        product.quantity -= 1;
+        const newQuantity = product.quantity - listOrderItem[i].quantity;
+        product.quantity = newQuantity > 0 ? newQuantity : 0;
         await product.save();
       }
     }
@@ -382,15 +383,16 @@ const isUpdateOrder = async (orderId, status) => {
 
 const getTotalRecords = async (page, searchCode) => {
   try {
-    let  totalRecords = 0;
+    let totalRecords = 0;
     if (searchCode) {
       const sum = await getListOrder(page, 100000000, searchCode);
       totalRecords = Math.ceil(sum.length / 15);
     } else {
-      totalRecords = await orderModel.countDocuments({status:{ $ne: "PROCESSING" } });
+      totalRecords = await orderModel.countDocuments({
+        status: { $ne: "PROCESSING" },
+      });
     }
 
-     
     return totalRecords;
   } catch (error) {
     throw new Error(`Error while getting total records: ${error.message}`);
@@ -398,14 +400,14 @@ const getTotalRecords = async (page, searchCode) => {
 };
 const getTotalRecordsByStatus = async (status, page, searchCode) => {
   try {
-    let  totalRecords = 0;
+    let totalRecords = 0;
     if (searchCode) {
       const sum = await getListOrder(page, 100000000, searchCode);
       totalRecords = Math.ceil(sum.length / 15);
     } else {
       totalRecords = await orderModel.countDocuments({ status: status });
     }
-     
+
     return totalRecords;
   } catch (error) {
     throw new Error(`Error while getting total records: ${error.message}`);
